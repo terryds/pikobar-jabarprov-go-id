@@ -41,12 +41,12 @@ export default {
           icon: faHome
         },
         {
-          title: 'Notification',
+          title: 'Notifikasi',
           to: '/notifications',
           icon: faBell
         },
         {
-          title: 'News',
+          title: 'Berita',
           to: '/articles',
           icon: faNewspaper
         },
