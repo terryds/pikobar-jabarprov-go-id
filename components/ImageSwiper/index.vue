@@ -8,7 +8,7 @@
             :key="index"
             class="swiper-slide"
             :style="{'--swiper-height': height}"
-            @slide-click="$router.push(`/infographics/${item.id}`)">
+            @slide-click="$router.push(getInfographicURL(item))">
             <div>
               <img
                 tag="img"
@@ -16,7 +16,7 @@
               <br>
               <nuxt-link
                 tag="a"
-                :to="`/infographics/${item.id}`">
+                :to="getInfographicURL(item)">
                 {{ item.title }}
               </nuxt-link>
             </div>
@@ -110,6 +110,14 @@ export default {
             this.isPending = false
           })
       }
+    }
+  },
+  methods: {
+    encodeURI (string) {
+      return encodeURI(string)
+    },
+    getInfographicURL (item) {
+      return `/infographics/${this.encodeURI(item.title)}-inf.${item.id}`
     }
   }
 }
