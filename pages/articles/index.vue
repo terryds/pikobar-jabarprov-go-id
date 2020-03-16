@@ -1,15 +1,16 @@
 <template>
-  <div class="relative" style="top: -2px;">
+  <div class="relative lg:border-t border-solid border-gray-300" style="top: -2px;">
     <div class="bg-white border-b border-solid border-gray-300">
-      <div class="container mx-auto max-w-3xl">
+      <div class="mx-auto max-w-xl">
         <ul class="h-20 flex flex-row justify-center items-end">
           <li class="flex-1 px-4">
             <button
               :class="['relative w-full focus:outline-none', currentTab === 'live' && 'text-brand-green-light font-bold']"
               @click="currentTab = 'live'">
-              <span class="inline-block align-middle w-3 h-3 rounded-full bg-brand-green mb-4 mr-2" />
+              <span
+                class="is-rippling inline-block align-middle w-3 h-3 rounded-full bg-brand-green mb-4 mr-2"/>
               <span class="inline-block align-middle mb-4">
-                Live Updates
+                Berita Terbaru
               </span>
               <br>
               <i v-if="currentTab === 'live'" class="absolute bottom-0 block w-full h-1 bg-brand-green"/>
@@ -31,7 +32,7 @@
     <br>
     <div
       v-show="currentTab === 'live'"
-      class="container mx-4 p-5 max-w-3xl mx-auto">
+      class="container mx-4 p-5 lg:max-w-3xl mx-auto">
       <h3 class="text-3xl text-gray-900 font-bold text-left leading-none">
         Live Updates
       </h3>
@@ -39,7 +40,7 @@
     </div>
     <div
       v-show="currentTab === 'press'"
-      class="container mx-4 p-5 max-w-3xl mx-auto">
+      class="container mx-4 p-5 lg:max-w-3xl mx-auto">
       <h3 class="text-3xl text-gray-900 font-bold text-left leading-none">
         Rilis Pers
       </h3>
@@ -275,5 +276,24 @@ export default {
       @apply mr-4;
     }
   }
+}
+
+@keyframes ripple {
+  0% {
+    transform: scale(0.85);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 0.4;
+    transform: scale(1.2);
+  }
+}
+
+.is-rippling {
+  animation: ripple 0.75s ease-out infinite alternate;
 }
 </style>
