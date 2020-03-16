@@ -2,13 +2,14 @@
   <nav
     class="fixed bottom-0 w-screen px-4 py-2 flex flex-row justify-center items-baseline bg-white"
     style="box-shadow: 0 -8px 24px 0 rgba(0,0,0,0.1)">
-    <div class="navbar-items">
+    <div class="navbar-items flex flex-row justify-center items-center">
       <NavbarItem
         v-for="(item, index) in navbarItems"
         :key="index"
         :title="item.title"
         :to="item.to"
-        :exact="item.exact">
+        :exact="item.exact"
+        class="mx-3 sm:mx-5">
         <template #icon>
           <FontAwesomeIcon :icon="item.icon" />
         </template>
@@ -63,7 +64,7 @@ export default {
 
 <style lang="scss" scoped>
 .navbar-items {
-  display: grid;
-  grid-template-columns: repeat(4, 100px);
+  // display: grid;
+  // grid-template-columns: repeat(4, 86px);
 }
 </style>
