@@ -33,6 +33,10 @@ export default {
   ** Plugins to load before mounting the App
   */
   plugins: [
+    {
+      src: '~/plugins/service-worker.js',
+      mode: 'client'
+    },
     '~/plugins/vuex-router-sync.js',
     { src: '~/plugins/vue-carousel.js', mode: 'client' }
   ],
@@ -55,10 +59,14 @@ export default {
     '@nuxtjs/pwa'
   ],
   pwa: {
-    workbox: {
-      importScripts: [
-        'app-sw.js'
-      ]
+    dev: true,
+    autoRegister: false,
+    themeColor: '#399F4F',
+    manifest: {
+      name: 'Jabar COVID-19',
+      background_color: '#399F4F',
+      display: 'fullscreen',
+      orientation: 'portrait'
     }
   },
   /*
