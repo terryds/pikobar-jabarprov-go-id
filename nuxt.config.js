@@ -33,6 +33,7 @@ export default {
   ** Plugins to load before mounting the App
   */
   plugins: [
+    '~/plugins/vuex-router-sync.js',
     { src: '~/plugins/vue-carousel.js', mode: 'client' }
   ],
   /*
