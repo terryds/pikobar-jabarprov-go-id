@@ -1,9 +1,12 @@
 <template>
   <div class="container mx-auto">
-    <ImageCarousel :items="banners" />
+    <div
+      class="sm:m-4 overflow-hidden rounded-none sm:rounded-lg">
+      <ImageCarousel :items="banners" />
+    </div>
     <div class="border-solid border-gray-300">
       <section class="mx-4 my-8">
-        <div style="display: grid; grid-template-columns: 1fr 1fr; column-gap: 1rem; row-gap: 1rem;">
+        <div class="call-cards">
           <CallCard
             title="Call Center"
             subtitle="(Nomor Darurat)"
@@ -12,17 +15,17 @@
             title="Dinkes Jabar"
             subtitle="(Pertanyaan Umum)"
             number="0811 2093 306" />
-        </div>
-        <div
-          class="mt-4 p-4 flex flex-row flex-wrap justify-between items-center text-white bg-brand-green"
-          style="border-radius: 0.8rem;">
-          <p class="flex-none">
-            <strong>Pertanyaan Terlayani</strong><br>
-            <small>(Telpon dan Pesan Teks)</small>
-          </p>
-          <label class="p-3 text-3xl text-brand-yellow-light font-bold">
-            {{ cases ? cases.pertanyaan_terlayani : '' }}
-          </label>
+          <div
+            class="responded-question mt-4 lg:mt-0 p-4 flex flex-row flex-wrap justify-between items-center text-white bg-brand-green"
+            style="border-radius: 0.8rem;">
+            <p class="flex-none">
+              <strong>Pertanyaan Terlayani</strong><br>
+              <small>(Telpon dan Pesan Teks)</small>
+            </p>
+            <label class="p-3 text-3xl text-brand-yellow-light font-bold">
+              {{ cases ? cases.pertanyaan_terlayani : '' }}
+            </label>
+          </div>
         </div>
       </section>
       <section
@@ -68,6 +71,11 @@
             </svg>
           </template>
         </CounterCard>
+      </section>
+      <section
+        class="bg-white mx-4 my-8 overflow-hidden"
+        style="border-radius: 0.8rem; box-shadow: 0 0 4px 0px rgba(0,0,0,0.05), 0 4px 24px 0 rgba(0,0,0,0.1);">
+        <PetaPersebaranAllCases />
       </section>
       <section
         class="bg-white mx-4 my-8 p-5"
@@ -159,6 +167,7 @@ import CallCard from '~/components/CallCard'
 import ContactList from '~/components/ContactList'
 import BlogPostPreview from '~/components/Blog/BlogPostPreview'
 import CounterCard from '~/components/CounterCard'
+import PetaPersebaranAllCases from '~/components/Tableau/PetaPersebaranAllCases'
 
 export default {
   components: {
@@ -167,7 +176,8 @@ export default {
     CallCard,
     ContactList,
     BlogPostPreview,
-    CounterCard
+    CounterCard,
+    PetaPersebaranAllCases
   },
   data () {
     return {
@@ -200,6 +210,23 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.responded-question {
+  grid-column: auto / span 2;
+
+  @screen lg {
+    grid-column: auto;
+  }
+}
+.call-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 1rem;
+  row-gap: 1rem;
+
+  @screen lg {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
 .counter-cards {
 
   @screen lg {
