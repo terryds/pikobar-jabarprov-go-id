@@ -4,7 +4,7 @@
       <nuxt-link
         tag="a"
         :to="to"
-        class="text-xl font-bold hover:underline">
+        class="text-lg font-bold hover:underline">
         {{ title }}
       </nuxt-link>
       <p class="text-base">

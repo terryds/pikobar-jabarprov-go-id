@@ -1,5 +1,5 @@
 <template>
-  <main>
+  <div class="container mx-auto">
     <div class="container mx-4 p-5 max-w-3xl mx-auto">
       <h3 class="text-3xl text-gray-900 font-bold text-left leading-none">
         Pertanyaan yang Sering Ditanyakan
@@ -52,7 +52,7 @@
         </ul>
       </div>
     </div>
-  </main>
+  </div>
 </template>
 
 <script>

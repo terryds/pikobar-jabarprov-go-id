@@ -47,7 +47,7 @@ export default {
         },
         {
           title: 'Berita',
-          to: '/articles',
+          to: '/articles?tab=press',
           icon: faNewspaper
         },
         {

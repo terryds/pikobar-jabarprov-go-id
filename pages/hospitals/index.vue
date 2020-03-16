@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container mx-auto">
     <div class="p-5 bg-white border-solid border-gray-300">
       <section>
         <h2 class="text-xl font-bold leading-tight">

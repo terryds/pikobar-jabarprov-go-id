@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container mx-auto">
     <ImageCarousel :items="banners" />
     <div class="border-solid border-gray-300">
       <section class="mx-4 my-8">
@@ -21,7 +21,7 @@
             <small>(Telpon dan Pesan Teks)</small>
           </p>
           <label class="p-3 text-3xl text-brand-yellow-light font-bold">
-            100
+            {{ cases ? cases.pertanyaan_terlayani : '' }}
           </label>
         </div>
       </section>
@@ -111,13 +111,14 @@
         </div>
       </section>
     </div>
-    <br>
-    <div class="p-4 border-solid border-gray-300">
-      <section>
+    <div>
+      <section
+        class="bg-white mx-4 my-8 p-5"
+        style="border-radius: 0.8rem; box-shadow: 0 0 4px 0px rgba(0,0,0,0.05), 0 4px 24px 0 rgba(0,0,0,0.1);">
         <h2 class="text-xl font-bold leading-tight">
           Rilis Pers
         </h2>
-        <p class="mb-8 text-lg opacity-50 leading-tight">
+        <p class="mb-8 text-base opacity-50 leading-tight">
           Terakhir Diperbarui: {{ todayDateAndTime }}
         </p>
         <br>
@@ -131,8 +132,17 @@
               :content="item.content"
               :date="formatDateTimeShort(item.published_at)"
               :to="`/articles/${item.id}`"/>
-            <hr class="my-8">
+            <hr v-if="index < news.length - 1" class="my-8">
           </div>
+        </div>
+        <br>
+        <div>
+          <nuxt-link
+            tag="a"
+            class="block w-full p-4 rounded-lg text-center text-white bg-brand-green hover:bg-brand-green-light font-bold"
+            to="/articles?tab=press">
+            Lihat Rilis Pers Lainnya
+          </nuxt-link>
         </div>
       </section>
     </div>

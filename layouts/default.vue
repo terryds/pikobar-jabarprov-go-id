@@ -2,7 +2,7 @@
   <div class="w-full bg-gray-100">
     <Appbar />
     <div
-      class="container mx-auto pb-32"
+      class="w-full pb-32"
       style="min-height: 75vh;">
       <nuxt />
     </div>
