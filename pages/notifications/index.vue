@@ -1,7 +1,7 @@
 <template>
   <div class="container mx-auto">
     <div
-      class="container mx-4 p-5 max-w-3xl mx-auto">
+      class="container m-4 px-5 max-w-3xl mx-auto">
       <h3 class="text-3xl text-gray-900 font-bold text-left leading-none">
         Notifikasi
       </h3>
@@ -9,7 +9,7 @@
     </div>
     <div>
       <template v-if="!isPending">
-        <div class="flex flex-wrap">
+        <div class="px-5">
           <div
             v-for="item in notifications"
             :key="item.id"
@@ -23,7 +23,7 @@
                     class="text-brand-green text-lg"/>
                 </div>
                 <div class="text-left flex-grow">
-                  <p class="text-sm leading-normal">
+                  <p class="text-base leading-normal">
                     {{ item['title'] }}
                   </p>
                   <p class="text-sm text-gray-600">

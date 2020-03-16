@@ -1,33 +1,40 @@
 <template>
-  <div class="messages">
+  <div>
     <div class="container mx-auto">
-      <div class="w-full lg:flex px-4 mb-4 mt-4">
-        <p class="text-leading text-grey-darker">
-          Notifications
-        </p>
+      <div class="m-4 px-5 max-w-3xl mx-auto">
+        <h3 class="text-3xl text-gray-900 font-bold text-left leading-none">
+          Notifikasi
+        </h3>
+        <br>
       </div>
 
-      <div class="bg-white shadow p-4">
+      <div class="max-w-3xl  mx-auto bg-white shadow p-4">
         <template v-if="!isPending && item">
-          <div class="flex">
-            <div class="flex items-center block mx-auto mr-4">
-              <i class="fas fa-envelope text-brand-green text-lg" />
-            </div>
-            <div class="text-left flex-grow">
-              <p class="text-sm leading-normal">
-                {{ item['title'] }}
-              </p>
-              <p class="text-sm text-gray-600">
-                {{ formatDateTimeShort(item['published_at']) }}
+          <div class="flex justify-start items-center block">
+            <FontAwesomeIcon
+              :icon="icon.faEnvelope"
+              class="text-brand-green text-2xl mr-4"/>
+            <div>
+              <h3 class="text-lg leading-normal">
+                {{ item.title }}
+              </h3>
+              <p class="text-base text-gray-600">
+                {{ formatDateTimeShort(item.published_at) }}
               </p>
             </div>
           </div>
-
-          <div class="text-sm leading-normal mt-5 body-content" v-html="formatContent(item['content'])" />
-
+          <br>
+          <br>
+          <div
+            class="text-base html-content"
+            v-html="item.content" />
           <template v-if="item['action_url']">
             <div class="my-2">
-              <a :href="item['action_url']" class="w-full text-center shadow block bg-brand-blue text-white font-bold py-2 px-4 rounded" @click="clickAction">{{ item['action_title'] }}</a>
+              <a
+                :href="item['action_url']"
+                class="w-full text-center shadow block bg-brand-blue text-white font-bold py-2 px-4 rounded"
+                @click="clickAction">{{ item['action_title'] }}
+              </a>
             </div>
           </template>
         </template>
@@ -59,6 +66,7 @@
 </template>
 
 <script>
+import { faEnvelope } from '@fortawesome/free-solid-svg-icons'
 import { mapActions } from 'vuex'
 import { ContentLoader } from 'vue-content-loader'
 import { formatDateTimeShort } from '~/lib/date'
@@ -74,7 +82,10 @@ export default {
   data () {
     return {
       isPending: true,
-      item: null
+      item: null,
+      icon: {
+        faEnvelope
+      }
     }
   },
   mounted () {
