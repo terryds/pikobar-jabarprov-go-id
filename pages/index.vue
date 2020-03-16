@@ -92,7 +92,7 @@
         <div>
           <nuxt-link
             tag="a"
-            class="block w-full p-4 rounded-lg text-center text-white bg-brand-green hover:bg-brand-green-light font-bold"
+            class="block w-full md:inline-block md:w-auto p-4 rounded-lg text-center text-white bg-brand-green hover:bg-brand-green-light font-bold"
             to="/hospitals">
             Tampilkan Lebih Banyak
           </nuxt-link>
@@ -112,7 +112,7 @@
         <div class="p-4">
           <nuxt-link
             tag="a"
-            class="block w-full p-4 rounded-lg text-center text-white bg-brand-green hover:bg-brand-green-light font-bold"
+            class="block w-full md:inline-block md:w-auto p-4 rounded-lg text-center text-white bg-brand-green hover:bg-brand-green-light font-bold"
             to="/infographics">
             Tampilkan Lebih Banyak
           </nuxt-link>
@@ -135,7 +135,7 @@
             v-for="(item, index) in news"
             :key="index">
             <BlogPostPreview
-              :cover-image="item.image"
+              :image="item.image"
               :title="item.title"
               :content="item.content"
               :date="formatDateTimeShort(item.published_at)"
@@ -147,7 +147,7 @@
         <div>
           <nuxt-link
             tag="a"
-            class="block w-full p-4 rounded-lg text-center text-white bg-brand-green hover:bg-brand-green-light font-bold"
+            class="block w-full md:inline-block md:w-auto p-4 rounded-lg text-center text-white bg-brand-green hover:bg-brand-green-light font-bold"
             to="/articles?tab=press">
             Lihat Rilis Pers Lainnya
           </nuxt-link>
