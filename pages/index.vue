@@ -198,10 +198,12 @@ export default {
     })
   },
   async created () {
-    await this.$store.dispatch('banners/getItems')
-    await this.$store.dispatch('news/getItems')
-    await this.$store.dispatch('statistics/getCases')
-    await this.$store.dispatch('infographics/getItems')
+    await Promise.all([
+      this.$store.dispatch('banners/getItems'),
+      this.$store.dispatch('news/getItems'),
+      this.$store.dispatch('statistics/getCases'),
+      this.$store.dispatch('infographics/getItems')
+    ])
   },
   methods: {
     formatDateTimeShort
