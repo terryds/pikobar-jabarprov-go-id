@@ -1,13 +1,27 @@
 <template>
-  <div>
+  <div
+    class="container sm:p-5 mx-auto">
     <div class="p-5 bg-white border-solid border-gray-300">
       <section>
         <h2 class="text-xl font-bold leading-tight">
           Infografis Terkait COVID-19
         </h2>
         <br>
-        <div>
-          <!--  -->
+        <div class="infographic-list">
+          <figure
+            v-for="(item, index) in infographics"
+            :key="index"
+            class="w-full">
+            <img
+              :src="item.images[0] || null"
+              class="cursor-pointer infographic-list__item-image w-full object-cover object-left-top rounded-lg shadow-lg hover:opacity-75"
+              @click.prevent="$router.push(getItemURL(item))">
+            <caption class="mt-4 text-left block w-full font-bold opacity-75 hover:underline">
+              <nuxt-link :to="getItemURL(item)">
+                {{ item.title }}
+              </nuxt-link>
+            </caption>
+          </figure>
         </div>
       </section>
     </div>
@@ -15,12 +29,56 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 export default {
+  data () {
+    return {
+      isPending: true
+    }
+  },
   computed: {
     ...mapState('infographics', {
       infographics: 'items'
     })
+  },
+  mounted () {
+    this.isPending = true
+    this.getItems({ perPage: 8 })
+      .finally(() => {
+        this.isPending = false
+      })
+  },
+  methods: {
+    encodeURI (string) {
+      return encodeURI(string)
+    },
+    getItemURL (item) {
+      return `/infographics/${this.encodeURI(item.title)}-inf.${item.id}`
+    },
+    ...mapActions('infographics', {
+      getItems: 'getItems'
+    })
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.infographic-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  column-gap: 1.5rem;
+  row-gap: 3rem;
+
+  &__item-image {
+    height: 256px;
+  }
+
+  @screen md {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  @screen lg {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
+</style>
