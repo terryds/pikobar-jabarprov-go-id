@@ -1,5 +1,17 @@
 <template>
   <header class="bg-white border-b border-solid border-gray-300">
+    <div v-if="showPopupNotification" class="bg-brand-yellow-darkest">
+      <div class="container mx-auto">
+        <div class="flex flex-wrap px-6 py-4">
+          <div class="text-sm w-full">
+            Izinkan notifikasi mengirim pesan
+            <button @click="allowNotification" class="ml-2 bg-brand-blue text-white font-bold py-1 px-4 rounded focus:outline-none focus:shadow-outline" type="button">
+              Allow
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="container mx-auto p-4">
       <a
         v-if="canGoBack"
@@ -37,12 +49,14 @@
 
 <script>
 import { faChevronLeft } from '@fortawesome/free-solid-svg-icons'
+import { db, messaging, FieldValue } from '~/lib/firebase'
 export default {
   data () {
     return {
       icon: {
         faChevronLeft
-      }
+      },
+      showPopupNotification: true
     }
   },
   computed: {
@@ -53,9 +67,62 @@ export default {
       return this.$store.state.route.from.path
     }
   },
+  mounted () {
+    this.checkPermission()
+  },
   methods: {
     onGoBack () {
       this.$router.back()
+    },
+    async checkPermission () {
+      if (!messaging) {
+        return
+      }
+
+      const permission = await Notification.permission
+
+      if (permission === 'default') {
+        this.showPopupNotification = true
+      }
+
+      if (permission === 'granted') {
+        const token = await messaging.getToken()
+
+        this.saveToken(token)
+      }
+    },
+    async allowNotification () {
+      if (!messaging) {
+        return
+      }
+
+      // Request Permission of Notifications
+      const permission = await Notification.requestPermission()
+
+      if (permission === 'granted') {
+        const token = await messaging.getToken()
+
+        this.saveToken(token)
+      }
+
+      messaging.onTokenRefresh(async () => {
+        const token = await messaging.getToken()
+
+        this.saveToken(token)
+      })
+
+      this.showPopupNotification = false
+    },
+    async saveToken (token) {
+      const tokenRef = await db.collection('tokens').doc(token)
+      const record = await tokenRef.get()
+
+      if (record.exists === false) {
+        tokenRef.set({
+          token,
+          createdAt: FieldValue.serverTimestamp()
+        })
+      }
     }
   }
 }
