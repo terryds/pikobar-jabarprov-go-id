@@ -1,6 +1,45 @@
 <template>
-  <main>
-    <div class="container mx-4 p-5 max-w-3xl mx-auto">
+  <div class="relative" style="top: -2px;">
+    <div class="bg-white border-b border-solid border-gray-300">
+      <div class="container mx-auto max-w-3xl">
+        <ul class="h-20 flex flex-row justify-center items-end">
+          <li class="flex-1 px-4">
+            <button
+              :class="['relative w-full focus:outline-none', currentTab === 'live' && 'text-brand-green-light font-bold']"
+              @click="currentTab = 'live'">
+              <span class="inline-block align-middle w-3 h-3 rounded-full bg-brand-green mb-4 mr-2" />
+              <span class="inline-block align-middle mb-4">
+                Live Updates
+              </span>
+              <br>
+              <i v-if="currentTab === 'live'" class="absolute bottom-0 block w-full h-1 bg-brand-green"/>
+            </button>
+          </li>
+          <li class="flex-1 px-4">
+            <button
+              :class="['relative w-full focus:outline-none', currentTab === 'press' && 'text-brand-green-light font-bold']"
+              @click="currentTab = 'press'">
+              <span class="block mb-4">
+                Rilis Pers
+              </span>
+              <i v-if="currentTab === 'press'" class="absolute bottom-0 block w-full h-1 bg-brand-green"/>
+            </button>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <br>
+    <div
+      v-show="currentTab === 'live'"
+      class="container mx-4 p-5 max-w-3xl mx-auto">
+      <h3 class="text-3xl text-gray-900 font-bold text-left leading-none">
+        Live Updates
+      </h3>
+      <br>
+    </div>
+    <div
+      v-show="currentTab === 'press'"
+      class="container mx-4 p-5 max-w-3xl mx-auto">
       <h3 class="text-3xl text-gray-900 font-bold text-left leading-none">
         Rilis Pers
       </h3>
@@ -114,7 +153,7 @@
         </template>
       </div>
     </div>
-  </main>
+  </div>
 </template>
 
 <script>
@@ -138,6 +177,24 @@ export default {
       lastDocumentSnapshot: null,
       currentPage: 0,
       perPage: 5
+    }
+  },
+  computed: {
+    currentTab: {
+      get () {
+        return this.$route.query.tab || 'press'
+      },
+      set (tab) {
+        if (tab === this.$route.query.tab) {
+          return
+        }
+        this.$router.replace({
+          path: this.$route.path,
+          query: {
+            tab
+          }
+        })
+      }
     }
   },
   mounted () {
@@ -191,6 +248,18 @@ export default {
         }).catch((e) => {
           return null
         })
+    }
+  },
+  beforeRouteEnter (to, from, next) {
+    if (!['live', 'press'].includes(to.query.tab)) {
+      next({
+        path: to.path,
+        query: {
+          tab: 'press'
+        }
+      })
+    } else {
+      next()
     }
   }
 }
