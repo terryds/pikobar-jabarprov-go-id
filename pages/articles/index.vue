@@ -91,6 +91,7 @@
           <BlogPostPreview
             v-for="item in items"
             :key="item.id"
+            :image="item.image"
             :title="item.title"
             :content="item.content"
             :to="`/articles/${item.id}`"
