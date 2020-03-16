@@ -1,22 +1,17 @@
 <template>
-  <div class="flex flex-row justify-start items-center">
-    <a
-      class="appearance-none inline-block w-12 h-12 mr-6 rounded-full flex flex-row justify-center items-center shadow-lg bg-brand-green hover:bg-brand-green-lighter"
-      :title="`Lakukan panggilan ke ${title}`"
-      :href="`tel:${number}`">
-      <FontAwesomeIcon
-        class="text-xl text-white"
-        :icon="icons.faPhone"/>
-    </a>
-    <div>
+  <div
+    class="cursor-pointer px-3 py-5 flex flex-row justify-start items-center bg-white hover:bg-gray-100"
+    style="border-radius: 0.8rem; box-shadow: 0 0 4px 0px rgba(0,0,0,0.05), 0 4px 24px 0 rgba(0,0,0,0.1);"
+    @click.capture="onClick">
+    <FontAwesomeIcon
+      class="mr-3 text-xl text-brand-green pointer-events-none"
+      :icon="icon.faPhone"/>
+    <div class="pointer-events-none">
       <label class="block text-base" v-text="title" />
       <small
         v-if="subtitle"
         class="block text-sm opacity-50"
         v-text="subtitle" />
-      <a class="text-xl" :href="`tel:${number}`">
-        {{ number }}
-      </a>
     </div>
   </div>
 </template>
@@ -40,9 +35,14 @@ export default {
   },
   data () {
     return {
-      icons: {
+      icon: {
         faPhone
       }
+    }
+  },
+  methods: {
+    onClick () {
+      window.open(`tel:${this.number}`, '_blank')
     }
   }
 }
