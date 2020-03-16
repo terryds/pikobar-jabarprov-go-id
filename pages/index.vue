@@ -169,19 +169,6 @@ export default {
     BlogPostPreview,
     CounterCard
   },
-  fetch ({ store }) {
-    const promises = []
-    if (!store.state.banners.items.length) {
-      promises.push(store.dispatch('banners/getItems'))
-    }
-    if (!store.state.news.items.length) {
-      promises.push(store.dispatch('news/getItems'))
-    }
-    if (!store.state.statistics.cases) {
-      promises.push(store.dispatch('statistics/getCases'))
-    }
-    return Promise.all(promises)
-  },
   data () {
     return {
       icon: {
@@ -200,8 +187,11 @@ export default {
       cases: state => state.statistics.cases
     })
   },
-  created () {
-    this.$store.dispatch('infographics/getItems')
+  async created () {
+    await this.$store.dispatch('banners/getItems')
+    await this.$store.dispatch('news/getItems')
+    await this.$store.dispatch('statistics/getCases')
+    await this.$store.dispatch('infographics/getItems')
   },
   methods: {
     formatDateTimeShort
