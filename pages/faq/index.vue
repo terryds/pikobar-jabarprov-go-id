@@ -78,7 +78,7 @@ export default {
       items: 'items'
     })
   },
-  created () {
+  mounted () {
     this.getItems()
   },
   methods: {
@@ -107,10 +107,12 @@ export default {
 
 <style lang="scss" scoped>
 .faq-list {
+  counter-reset: faq-number 0;
   &__item {
+    counter-increment: faq-number 1;
     > header::before {
       align-self: flex-start;
-      content: '-';
+      content: counter(faq-number) '.';
       @apply mr-4;
     }
   }
