@@ -79,7 +79,7 @@ export default {
         return
       }
 
-      const permission = await Notification.permission
+      const permission = Notification.permission
 
       if (permission === 'default') {
         this.showPopupNotification = true
@@ -91,27 +91,22 @@ export default {
         this.saveToken(token)
       }
     },
-    async allowNotification () {
+    allowNotification () {
       if (!messaging) {
         return
       }
+      Notification.requestPermission(async (permission) => {
+        if (permission === 'granted') {
+          const token = await messaging.getToken()
+          this.saveToken(token)
+        }
+        messaging.onTokenRefresh(async () => {
+          const token = await messaging.getToken()
 
-      // Request Permission of Notifications
-      const permission = await Notification.requestPermission()
-
-      if (permission === 'granted') {
-        const token = await messaging.getToken()
-
-        this.saveToken(token)
-      }
-
-      messaging.onTokenRefresh(async () => {
-        const token = await messaging.getToken()
-
-        this.saveToken(token)
+          this.saveToken(token)
+        })
+        this.showPopupNotification = false
       })
-
-      this.showPopupNotification = false
     },
     async saveToken (token) {
       const tokenRef = await db.collection('tokens').doc(token)
