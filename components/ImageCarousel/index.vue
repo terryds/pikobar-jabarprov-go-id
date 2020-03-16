@@ -14,7 +14,7 @@
       </template>
       <template v-else>
         <slot name="pending">
-          <div class="bg-white">
+          <div class="bg-white p-8 rounded-lg">
             <content-loader
               :speed="2"
               width="400"

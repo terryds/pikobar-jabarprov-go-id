@@ -53,3 +53,9 @@ html {
     color: #009BDA;
   }
 }
+
+.container {
+  @screen lg {
+    max-width: 1024px;
+  }
+}
