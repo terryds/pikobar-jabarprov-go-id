@@ -122,11 +122,6 @@ export default {
   margin-right: 1.5rem;
   @apply relative flex flex-row justify-center items-center;
 
-  @screen lg {
-    padding: 0;
-    height: 400px;
-  }
-
   > div {
     @apply w-full h-full;
 

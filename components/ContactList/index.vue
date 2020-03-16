@@ -4,7 +4,8 @@
       <li
         v-for="(item, i) in items"
         :key="i"
-        class="mb-8">
+        class="mb-8 pl-5 relative">
+        <div class="absolute top-0 bottom-0 left-0 w-1 bg-orange-300" />
         <h5 class="inline-block text-lg font-bold leading-loose">
           {{ item.name }}
         </h5>
