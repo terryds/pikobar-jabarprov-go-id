@@ -25,7 +25,7 @@
             :options="lineChartPositifOptions"
           />
         </div>
-        <div
+        <!-- <div
           class="p-1 col-md m-2 "
           style="border-radius: 0.8rem; box-shadow: 0 0 4px 0px rgba(0,0,0,0.05), 0 4px 24px 0 rgba(0,0,0,0.1); background-color: #D6E6F7 !important; border: solid 1px #9BC8F4;"
         >
@@ -40,7 +40,7 @@
             :data="lineChartPerawatanData"
             :options="lineChartPerawatanOptions"
           />
-        </div>
+        </div> -->
         <div
           class="p-1 col-md m-2 "
           style="border-radius: 0.8rem; box-shadow: 0 0 4px 0px rgba(0,0,0,0.05), 0 4px 24px 0 rgba(0,0,0,0.1); background-color: #D3EEE3 !important; border: solid 1px #91DCBD; "
@@ -134,6 +134,37 @@
           style="border-radius: 0.8rem; box-shadow: 0 0 4px 0px rgba(0,0,0,0.05), 0 4px 24px 0 rgba(0,0,0,0.1); height:400px;"
         >
           <MapView />
+        </div>
+      </section>
+
+      <section class="row">
+        <div
+          class="bg-white p-1 col-md m-2"
+          style="border-radius: 0.8rem; box-shadow: 0 0 4px 0px rgba(0,0,0,0.05), 0 4px 24px 0 rgba(0,0,0,0.1);"
+        >
+          <h4 class="m-3">
+            <b>Jenis Kelamin</b>
+          </h4>
+          <hr>
+          <GChart
+            type="PieChart"
+            :data="pieChartJenisKelaminData"
+            :options="pieChartJenisKelaminOptions"
+          />
+        </div>
+        <div
+          class="bg-white p-1 col-md m-2"
+          style="border-radius: 0.8rem; box-shadow: 0 0 4px 0px rgba(0,0,0,0.05), 0 4px 24px 0 rgba(0,0,0,0.1);"
+        >
+          <h4 class="m-3">
+            <b>Umur dan Gender</b>
+          </h4>
+          <hr>
+          <GChart
+            type="BarChart"
+            :data="barChartUmurJenisKelaminData"
+            :options="barChartUmurJenisKelaminOptions"
+          />
         </div>
       </section>
 
@@ -298,6 +329,118 @@ export default {
           0: { color: '#FF9441' }
         }
       },
+      pieChartJenisKelaminData: [
+        ['Jenis Kelamin', 'Data'],
+        ['Wanita', 10],
+        ['Pria', 20],
+        ['Tidak Teridentifikasi', 10]
+      ],
+      pieChartJenisKelaminOptions: {
+        height: 400,
+        slices: {
+          0: { color: '#FF7E7E' },
+          1: { color: '#00CFF4' },
+          2: { color: '#7D7D7D' }
+        },
+        legend: {
+          position: 'bottom'
+        }
+      },
+      barChartUmurJenisKelaminData: {
+        cols: [
+          { id: 'Umur', label: 'Umur', type: 'string' },
+          { id: 'Pria', label: 'Pria', type: 'number' },
+          { id: 'Wanita', label: 'Wanita', type: 'number' }
+        ],
+        rows: [
+          {
+            c: [
+              { v: 10, f: '0-10' },
+              { v: -1, f: '1%' },
+              { v: 2, f: '2%' }
+            ]
+          },
+          {
+            c: [
+              { v: 20, f: '11-20' },
+              { v: -8, f: '8%' },
+              { v: 5, f: '5%' }
+            ]
+          },
+          {
+            c: [
+              { v: 30, f: '21-30' },
+              { v: -12, f: '12%' },
+              { v: 15, f: '15%' }
+            ]
+          },
+          {
+            c: [
+              { v: 40, f: '31-40' },
+              { v: -23, f: '23%' },
+              { v: 15, f: '15%' }
+            ]
+          },
+          {
+            c: [
+              { v: 50, f: '41-50' },
+              { v: -19, f: '19%' },
+              { v: 20, f: '20%' }
+            ]
+          },
+          {
+            c: [
+              { v: 60, f: '51-60' },
+              { v: -14, f: '14%' },
+              { v: 17, f: '17%' }
+            ]
+          },
+          {
+            c: [
+              { v: 70, f: '61-70' },
+              { v: -29, f: '29%' },
+              { v: 25, f: '25%' }
+            ]
+          },
+          {
+            c: [
+              { v: 80, f: '71-80' },
+              { v: -8, f: '8%' },
+              { v: 7, f: '7%' }
+            ]
+          },
+          {
+            c: [
+              { v: 100, f: '81-100' },
+              { v: -3, f: '3%' },
+              { v: 3, f: '3%' }
+            ]
+          }
+        ]
+      },
+      barChartUmurJenisKelaminOptions: {
+        height: 400,
+        series: {
+          0: { color: '#FF7E7E' },
+          1: { color: '#00CFF4' },
+          2: { color: '#7D7D7D' }
+        },
+        legend: {
+          position: 'bottom'
+        },
+        isStacked: true,
+        vAxis: {
+          format: '##;##'
+        },
+        hAxis: {
+          title: 'Umur'
+        },
+        viewWindowMode: 'explicit',
+        viewWindow: {
+          min: -100,
+          max: 100
+        }
+      },
       jsonData: null,
       jsonDataResult: {
         odp: 0,
@@ -324,13 +467,14 @@ export default {
     fetchData () {
       const self = this
       axios
-        .get('http://10.59.3.18:3000/', {
+        .get('http://dashboard-pikobar.digitalservice.id/', {
           headers: {
             'Access-Control-Allow-Origin': '*'
           }
         })
         .then(function (response) {
           self.jsonData = response.data.gsheets_high_confidential_rekap_pasien
+          // by status
           for (let i = 0; i < self.jsonData.length; i++) {
             if (self.jsonData[i].status === 'Positif') {
               self.jsonDataResult.positif += 1
@@ -340,6 +484,26 @@ export default {
               self.jsonDataResult.pdp += 1
             }
           }
+          // by jenis_kelamin
+          let tempJenisKelaminPria = 0
+          let tempJenisKelaminWanita = 0
+          let tempJenisKelaminNull = 0
+          for (let i = 0; i < self.jsonData.length; i++) {
+            if (self.jsonData[i].jenis_kelamin_str === 'Laki-laki') {
+              tempJenisKelaminPria += 1
+            } else if (self.jsonData[i].jenis_kelamin_str === 'Perempuan') {
+              tempJenisKelaminWanita += 1
+            } else {
+              tempJenisKelaminNull += 1
+            }
+          }
+          self.pieChartJenisKelaminData = [
+            ['Jenis Kelamin', 'Data'],
+            ['Pria', tempJenisKelaminPria],
+            ['Wanita', tempJenisKelaminWanita],
+            ['Tidak Teridentifikasi', tempJenisKelaminNull]
+          ]
+          console.log(self.pieChartJenisKelaminData)
         })
         .catch(function (error) {
           console.log(error)
