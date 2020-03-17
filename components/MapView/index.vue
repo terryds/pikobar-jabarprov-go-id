@@ -18,6 +18,7 @@
 <script>
 import { mapState } from 'vuex'
 import { loadModules } from 'esri-loader'
+import axios from 'axios'
 
 export default {
   name: 'MapView',
@@ -48,7 +49,10 @@ export default {
       this.view.ui.move('zoom', 'bottom-right')
 
       const legend = new Legend({
-        view: this.view
+        view: this.view,
+        layerInfos: [{
+          title: 'Legend'
+        }]
       })
       const expandLegend = new Expand({
         view: this.view,
@@ -71,28 +75,31 @@ export default {
       pgCorona.odp = []
       pgCorona.positif = []
 
-      this.corona.forEach((element) => {
+      this.jsonData.forEach((element) => {
+        console.log(element.desa_str)
         const point = new Point({
           type: 'point', // autocasts as new Point()
-          longitude: element.location[1],
-          latitude: element.location[0]
+          longitude: element.alamat_longitude,
+          latitude: element.alamat_latitude
         })
 
         const pointGraphic = new Graphic({
           geometry: point,
           attributes: {
             status: element.status,
-            usia: element.usia,
-            city: element.city,
+            usia: element.umur,
+            desa: element.desa_str,
+            kecamatan: element.kecamatan_str,
+            kabkot: element.kabkot_str,
             ObjectID: element.ObjectID
           }
         })
 
         switch (element.status) {
-          case 'positif' :
+          case 'Positif' :
             pgCorona.positif.push(pointGraphic)
             break
-          case 'pdp' :
+          case 'PDP' :
             pgCorona.pdp.push(pointGraphic)
             break
           default:
@@ -119,8 +126,16 @@ export default {
                 label: 'Usia'
               },
               {
-                fieldName: 'city',
-                label: 'Kota'
+                fieldName: 'desa',
+                label: 'Desa'
+              },
+              {
+                fieldName: 'kecamatan',
+                label: 'Kecamatan'
+              },
+              {
+                fieldName: 'kabkot',
+                label: 'Kab/Kota'
               }
             ]
           }
@@ -174,8 +189,18 @@ export default {
         type: 'string'
       },
       {
-        name: 'city',
-        alias: 'Kota',
+        name: 'desa',
+        alias: 'Desa',
+        type: 'string'
+      },
+      {
+        name: 'kecamatan',
+        alias: 'Kecamatan',
+        type: 'string'
+      },
+      {
+        name: 'kabkot',
+        alias: 'Kab/Kota',
         type: 'string'
       }]
       const f2 = new FeatureLayer({
@@ -214,8 +239,36 @@ export default {
         popupTemplate: template
       })
       maps.add(fl)
-      console.log(this.corona)
     })
+  },
+  beforeMount () {
+    this.fetchData()
+  },
+  methods: {
+    fetchData () {
+      const self = this
+      axios
+        .get('http://dashboard-pikobar.digitalservice.id/', {
+          headers: {
+            'Access-Control-Allow-Origin': '*'
+          }
+        })
+        .then(function (response) {
+          self.jsonData = response.data.gsheets_high_confidential_rekap_pasien
+          for (let i = 0; i < self.jsonData.length; i++) {
+            if (self.jsonData[i].status === 'Positif') {
+              self.jsonDataResult.positif += 1
+            } else if (self.jsonData[i].status === 'ODP') {
+              self.jsonDataResult.odp += 1
+            } else if (self.jsonData[i].status === 'PDP') {
+              self.jsonDataResult.pdp += 1
+            }
+          }
+        })
+        .catch(function (error) {
+          console.log(error)
+        })
+    }
   },
   beforeDestroy () {
     if (this.view) {
