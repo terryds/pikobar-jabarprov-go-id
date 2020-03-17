@@ -10,7 +10,7 @@
         </p>
         <br>
         <div>
-          <ContactList :items="hospitals"/>
+          <ContactList :items="hospitals" />
         </div>
       </section>
     </div>

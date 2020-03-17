@@ -1,7 +1,8 @@
 <template>
   <div class="container mx-auto">
     <div
-      class="container m-4 px-5 max-w-3xl mx-auto">
+      class="container m-4 px-5 max-w-3xl mx-auto"
+    >
       <h3 class="text-3xl text-gray-900 font-bold text-left leading-none">
         Notifikasi
       </h3>
@@ -14,13 +15,15 @@
             v-for="item in notifications"
             :key="item.id"
             class="w-full bg-white hover:bg-gray-200 shadow-lg mb-4 p-5"
-            style="border-radius: 0.8rem;">
+            style="border-radius: 0.8rem;"
+          >
             <router-link :to="`/notifications/${item.id}`">
               <div class="flex">
                 <div class="flex items-center block mx-auto mr-4">
                   <FontAwesomeIcon
                     :icon="icon.faEnvelope"
-                    class="text-brand-green text-lg"/>
+                    class="text-brand-green text-lg"
+                  />
                 </div>
                 <div class="text-left flex-grow">
                   <p class="text-base leading-normal">
@@ -40,21 +43,24 @@
           <content-loader
             :speed="2"
             primary-color="#f3f3f3"
-            secondary-color="#ecebeb">
+            secondary-color="#ecebeb"
+          >
             <rect
               x="0"
               y="15"
               rx="0"
               ry="0"
               width="100%"
-              height="15"/>
+              height="15"
+            />
             <rect
               x="0"
               y="45"
               rx="0"
               ry="0"
               width="100%"
-              height="75"/>
+              height="75"
+            />
           </content-loader>
         </div>
       </template>

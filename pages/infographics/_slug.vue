@@ -1,20 +1,23 @@
 <template>
   <div
-    class="container sm:p-5 mx-auto">
+    class="container sm:p-5 mx-auto"
+  >
     <div class="p-5 bg-white border-solid border-gray-300">
       <section>
         <template v-if="isPending">
           <ContentLoader
             :speed="2"
             width="400"
-            height="200">
+            height="200"
+          >
             <rect
               x="0"
               y="0"
               rx="0"
               ry="0"
               width="100%"
-              height="100%" />
+              height="100%"
+            />
           </ContentLoader>
         </template>
         <template v-else-if="infographic">
@@ -24,7 +27,8 @@
           <br>
           <img
             :src="infographic.images[0] || null"
-            class="cursor-pointer w-full h-full object-contain object-center">
+            class="cursor-pointer w-full h-full object-contain object-center"
+          >
         </template>
       </section>
     </div>

@@ -6,24 +6,27 @@
           <li class="flex-1 px-4">
             <button
               :class="['relative w-full focus:outline-none', currentTab === 'live' && 'text-brand-green-light font-bold']"
-              @click="currentTab = 'live'">
+              @click="currentTab = 'live'"
+            >
               <span
-                class="is-rippling inline-block align-middle w-3 h-3 rounded-full bg-brand-green mb-4 mr-2"/>
+                class="is-rippling inline-block align-middle w-3 h-3 rounded-full bg-brand-green mb-4 mr-2"
+              />
               <span class="inline-block align-middle mb-4">
                 Berita Terbaru
               </span>
               <br>
-              <i v-if="currentTab === 'live'" class="absolute bottom-0 block w-full h-1 bg-brand-green"/>
+              <i v-if="currentTab === 'live'" class="absolute bottom-0 block w-full h-1 bg-brand-green" />
             </button>
           </li>
           <li class="flex-1 px-4">
             <button
               :class="['relative w-full focus:outline-none', currentTab === 'press' && 'text-brand-green-light font-bold']"
-              @click="currentTab = 'press'">
+              @click="currentTab = 'press'"
+            >
               <span class="block mb-4">
                 Rilis Pers
               </span>
-              <i v-if="currentTab === 'press'" class="absolute bottom-0 block w-full h-1 bg-brand-green"/>
+              <i v-if="currentTab === 'press'" class="absolute bottom-0 block w-full h-1 bg-brand-green" />
             </button>
           </li>
         </ul>
@@ -31,18 +34,10 @@
     </div>
     <br>
     <div
-      v-show="currentTab === 'live'"
-      class="container mx-4 p-5 lg:max-w-3xl mx-auto">
+      class="container mx-4 p-5 lg:max-w-3xl mx-auto"
+    >
       <h3 class="text-3xl text-gray-900 font-bold text-left leading-none">
-        Live Updates
-      </h3>
-      <br>
-    </div>
-    <div
-      v-show="currentTab === 'press'"
-      class="container mx-4 p-5 lg:max-w-3xl mx-auto">
-      <h3 class="text-3xl text-gray-900 font-bold text-left leading-none">
-        Rilis Pers
+        {{ pageTitle }}
       </h3>
       <br>
       <div>
@@ -50,20 +45,36 @@
           <div
             v-for="i in 6"
             :key="i"
-            class="mb-8 rounded-lg p-6 bg-white">
+            class="mb-8 rounded-lg p-6 bg-white"
+          >
             <BlogPostPlaceholder />
           </div>
         </template>
         <template v-if="items && items.length">
-          <BlogPostPreview
-            v-for="item in items"
-            :key="item.id"
-            :image="item.image"
-            :title="item.title"
-            :content="item.content"
-            :to="`/articles/${item.id}`"
-            :date="formatDateTimeShort(item.published_at)"
-            class="bg-white rounded-lg mb-8 p-6 shadow-lg"/>
+          <template v-if="currentTab === 'press'">
+            <BlogPostPreview
+              v-for="item in items"
+              :key="item.id"
+              :image="item.image"
+              :title="item.title"
+              :content="item.content"
+              :to="`/articles/${item.id}`"
+              :date="formatDateTimeShort(item.published_at)"
+              class="bg-white rounded-lg mb-8 p-6 shadow-lg"
+            />
+          </template>
+          <template v-if="currentTab === 'live'">
+            <AnchorPostPreview
+              v-for="item in items"
+              :key="item.id"
+              :image="item.image"
+              :title="item.title"
+              :content="item.content"
+              :to="`/articles/${item.id}`"
+              :date="formatDateTimeShort(item.published_at)"
+              class="bg-white rounded-lg mb-8 p-6 shadow-lg"
+            />
+          </template>
         </template>
         <template v-if="isLoadingMore">
           <div class="mb-8 rounded-lg p-6 bg-white">
@@ -73,7 +84,8 @@
         <template v-if="!isLoadingMore && !hasReachedEnd">
           <button
             class="w-full px-6 py-2 rounded-lg bg-brand-blue hover:bg-blue-400 text-white font-bold uppercase tracking-wider"
-            @click="onLoadMore">
+            @click="onLoadMore"
+          >
             Load More
           </button>
         </template>
@@ -81,7 +93,8 @@
           <button
             class="cursor-not-allowed w-full px-6 py-2 rounded-lg bg-gray-400 text-white font-bold uppercase tracking-wider"
             disabled
-            @click="onLoadMore">
+            @click="onLoadMore"
+          >
             Tidak ada berita lainnya
           </button>
         </template>
@@ -97,6 +110,7 @@ import { formatDateTimeShort } from '~/lib/date'
 // import { mapState, mapGetters, mapActions } from 'vuex'
 
 import BlogPostPreview from '~/components/Blog/BlogPostPreview'
+import AnchorPostPreview from '~/components/Blog/AnchorPostPreview'
 
 const BlogPostPlaceholder = {
   components: {
@@ -116,6 +130,7 @@ const BlogPostPlaceholder = {
 
 export default {
   components: {
+    AnchorPostPreview,
     BlogPostPreview,
     BlogPostPlaceholder
   },
@@ -144,6 +159,13 @@ export default {
             tab
           }
         })
+      }
+    },
+    pageTitle () {
+      switch (this.currentTab) {
+        case 'live': return 'Berita Terbaru'
+        case 'press': return 'Rilis Pers'
+        default: return ''
       }
     }
   },

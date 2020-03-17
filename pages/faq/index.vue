@@ -9,20 +9,23 @@
         <div
           v-for="i in 6"
           :key="i"
-          class="mb-4 rounded-lg p-4 bg-white">
+          class="mb-4 rounded-lg p-4 bg-white"
+        >
           <ContentLoader
             :width="320"
             :height="32"
             :speed="3"
             primary-color="#eee"
-            secondary-color="#fafafa">
+            secondary-color="#fafafa"
+          >
             <rect
               x="0"
               y="0"
               width="100%"
               height="100%"
               rx="4"
-              ry="4"/>
+              ry="4"
+            />
           </ContentLoader>
         </div>
       </div>
@@ -31,23 +34,27 @@
           <li
             v-for="(faq, index) in items"
             :key="index"
-            class="faq-list__item mb-4 rounded-lg overflow-hidden">
+            class="faq-list__item mb-4 rounded-lg overflow-hidden"
+          >
             <header
               class="cursor-pointer relative flex justify-start items-center p-4 pr-16 text-white text-lg font-bold bg-brand-blue shadow-lg clearfix"
-              @click.capture="toggleItem(index)">
+              @click.capture="toggleItem(index)"
+            >
               <span>
                 {{ faq.title }}
               </span>
               <button
                 class="appearance-none text-white absolute"
-                style="right: 2rem;">
+                style="right: 2rem;"
+              >
                 <FontAwesomeIcon :icon="isItemOpen(index) ? icon.faChevronUp : icon.faChevronDown" />
               </button>
             </header>
             <main
               v-show="isItemOpen(index)"
               class="html-content p-4 md:p-8 text-base bg-white"
-              v-html="faq.content"/>
+              v-html="faq.content"
+            />
           </li>
         </ul>
       </div>

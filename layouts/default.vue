@@ -8,7 +8,8 @@
             <button
               class="ml-2 bg-brand-blue text-white font-bold py-1 px-4 rounded focus:outline-none focus:shadow-outline"
               type="button"
-              @click="refreshApp">
+              @click="refreshApp"
+            >
               Update
             </button>
           </div>
@@ -18,10 +19,11 @@
     <Appbar />
     <div
       class="w-full pb-32"
-      style="min-height: 75vh;">
+      style="min-height: 75vh;"
+    >
       <nuxt />
     </div>
-    <Navbar/>
+    <Navbar />
   </div>
 </template>
 

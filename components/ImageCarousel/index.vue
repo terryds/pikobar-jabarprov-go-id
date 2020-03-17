@@ -6,7 +6,8 @@
           <VueCarouselSlide
             v-for="(item, index) in carouselItems"
             :key="index"
-            class="banner-slide">
+            class="banner-slide"
+          >
             <img role="bg" :src="item.url">
             <img role="main" :src="item.url">
           </VueCarouselSlide>
@@ -18,14 +19,16 @@
             <content-loader
               :speed="2"
               width="400"
-              height="200">
+              height="200"
+            >
               <rect
                 x="0"
                 y="0"
                 rx="0"
                 ry="0"
                 width="100%"
-                height="100%" />
+                height="100%"
+              />
             </content-loader>
           </div>
         </slot>

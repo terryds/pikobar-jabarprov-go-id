@@ -13,7 +13,8 @@
           <div class="flex justify-start items-center block">
             <FontAwesomeIcon
               :icon="icon.faEnvelope"
-              class="text-brand-green text-2xl mr-4"/>
+              class="text-brand-green text-2xl mr-4"
+            />
             <div>
               <h3 class="text-lg leading-normal">
                 {{ item.title }}
@@ -27,13 +28,15 @@
           <br>
           <div
             class="text-base html-content"
-            v-html="item.content" />
+            v-html="item.content"
+          />
           <template v-if="item['action_url']">
             <div class="my-2">
               <a
                 :href="item['action_url']"
                 class="w-full text-center shadow block bg-brand-blue text-white font-bold py-2 px-4 rounded"
-                @click="clickAction">{{ item['action_title'] }}
+                @click="clickAction"
+              >{{ item['action_title'] }}
               </a>
             </div>
           </template>
@@ -43,21 +46,24 @@
           <content-loader
             :speed="2"
             primary-color="#f3f3f3"
-            secondary-color="#ecebeb">
+            secondary-color="#ecebeb"
+          >
             <rect
               x="0"
               y="15"
               rx="0"
               ry="0"
               width="100%"
-              height="15"/>
+              height="15"
+            />
             <rect
               x="0"
               y="45"
               rx="0"
               ry="0"
               width="100%"
-              height="75"/>
+              height="75"
+            />
           </content-loader>
         </template>
       </div>
