@@ -42,8 +42,8 @@ export default {
           icon: faHome
         },
         {
-          title: 'Notifikasi',
-          to: '/notifications',
+          title: 'Data',
+          to: '/data',
           icon: faBell
         },
         {
