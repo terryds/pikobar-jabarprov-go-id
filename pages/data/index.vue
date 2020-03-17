@@ -17,7 +17,7 @@
             <b>POSITIF COVID-19</b>
           </h4>
           <h3 class="ml-3" style="font-size: 30px;">
-            <b>2</b>
+            <b>{{ jsonDataResult.positif }}</b>
           </h3>
           <GChart
             type="LineChart"
@@ -33,7 +33,7 @@
             <b>PERAWATAN</b>
           </h4>
           <h3 class="ml-3" style="font-size: 30px;">
-            <b>3</b>
+            <b>{{ jsonDataResult.perawatan }}</b>
           </h3>
           <GChart
             type="LineChart"
@@ -49,7 +49,7 @@
             <b>SEMBUH</b>
           </h4>
           <h3 class="ml-3" style="font-size: 30px;">
-            <b>4</b>
+            <b>{{ jsonDataResult.sembuh }}</b>
           </h3>
           <GChart
             type="LineChart"
@@ -65,7 +65,7 @@
             <b>MENINGGAL</b>
           </h4>
           <h3 class="ml-3" style="font-size: 30px;">
-            <b>5</b>
+            <b>{{ jsonDataResult.meninggal }}</b>
           </h3>
           <GChart
             type="LineChart"
@@ -86,17 +86,17 @@
           <hr>
           <div class="row p-2">
             <div class="col-md m-2 mr-5">
-              <span style="color: #0082ED; font-size: 30px; font-weight: bold;">804</span><br>
+              <span style="color: #0082ED; font-size: 30px; font-weight: bold;">{{ jsonDataResult.odp }}</span><br>
               <span style="color: #8A8A8A; font-weight: bold;">Total ODP</span>
             </div>
             <div class="col-md m-2">
-              <span style="color: #0082ED; font-size: 30px; font-weight: bold;">270</span>
-              <span style="color: #000000; font-size: 12px; font-weight: bold;">(33%)</span><br>
+              <span style="color: #0082ED; font-size: 30px; font-weight: bold;">{{ jsonDataResult.odp_proses }}</span>
+              <span style="color: #000000; font-size: 12px; font-weight: bold;">({{ jsonDataResult.pdp_proses_persen }}%)</span><br>
               <span style="color: #8A8A8A; font-weight: bold;">Proses Pemantauan</span>
             </div>
             <div class="col-md m-2">
-              <span style="color: #0082ED; font-size: 30px; font-weight: bold;">534</span>
-              <span style="color: #000000; font-size: 12px; font-weight: bold;">(67%)</span><br>
+              <span style="color: #0082ED; font-size: 30px; font-weight: bold;">{{ jsonDataResult.odp_selesai }}</span>
+              <span style="color: #000000; font-size: 12px; font-weight: bold;">({{ jsonDataResult.pdp_selesai_persen }}%)</span><br>
               <span style="color: #8A8A8A; font-weight: bold;">Selesai Pemantauan</span>
             </div>
           </div>
@@ -111,17 +111,17 @@
           <hr>
           <div class="row p-2">
             <div class="col-md m-2 mr-5">
-              <span style="color: #FF4A4B; font-size: 30px; font-weight: bold;">250</span><br>
+              <span style="color: #FF4A4B; font-size: 30px; font-weight: bold;">{{ jsonDataResult.pdp }}</span><br>
               <span style="color: #8A8A8A; font-weight: bold;">Total PDP</span>
             </div>
             <div class="col-md m-2">
-              <span style="color: #FF4A4B; font-size: 30px; font-weight: bold;">136</span>
-              <span style="color: #000000; font-size: 12px; font-weight: bold;">(51%)</span><br>
+              <span style="color: #FF4A4B; font-size: 30px; font-weight: bold;">{{ jsonDataResult.pdp_proses }}</span>
+              <span style="color: #000000; font-size: 12px; font-weight: bold;">({{ jsonDataResult.pdp_proses_persen }}%)</span><br>
               <span style="color: #8A8A8A; font-weight: bold;">Masih Dirawat</span>
             </div>
             <div class="col-md m-2">
-              <span style="color: #FF4A4B; font-size: 30px; font-weight: bold;">114</span>
-              <span style="color: #000000; font-size: 12px; font-weight: bold;">(49%)</span><br>
+              <span style="color: #FF4A4B; font-size: 30px; font-weight: bold;">{{ jsonDataResult.pdp_selesai }}</span>
+              <span style="color: #000000; font-size: 12px; font-weight: bold;">({{ jsonDataResult.pdp_selesai_persen }}%)</span><br>
               <span style="color: #8A8A8A; font-weight: bold;">Pulang dan Sehat</span>
             </div>
           </div>
@@ -136,12 +136,15 @@
           &nbsp;
         </div>
       </section>
+
+      <!-- {{ jsonDataResult }} -->
     </div>
   </div>
 </template>
 
 <script>
 import { GChart } from 'vue-google-charts'
+import axios from 'axios'
 
 export default {
   components: {
@@ -292,7 +295,53 @@ export default {
         series: {
           0: { color: '#FF9441' }
         }
+      },
+      jsonData: null,
+      jsonDataResult: {
+        odp: 0,
+        odp_proses: 0,
+        odp_proses_persen: 0,
+        odp_selesai: 0,
+        odp_selesai_persen: 0,
+        pdp: 0,
+        pdp_proses: 0,
+        pdp_proses_persen: 0,
+        pdp_selesai: 0,
+        pdp_selesai_persen: 0,
+        positif: 0,
+        perawatan: 0,
+        sembuh: 0,
+        meninggal: 0
       }
+    }
+  },
+  created () {
+    this.fetchData()
+  },
+  methods: {
+    fetchData () {
+      const self = this
+      axios
+        .get('http://10.59.3.18:3000/', {
+          headers: {
+            'Access-Control-Allow-Origin': '*'
+          }
+        })
+        .then(function (response) {
+          self.jsonData = response.data.gsheets_high_confidential_rekap_pasien
+          for (let i = 0; i < self.jsonData.length; i++) {
+            if (self.jsonData[i].status === 'Positif') {
+              self.jsonDataResult.positif += 1
+            } else if (self.jsonData[i].status === 'ODP') {
+              self.jsonDataResult.odp += 1
+            } else if (self.jsonData[i].status === 'PDP') {
+              self.jsonDataResult.pdp += 1
+            }
+          }
+        })
+        .catch(function (error) {
+          console.log(error)
+        })
     }
   }
 }
