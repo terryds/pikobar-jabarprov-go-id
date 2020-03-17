@@ -48,7 +48,7 @@ export default {
   },
   methods: {
     onClick () {
-      if (this.logOnClick) {
+      if ((process.client || process.browser) && this.logOnClick) {
         analytics.logEvent('click_call_action', {
           to: this.number
         })

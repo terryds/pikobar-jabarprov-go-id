@@ -46,7 +46,9 @@ export default {
     this.isPending = true
     this.getItems({ perPage: 8 })
       .finally(() => {
-        analytics.logEvent('infographic_list_view')
+        if (process.browser) {
+          analytics.logEvent('infographic_list_view')
+        }
         this.isPending = false
       })
   },

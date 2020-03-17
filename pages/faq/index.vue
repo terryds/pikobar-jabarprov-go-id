@@ -82,7 +82,9 @@ export default {
   mounted () {
     this.getItems()
       .then(() => {
-        analytics.logEvent('faqs_view')
+        if (process.browser) {
+          analytics.logEvent('faqs_view')
+        }
       })
   },
   methods: {

@@ -51,41 +51,7 @@
             v-for="i in 6"
             :key="i"
             class="mb-8 rounded-lg p-6 bg-white">
-            <ContentLoader
-              :width="320"
-              :height="60"
-              :speed="3"
-              primary-color="#eee"
-              secondary-color="#fafafa">
-              <rect
-                x="0"
-                y="0"
-                width="33%"
-                height="10"
-                rx="5"
-                ry="5" />
-              <rect
-                x="0"
-                y="16"
-                width="100%"
-                height="10"
-                rx="5"
-                ry="5" />
-              <rect
-                x="0"
-                y="32"
-                width="100%"
-                height="10"
-                rx="5"
-                ry="5" />
-              <rect
-                x="0"
-                y="48"
-                width="100%"
-                height="10"
-                rx="5"
-                ry="5" />
-            </ContentLoader>
+            <BlogPostPlaceholder />
           </div>
         </template>
         <template v-if="items && items.length">
@@ -101,41 +67,7 @@
         </template>
         <template v-if="isLoadingMore">
           <div class="mb-8 rounded-lg p-6 bg-white">
-            <ContentLoader
-              :width="320"
-              :height="60"
-              :speed="3"
-              primary-color="#eee"
-              secondary-color="#fafafa">
-              <rect
-                x="0"
-                y="0"
-                width="33%"
-                height="10"
-                rx="5"
-                ry="5"/>
-              <rect
-                x="0"
-                y="16"
-                width="100%"
-                height="10"
-                rx="5"
-                ry="5"/>
-              <rect
-                x="0"
-                y="32"
-                width="100%"
-                height="10"
-                rx="5"
-                ry="5"/>
-              <rect
-                x="0"
-                y="48"
-                width="100%"
-                height="10"
-                rx="5"
-                ry="5" />
-            </ContentLoader>
+            <BlogPostPlaceholder />
           </div>
         </template>
         <template v-if="!isLoadingMore && !hasReachedEnd">
@@ -166,10 +98,26 @@ import { formatDateTimeShort } from '~/lib/date'
 
 import BlogPostPreview from '~/components/Blog/BlogPostPreview'
 
+const BlogPostPlaceholder = {
+  components: {
+    ContentLoader
+  },
+  render (h) {
+    return (
+      <ContentLoader width={320} height={60} speed={3} primary-color="#eee" secondary-color="#fafafa">
+        <rect x="0" y="0" width="33%" height="10" rx="5" ry="5" />
+        <rect x="0" y="16" width="100%" height="10" rx="5" ry="5" />
+        <rect x="0" y="32" width="100%" height="10" rx="5" ry="5" />
+        <rect x="0" y="48" width="100%" height="10" rx="5" ry="5" />
+      </ContentLoader>
+    )
+  }
+}
+
 export default {
   components: {
-    ContentLoader,
-    BlogPostPreview
+    BlogPostPreview,
+    BlogPostPlaceholder
   },
   data () {
     return {
@@ -250,7 +198,9 @@ export default {
         }).catch((e) => {
           return null
         }).finally(() => {
-          analytics.logEvent('article_list_view')
+          if (process.client || process.browser) {
+            analytics.logEvent('article_list_view')
+          }
         })
     }
   },

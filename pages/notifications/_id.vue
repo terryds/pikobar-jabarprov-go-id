@@ -94,7 +94,9 @@ export default {
       .then((notification) => {
         this.item = notification
       }).then(() => {
-        analytics.logEvent('message_detail_view', { id: this.$route.params.id })
+        if (process.browser) {
+          analytics.logEvent('message_detail_view', { id: this.$route.params.id })
+        }
       }).finally(() => {
         this.isPending = false
       })
@@ -110,7 +112,9 @@ export default {
     },
 
     clickAction () {
-      analytics.logEvent('message_detail_click_action', { id: this.item.action_url })
+      if (process.client || process.browser) {
+        analytics.logEvent('message_detail_click_action', { id: this.item.action_url })
+      }
     }
   }
 }

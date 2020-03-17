@@ -70,7 +70,9 @@ export default {
               this.infographic = item
             })
             .then(() => {
-              analytics.logEvent('infographic_detail_view', { id: this.$route.params.slug })
+              if (process.client || process.browser) {
+                analytics.logEvent('infographic_detail_view', { id: this.$route.params.slug })
+              }
             })
             .finally(() => {
               this.isPending = false

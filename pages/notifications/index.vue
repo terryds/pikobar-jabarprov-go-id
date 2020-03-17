@@ -92,7 +92,9 @@ export default {
     this.isPending = true
     this.getItems()
       .finally(() => {
-        analytics.logEvent('messages_list_view')
+        if (process.client || process.browser) {
+          analytics.logEvent('messages_list_view')
+        }
         this.isPending = false
       })
   },

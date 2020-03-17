@@ -91,7 +91,9 @@ export default {
       return this.$store.dispatch('news/getItemById', id)
         .then((item) => {
           this.item = item
-          analytics.logEvent('article_detail_view', { id: item.id })
+          if (process.client || process.browser) {
+            analytics.logEvent('article_detail_view', { id: item.id })
+          }
         }).finally(() => {
           this.isLoading = false
         })
@@ -100,7 +102,9 @@ export default {
       return content
     },
     clickAction (e) {
-      analytics.logEvent('article_detail_click_action', { id: this.$route.params.slug })
+      if (process.client || process.browser) {
+        analytics.logEvent('article_detail_click_action', { id: this.$route.params.slug })
+      }
       window.open(e.target.href, '_blank')
     }
   }
