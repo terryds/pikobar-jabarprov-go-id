@@ -65,8 +65,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+/* purgecss start ignore */
 .navbar-items {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
 }
+/* purgecss end ignore */
 </style>
