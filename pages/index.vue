@@ -10,11 +10,13 @@
           <CallCard
             title="Call Center"
             subtitle="(Nomor Darurat)"
-            number="119" />
+            number="119"
+            :log-on-click="true"/>
           <CallCard
             title="Dinkes Jabar"
             subtitle="(Pertanyaan Umum)"
-            number="0811 2093 306" />
+            number="0811 2093 306"
+            :log-on-click="true"/>
           <div
             class="responded-question mt-4 lg:mt-0 p-4 flex flex-row flex-wrap justify-between items-center text-white bg-brand-green"
             style="border-radius: 0.8rem;">

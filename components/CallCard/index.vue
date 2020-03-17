@@ -18,6 +18,8 @@
 
 <script>
 import { faPhone } from '@fortawesome/free-solid-svg-icons'
+import { analytics } from '~/lib/firebase'
+
 export default {
   props: {
     title: {
@@ -31,6 +33,10 @@ export default {
     number: {
       type: String,
       required: true
+    },
+    logOnClick: {
+      type: Boolean,
+      default: false
     }
   },
   data () {
@@ -42,6 +48,11 @@ export default {
   },
   methods: {
     onClick () {
+      if (this.logOnClick) {
+        analytics.logEvent('click_call_action', {
+          to: this.number
+        })
+      }
       window.open(`tel:${this.number}`, '_blank')
     }
   }

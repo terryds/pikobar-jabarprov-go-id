@@ -59,6 +59,7 @@
 import { mapState, mapActions } from 'vuex'
 import { ContentLoader } from 'vue-content-loader'
 import { faChevronUp, faChevronDown } from '@fortawesome/free-solid-svg-icons'
+import { analytics } from '~/lib/firebase'
 
 export default {
   components: {
@@ -80,6 +81,9 @@ export default {
   },
   mounted () {
     this.getItems()
+      .then(() => {
+        analytics.logEvent('faqs_view')
+      })
   },
   methods: {
     ...mapActions('faqs', {

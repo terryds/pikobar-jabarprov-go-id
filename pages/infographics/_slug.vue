@@ -34,6 +34,7 @@
 <script>
 import { mapActions } from 'vuex'
 import { ContentLoader } from 'vue-content-loader'
+import { analytics } from '~/lib/firebase'
 
 const regex = /(?:(-inf\.))(.*)$/
 export default {
@@ -67,6 +68,9 @@ export default {
           this.getItemById(v)
             .then((item) => {
               this.infographic = item
+            })
+            .then(() => {
+              analytics.logEvent('infographic_detail_view', { id: this.$route.params.slug })
             })
             .finally(() => {
               this.isPending = false

@@ -30,6 +30,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex'
+import { analytics } from '~/lib/firebase'
 export default {
   data () {
     return {
@@ -45,6 +46,7 @@ export default {
     this.isPending = true
     this.getItems({ perPage: 8 })
       .finally(() => {
+        analytics.logEvent('infographic_list_view')
         this.isPending = false
       })
   },

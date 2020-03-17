@@ -70,7 +70,7 @@ import { faEnvelope } from '@fortawesome/free-solid-svg-icons'
 import { mapActions } from 'vuex'
 import { ContentLoader } from 'vue-content-loader'
 import { formatDateTimeShort } from '~/lib/date'
-// import { analytics } from '@/lib/firebase'
+import { analytics } from '~/lib/firebase'
 
 export default {
   components: {
@@ -93,8 +93,9 @@ export default {
     this.getItemById(this.$route.params.id)
       .then((notification) => {
         this.item = notification
-      })
-      .finally(() => {
+      }).then(() => {
+        analytics.logEvent('message_detail_view', { id: this.$route.params.id })
+      }).finally(() => {
         this.isPending = false
       })
   },
@@ -109,7 +110,7 @@ export default {
     },
 
     clickAction () {
-
+      analytics.logEvent('message_detail_click_action', { id: this.item.action_url })
     }
   }
 }

@@ -160,7 +160,7 @@
 
 <script>
 import { ContentLoader } from 'vue-content-loader'
-import { db } from '~/lib/firebase'
+import { db, analytics } from '~/lib/firebase'
 import { formatDateTimeShort } from '~/lib/date'
 // import { mapState, mapGetters, mapActions } from 'vuex'
 
@@ -249,6 +249,8 @@ export default {
           }
         }).catch((e) => {
           return null
+        }).finally(() => {
+          analytics.logEvent('article_list_view')
         })
     }
   },

@@ -25,7 +25,7 @@
               <a
                 :href="item['action_url']"
                 class="w-full text-center shadow block bg-brand-blue text-white font-bold py-2 px-4 rounded"
-                @click="clickAction" >
+                @click.prevent="clickAction" >
                 Baca Selengkapnya
               </a>
             </div>
@@ -61,7 +61,7 @@
 <script>
 import { ContentLoader } from 'vue-content-loader'
 import { formatDateTimeShort } from '~/lib/date'
-// import { analytics } from '~/lib/firebase'
+import { analytics } from '~/lib/firebase'
 
 export default {
   components: {
@@ -91,12 +91,17 @@ export default {
       return this.$store.dispatch('news/getItemById', id)
         .then((item) => {
           this.item = item
+          analytics.logEvent('article_detail_view', { id: item.id })
         }).finally(() => {
           this.isLoading = false
         })
     },
     formatContent (content) {
       return content
+    },
+    clickAction (e) {
+      analytics.logEvent('article_detail_click_action', { id: this.$route.params.slug })
+      window.open(e.target.href, '_blank')
     }
   }
 }

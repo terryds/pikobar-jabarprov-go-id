@@ -67,6 +67,7 @@ import { ContentLoader } from 'vue-content-loader'
 import { mapState, mapActions } from 'vuex'
 import { faEnvelope } from '@fortawesome/free-solid-svg-icons'
 import { formatDateTimeShort } from '~/lib/date'
+import { analytics } from '~/lib/firebase'
 
 export default {
   components: {
@@ -91,6 +92,7 @@ export default {
     this.isPending = true
     this.getItems()
       .finally(() => {
+        analytics.logEvent('messages_list_view')
         this.isPending = false
       })
   },
