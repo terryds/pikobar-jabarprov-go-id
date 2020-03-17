@@ -5,7 +5,7 @@
         <div class="flex flex-wrap px-6 py-4">
           <div class="text-sm w-full">
             Izinkan notifikasi mengirim pesan
-            <button @click="allowNotification" class="ml-2 bg-brand-blue text-white font-bold py-1 px-4 rounded focus:outline-none focus:shadow-outline" type="button">
+            <button class="ml-2 bg-brand-blue text-white font-bold py-1 px-4 rounded focus:outline-none focus:shadow-outline" type="button" @click="allowNotification">
               Allow
             </button>
           </div>
@@ -18,7 +18,8 @@
         tag="a"
         class="cursor-pointer flex items-center"
         href="javascript:void(0)"
-        @click.prevent="onGoBack">
+        @click.prevent="onGoBack"
+      >
         <FontAwesomeIcon :icon="icon.faChevronLeft" />
         <div class="text-left px-4">
           <p class="text-lg">
@@ -28,7 +29,8 @@
       </a>
       <div
         v-else
-        class="flex items-center">
+        class="flex items-center"
+      >
         <nuxt-link to="/">
           <img class="block h-10 mx-auto mr-4" src="logo.jpg" alt>
         </nuxt-link>

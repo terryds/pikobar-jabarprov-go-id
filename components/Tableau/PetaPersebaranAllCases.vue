@@ -1,5 +1,5 @@
 <template>
-  <TableauViz :url="url"/>
+  <TableauViz :url="url" />
 </template>
 
 <script>

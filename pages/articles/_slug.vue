@@ -15,17 +15,20 @@
           <img
             v-if="item.image"
             :src="item.image"
-            class="block mb-8 rounded-lg shadow-lg">
+            class="block mb-8 rounded-lg shadow-lg"
+          >
           <!-- eslint-disable-next-line -->
           <div 
             class="mt-5 html-content"
-            v-html="formatContent(item['content'])" />
+            v-html="formatContent(item['content'])"
+          />
           <template v-if="item['action_url']">
             <div class="my-2">
               <a
                 :href="item['action_url']"
                 class="w-full text-center shadow block bg-brand-blue text-white font-bold py-2 px-4 rounded"
-                @click.prevent="clickAction" >
+                @click.prevent="clickAction"
+              >
                 Baca Selengkapnya
               </a>
             </div>
@@ -36,21 +39,24 @@
           <content-loader
             :speed="2"
             primary-color="#f3f3f3"
-            secondary-color="#ecebeb">
+            secondary-color="#ecebeb"
+          >
             <rect
               x="0"
               y="15"
               rx="0"
               ry="0"
               width="100%"
-              height="15" />
+              height="15"
+            />
             <rect
               x="0"
               y="45"
               rx="0"
               ry="0"
               width="100%"
-              height="75" />
+              height="75"
+            />
           </content-loader>
         </template>
       </div>

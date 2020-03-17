@@ -8,15 +8,18 @@
             :key="index"
             class="swiper-slide"
             :style="{'--swiper-height': height}"
-            @slide-click="$router.push(getInfographicURL(item))">
+            @slide-click="$router.push(getInfographicURL(item))"
+          >
             <div>
               <img
                 tag="img"
-                :src="item.images[0]">
+                :src="item.images[0]"
+              >
               <br>
               <nuxt-link
                 tag="a"
-                :to="getInfographicURL(item)">
+                :to="getInfographicURL(item)"
+              >
                 {{ item.title }}
               </nuxt-link>
             </div>
@@ -29,14 +32,16 @@
             <content-loader
               :speed="2"
               width="400"
-              height="200">
+              height="200"
+            >
               <rect
                 x="0"
                 y="0"
                 rx="0"
                 ry="0"
                 width="100%"
-                height="100%" />
+                height="100%"
+              />
             </content-loader>
           </div>
         </slot>

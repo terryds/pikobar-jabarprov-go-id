@@ -1,6 +1,7 @@
 <template>
   <div
-    class="container sm:p-5 mx-auto">
+    class="container sm:p-5 mx-auto"
+  >
     <div class="p-5 bg-white border-solid border-gray-300">
       <section>
         <h2 class="text-xl font-bold leading-tight">
@@ -11,11 +12,13 @@
           <figure
             v-for="(item, index) in infographics"
             :key="index"
-            class="w-full">
+            class="w-full"
+          >
             <img
               :src="item.images[0] || null"
               class="cursor-pointer infographic-list__item-image w-full object-cover object-left-top rounded-lg shadow-lg hover:opacity-75"
-              @click.prevent="$router.push(getItemURL(item))">
+              @click.prevent="$router.push(getItemURL(item))"
+            >
             <caption class="mt-4 text-left block w-full font-bold opacity-75 hover:underline">
               <nuxt-link :to="getItemURL(item)">
                 {{ item.title }}
