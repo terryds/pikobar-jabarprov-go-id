@@ -21,7 +21,7 @@
 <script>
 import {
   faHome,
-  faBell,
+  faDesktop,
   faNewspaper,
   faQuestionCircle
 } from '@fortawesome/free-solid-svg-icons'
@@ -44,7 +44,7 @@ export default {
         {
           title: 'Data',
           to: '/data',
-          icon: faBell
+          icon: faDesktop
         },
         {
           title: 'Berita',
