@@ -34,13 +34,13 @@
           </div>
         </div>
       </section>
+      <h4 class="mx-4 mt-6">
+        Update Terakhir: {{ lastUpdatedAt }}
+      </h4>
       <section
         v-if="cases"
-        class="mx-4 my-8 counter-cards"
+        class="mx-4 my-8 counter-cards mt-0"
       >
-        <h4>
-          Update Terakhir: {{ lastUpdatedAt }}
-        </h4>
         <CounterCard
           class="my-4 flex-1"
           label="ODP Orang Dalam Pemantauan"
