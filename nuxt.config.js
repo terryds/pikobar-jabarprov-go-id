@@ -65,7 +65,7 @@ export default {
     manifest: {
       name: 'Jabar COVID-19',
       background_color: '#399F4F',
-      display: 'fullscreen',
+      display: 'standalone',
       orientation: 'portrait'
     }
   },
