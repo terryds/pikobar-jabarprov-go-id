@@ -38,6 +38,9 @@
         v-if="cases"
         class="mx-4 my-8 counter-cards"
       >
+        <h4>
+          Update Terakhir: {{ lastUpdatedAt }}
+        </h4>
         <CounterCard
           class="my-4 flex-1"
           label="ODP Orang Dalam Pemantauan"
@@ -179,6 +182,7 @@
 <script>
 import { mapState } from 'vuex'
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons'
+// import { Timestamp } from '../lib/firebase'
 import { formatDateTimeShort } from '~/lib/date'
 import ImageCarousel from '~/components/ImageCarousel'
 import ImageSwiper from '~/components/ImageSwiper'
@@ -214,7 +218,14 @@ export default {
       infographics: state => state.infographics.items.filter((_, index) => index < 3),
       news: state => state.news.items,
       cases: state => state.statistics.cases
-    })
+    }),
+    lastUpdatedAt () {
+      try {
+        return this.formatDateTimeShort(this.cases.updated_at)
+      } catch {
+        return ''
+      }
+    }
   },
   async created () {
     await Promise.all([
@@ -228,6 +239,7 @@ export default {
     formatDateTimeShort
   }
 }
+
 </script>
 
 <style lang="scss" scoped>
