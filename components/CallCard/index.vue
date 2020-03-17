@@ -1,6 +1,6 @@
 <template>
   <div
-    class="call-card cursor-pointer px-3 py-5 flex flex-row justify-start items-center bg-green-100 hover:bg-green-200"
+    class="call-card cursor-pointer px-3 py-5 flex flex-row justify-start items-center bg-white hover:bg-green-200"
     style="border-radius: 0.8rem; box-shadow: 0 0 4px 0px rgba(0,0,0,0.05), 0 4px 24px 0 rgba(0,0,0,0.1);"
     @click.capture="onClick"
   >
