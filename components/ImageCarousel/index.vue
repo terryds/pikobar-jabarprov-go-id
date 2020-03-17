@@ -105,8 +105,8 @@ export default {
   @apply relative flex flex-row justify-center items-center;
 
   @screen lg {
-    padding: 0;
-    height: 400px;
+    // padding: 0;
+    // height: 400px;
   }
 
   > img[role="bg"] {
@@ -124,9 +124,9 @@ export default {
     @apply absolute top-0 w-full h-full
     object-cover;
 
-    @screen lg {
-      @apply object-contain;
-    }
+    // @screen lg {
+    //   @apply object-contain;
+    // }
   }
 }
 </style>
