@@ -11,9 +11,14 @@
       <section class="row">
         <div
           class="p-1 col-md m-2 "
-          style="border-radius: 0.8rem; box-shadow: 0 0 4px 0px rgba(0,0,0,0.05), 0 4px 24px 0 rgba(0,0,0,0.1); background-color: #FCDFE0 !important; border: solid 1px #FFB4B5; ">
-          <h4 class="ml-3 mt-3" style="color: #4F4F4F;"><b>POSITIF COVID-19</b></h4>
-          <h3 class="ml-3" style="font-size: 30px;"><b>2</b></h3>
+          style="border-radius: 0.8rem; box-shadow: 0 0 4px 0px rgba(0,0,0,0.05), 0 4px 24px 0 rgba(0,0,0,0.1); background-color: #FCDFE0 !important; border: solid 1px #FFB4B5;"
+        >
+          <h4 class="ml-3 mt-3" style="color: #4F4F4F;">
+            <b>POSITIF COVID-19</b>
+          </h4>
+          <h3 class="ml-3" style="font-size: 30px;">
+            <b>2</b>
+          </h3>
           <GChart
             type="LineChart"
             :data="lineChartPositifData"
@@ -22,9 +27,14 @@
         </div>
         <div
           class="p-1 col-md m-2 "
-          style="border-radius: 0.8rem; box-shadow: 0 0 4px 0px rgba(0,0,0,0.05), 0 4px 24px 0 rgba(0,0,0,0.1); background-color: #D6E6F7 !important; border: solid 1px #9BC8F4; ">
-          <h4 class="ml-3 mt-3" style="color: #4F4F4F;"><b>PERAWATAN</b></h4>
-          <h3 class="ml-3" style="font-size: 30px;"><b>3</b></h3>
+          style="border-radius: 0.8rem; box-shadow: 0 0 4px 0px rgba(0,0,0,0.05), 0 4px 24px 0 rgba(0,0,0,0.1); background-color: #D6E6F7 !important; border: solid 1px #9BC8F4;"
+        >
+          <h4 class="ml-3 mt-3" style="color: #4F4F4F;">
+            <b>PERAWATAN</b>
+          </h4>
+          <h3 class="ml-3" style="font-size: 30px;">
+            <b>3</b>
+          </h3>
           <GChart
             type="LineChart"
             :data="lineChartPerawatanData"
@@ -33,9 +43,14 @@
         </div>
         <div
           class="p-1 col-md m-2 "
-          style="border-radius: 0.8rem; box-shadow: 0 0 4px 0px rgba(0,0,0,0.05), 0 4px 24px 0 rgba(0,0,0,0.1); background-color: #D3EEE3 !important; border: solid 1px #91DCBD; ">
-          <h4 class="ml-3 mt-3" style="color: #4F4F4F;"><b>SEMBUH</b></h4>
-          <h3 class="ml-3" style="font-size: 30px;"><b>4</b></h3>
+          style="border-radius: 0.8rem; box-shadow: 0 0 4px 0px rgba(0,0,0,0.05), 0 4px 24px 0 rgba(0,0,0,0.1); background-color: #D3EEE3 !important; border: solid 1px #91DCBD; "
+        >
+          <h4 class="ml-3 mt-3" style="color: #4F4F4F;">
+            <b>SEMBUH</b>
+          </h4>
+          <h3 class="ml-3" style="font-size: 30px;">
+            <b>4</b>
+          </h3>
           <GChart
             type="LineChart"
             :data="lineChartSembuhData"
@@ -44,9 +59,14 @@
         </div>
         <div
           class="p-1 col-md m-2 "
-          style="border-radius: 0.8rem; box-shadow: 0 0 4px 0px rgba(0,0,0,0.05), 0 4px 24px 0 rgba(0,0,0,0.1); background-color: #FBEADF !important; border: solid 1px #FED1B1; ">
-          <h4 class="ml-3 mt-3" style="color: #4F4F4F;"><b>MENINGGAL</b></h4>
-          <h3 class="ml-3" style="font-size: 30px;"><b>5</b></h3>
+          style="border-radius: 0.8rem; box-shadow: 0 0 4px 0px rgba(0,0,0,0.05), 0 4px 24px 0 rgba(0,0,0,0.1); background-color: #FBEADF !important; border: solid 1px #FED1B1; "
+        >
+          <h4 class="ml-3 mt-3" style="color: #4F4F4F;">
+            <b>MENINGGAL</b>
+          </h4>
+          <h3 class="ml-3" style="font-size: 30px;">
+            <b>5</b>
+          </h3>
           <GChart
             type="LineChart"
             :data="lineChartMeninggalData"
@@ -58,8 +78,11 @@
       <section class="row">
         <div
           class="bg-white p-1 col-md m-2"
-          style="border-radius: 0.8rem; box-shadow: 0 0 4px 0px rgba(0,0,0,0.05), 0 4px 24px 0 rgba(0,0,0,0.1);">
-          <h4 class="m-3"><b>ODP (Orang Dalam Pemantauan)</b></h4>
+          style="border-radius: 0.8rem; box-shadow: 0 0 4px 0px rgba(0,0,0,0.05), 0 4px 24px 0 rgba(0,0,0,0.1);"
+        >
+          <h4 class="m-3">
+            <b>ODP (Orang Dalam Pemantauan)</b>
+          </h4>
           <hr>
           <div class="row p-2">
             <div class="col-md m-2 mr-5">
@@ -80,8 +103,11 @@
         </div>
         <div
           class="bg-white p-1 col-md m-2"
-          style="border-radius: 0.8rem; box-shadow: 0 0 4px 0px rgba(0,0,0,0.05), 0 4px 24px 0 rgba(0,0,0,0.1);">
-          <h4 class="m-3"><b>PDP (Pasien Dalam Pengawasan)</b></h4>
+          style="border-radius: 0.8rem; box-shadow: 0 0 4px 0px rgba(0,0,0,0.05), 0 4px 24px 0 rgba(0,0,0,0.1);"
+        >
+          <h4 class="m-3">
+            <b>PDP (Pasien Dalam Pengawasan)</b>
+          </h4>
           <hr>
           <div class="row p-2">
             <div class="col-md m-2 mr-5">
@@ -102,6 +128,14 @@
         </div>
       </section>
 
+      <section class="row">
+        <div
+          class="bg-white p-1 col-md m-2"
+          style="border-radius: 0.8rem; box-shadow: 0 0 4px 0px rgba(0,0,0,0.05), 0 4px 24px 0 rgba(0,0,0,0.1); height:400px;"
+        >
+          &nbsp;
+        </div>
+      </section>
     </div>
   </div>
 </template>
