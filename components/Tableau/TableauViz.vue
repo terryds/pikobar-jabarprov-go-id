@@ -69,6 +69,11 @@ export default {
       }, 3000)
     })
   },
+  beforeDestroy () {
+    if (this.viz && typeof this.viz.dispose === 'function') {
+      this.viz.dispose()
+    }
+  },
   methods: {
     renderTableauViz () {
       this.showMap = false
