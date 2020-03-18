@@ -6,7 +6,11 @@ export function getCases (options) {
     .get()
     .then((doc) => {
       if (doc.exists) {
-        return doc.data()
+        const data = doc.data()
+        data.updated_at = data.updated_at.toDate()
+        return {
+          ...data
+        }
       }
       return null
     })
