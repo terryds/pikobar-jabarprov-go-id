@@ -178,14 +178,14 @@
             Inilah sebabnya mengapa kita penting untuk menjaga jarak hingga kurang lebih satu meter dari orang yang sakit.
           </p>
         </article>
-        <nuxtlink
+        <nuxt-link
           v-show="false"
           tag="a"
           to="#"
           class="text-center md:self-center w-48 py-4 rounded-lg text-brand-green-darker hover:bg-green-200 border-2 border-solid border-brand-green"
         >
           Lihat Selengkapnya
-        </nuxtlink>
+        </nuxt-link>
       </div>
     </section>
     <section class="mt-8 m-4 md:mt-16 md:m-8">
