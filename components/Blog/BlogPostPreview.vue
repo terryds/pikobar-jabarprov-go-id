@@ -6,11 +6,11 @@
           <nuxt-link
             tag="a"
             :to="to"
-            class="text-lg font-bold hover:underline"
+            class="text-brand-green text-lg lg:text-2xl hover:underline"
           >
-            {{ title }}
+            <strong>{{ title }}</strong>
           </nuxt-link>
-          <p class="text-base">
+          <p class="text-base mt-2 opacity-75">
             {{ subtitle }}
           </p>
         </header>
@@ -26,17 +26,6 @@
         class="hidden md:block w-1/3 self-stretch rounded-lg overflow-hidden object-cover object-center flex-none"
         :src="image"
       >
-    </div>
-    <div class="clearfix my-2">
-      <nuxt-link
-        class="float-right md:float-left md:mt-4 text-brand-blue hover:text-brand-blue-lighter font-bold"
-        :to="to"
-      >
-        <span class="mr-2 align-middle uppercase">
-          Selengkapnya
-        </span>
-        <FontAwesomeIcon class="align-middle" :icon="icon.faChevronRight" />
-      </nuxt-link>
     </div>
   </div>
 </template>
