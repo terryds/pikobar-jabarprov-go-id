@@ -36,7 +36,7 @@ export default {
   },
   mounted () {
     // lazy load the required ArcGIS API for JavaScript modules and CSS
-    loadModules(['esri/Map', 'esri/Graphic', 'esri/PopupTemplate', 'esri/views/MapView', 'esri/layers/FeatureLayer', 'esri/widgets/Legend', 'esri/geometry/Point', 'esri/symbols/SimpleMarkerSymbol', 'esri/widgets/Expand'], { css: true }).then(([ArcGISMap, Graphic, PopupTemplate, MapView, FeatureLayer, Legend, Point, SimpleMarkerSymbol, Expand]) => {
+    loadModules(['esri/Map', 'esri/Graphic', 'esri/PopupTemplate', 'esri/views/MapView', 'esri/layers/FeatureLayer', 'esri/widgets/Legend', 'esri/geometry/Point', 'esri/symbols/SimpleMarkerSymbol', 'esri/widgets/Expand', 'esri/renderers/UniqueValueRenderer'], { css: true }).then(([ArcGISMap, Graphic, PopupTemplate, MapView, FeatureLayer, Legend, Point, SimpleMarkerSymbol, Expand, UniqueValueRenderer]) => {
       const maps = new ArcGISMap({
         basemap: 'topo-vector'
       })
@@ -48,37 +48,18 @@ export default {
       })
       this.view.ui.move('zoom', 'bottom-right')
 
-      const legend = new Legend({
-        view: this.view,
-        layerInfos: [{
-          title: 'Legend'
-        }]
-      })
-      const expandLegend = new Expand({
-        view: this.view,
-        content: legend
-      })
-      this.view.ui.add(expandLegend, 'bottom-left')
       const clusterConfig = {
         type: 'cluster',
         clusterRadius: '5px',
-        // {cluster_count} is an aggregate field containing
-        // the number of features comprised by the cluster
         popupTemplate: {
           content: 'Terdapat {cluster_count} kasus.'
         }
       }
-
-      // Create a graphic and add the geometry and symbol to it
       const pgCorona = []
-      pgCorona.pdp = []
-      pgCorona.odp = []
-      pgCorona.positif = []
 
       this.jsonData.forEach((element) => {
-        console.log(element.desa_str)
         const point = new Point({
-          type: 'point', // autocasts as new Point()
+          type: 'point',
           longitude: element.alamat_longitude,
           latitude: element.alamat_latitude
         })
@@ -94,27 +75,13 @@ export default {
             ObjectID: element.ObjectID
           }
         })
-
-        switch (element.status) {
-          case 'Positif' :
-            pgCorona.positif.push(pointGraphic)
-            break
-          case 'PDP' :
-            pgCorona.pdp.push(pointGraphic)
-            break
-          default:
-            pgCorona.odp.push(pointGraphic)
-            break
-        }
+        pgCorona.push(pointGraphic)
       })
 
       const template = new PopupTemplate({
         title: 'Detail Data',
         content: [
           {
-            // It is also possible to set the fieldInfos outside of the content
-            // directly in the popupTemplate. If no fieldInfos is specifically set
-            // in the content, it defaults to whatever may be set within the popupTemplate.
             type: 'fields',
             fieldInfos: [
               {
@@ -144,35 +111,33 @@ export default {
       const markerSymbol = []
       // Create a symbol for drawing the point
       markerSymbol.positif = new SimpleMarkerSymbol({
-        color: '#EB5757',
+        color: [235, 87, 87, 0.7],
         outline: {
           // autocasts as new SimpleLineSymbol()
           color: [255, 255, 255],
-          width: 0,
-          opacity: 0
+          width: 0
         }
       })
 
       // Create a symbol for drawing the point
       markerSymbol.pdp = new SimpleMarkerSymbol({
-        color: '#F2C94C',
+        color: [242, 201, 76, 0.7],
         outline: {
           // autocasts as new SimpleLineSymbol()
           color: [255, 255, 255],
-          width: 0,
-          opacity: 0
+          width: 0
         }
       })
       // Create a symbol for drawing the point
       markerSymbol.odp = new SimpleMarkerSymbol({
-        color: '#2D9CDB',
+        color: [45, 156, 219, 0.7],
         outline: {
           // autocasts as new SimpleLineSymbol()
           color: [255, 255, 255],
-          width: 0,
-          opacity: 0
+          width: 0
         }
       })
+
       const fields = [{
         name: 'ObjectID',
         alias: 'ObjectID',
@@ -203,42 +168,46 @@ export default {
         alias: 'Kab/Kota',
         type: 'string'
       }]
-      const f2 = new FeatureLayer({
-        source: pgCorona.pdp,
-        featureReduction: clusterConfig,
-        renderer: {
-          type: 'simple',
-          symbol: markerSymbol.pdp
-        },
-        fields,
-        objectIDField: 'ObjectID',
-        popupTemplate: template
-      })
-      maps.add(f2)
-      const f3 = new FeatureLayer({
-        source: pgCorona.odp,
-        featureReduction: clusterConfig,
-        renderer: {
-          type: 'simple',
+
+      const renderer = {
+        type: 'unique-value',
+        field: 'status',
+        defaultSymbol: { type: 'simple' },
+        uniqueValueInfos: [{
+          value: 'ODP',
           symbol: markerSymbol.odp
         },
-        fields,
-        objectIDField: 'ObjectID',
-        popupTemplate: template
-      })
-      maps.add(f3)
-      const fl = new FeatureLayer({
-        source: pgCorona.positif,
-        featureReduction: clusterConfig,
-        renderer: {
-          type: 'simple',
-          symbol: markerSymbol.positif
+        {
+          value: 'PDP',
+          symbol: markerSymbol.pdp
         },
+        {
+          value: 'Positif',
+          symbol: markerSymbol.positif
+        }]
+      }
+      const featureLayerCorona = new FeatureLayer({
+        source: pgCorona,
+        featureReduction: clusterConfig,
+        renderer,
         fields,
         objectIDField: 'ObjectID',
         popupTemplate: template
       })
-      maps.add(fl)
+      maps.add(featureLayerCorona)
+
+      const legend = new Legend({
+        view: this.view,
+        layerInfos: [{
+          layer: featureLayerCorona,
+          title: 'Jumlah Data Pasien'
+        }]
+      })
+      const expandLegend = new Expand({
+        view: this.view,
+        content: legend
+      })
+      this.view.ui.add(expandLegend, 'bottom-left')
     })
   },
   beforeMount () {
@@ -255,15 +224,6 @@ export default {
         })
         .then(function (response) {
           self.jsonData = response.data.gsheets_high_confidential_rekap_pasien
-          for (let i = 0; i < self.jsonData.length; i++) {
-            if (self.jsonData[i].status === 'Positif') {
-              self.jsonDataResult.positif += 1
-            } else if (self.jsonData[i].status === 'ODP') {
-              self.jsonDataResult.odp += 1
-            } else if (self.jsonData[i].status === 'PDP') {
-              self.jsonDataResult.pdp += 1
-            }
-          }
         })
         .catch(function (error) {
           console.log(error)
