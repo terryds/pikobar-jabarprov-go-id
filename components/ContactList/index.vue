@@ -4,51 +4,19 @@
       <li
         v-for="(item, i) in items"
         :key="i"
-        class="mb-8 pl-5 relative"
       >
-        <div class="absolute top-0 bottom-0 left-0 w-1 bg-orange-300" />
-        <h5 class="inline-block text-lg font-bold leading-loose">
-          {{ item.name }}
-        </h5>
-        <p>
-          {{ item.address }}, {{ item.city }}
-        </p>
-        <p class="text-sm">
-          <template v-if="item.phones && item.phones.length">
-            <a
-              v-for="(num, j) in item.phones"
-              :key="j"
-              class="inline-block px-4 py-1 bg-blue-100 rounded mt-2 mr-2 text-gray-800 hover:opacity-50"
-              :href="`tel:${num}`"
-              target="_blank"
-              :title="`Telpon ${num}`"
-            >
-              <i class="fas fa-phone fa-sm mr-1" />
-              <span>
-                {{ num }}
-              </span>
-            </a>
-          </template>
-          <a
-            v-if="item.web"
-            class="inline-block px-4 py-1 bg-green-100 rounded mt-2 mr-2 text-gray-800 hover:opacity-50"
-            :href="item.web"
-            target="_blank"
-            :title="`Buka Laman ${item.web}`"
-          >
-            <i class="fas fa-globe-asia fa-sm mr-1" />
-            <span>
-              {{ item.web }}
-            </span>
-          </a>
-        </p>
+        <ContactListItem v-bind="item" />
       </li>
     </ul>
   </div>
 </template>
 
 <script>
+import ContactListItem from './ContactListItem'
 export default {
+  components: {
+    ContactListItem
+  },
   props: {
     items: {
       type: Array,

@@ -1,7 +1,7 @@
 
 <template>
   <div class="container mx-auto">
-    <section class="top-grid m-8">
+    <section class="top-grid m-4 md:m-8">
       <div class="top-grid__banner rounded-lg overflow-hidden">
         <img class="absolute inset-0 w-full h-full object-cover object-left-top" :src="bannerImage">
       </div>
@@ -21,10 +21,10 @@
         </summary>
       </div>
     </section>
-    <section class="m-8">
-      <h2 class=" text-2xl">
+    <section class="mt-8 m-4 md:m-8">
+      <h2 class=" text-lg md:text-2xl">
         <b>Angka Kejadian di Jawa Barat</b><br>
-        <small class="opacity-75">Update Terakhir: {{ lastUpdatedAt }}</small>
+        <small class="opacity-50">Update Terakhir: {{ lastUpdatedAt }}</small>
       </h2>
       <div class="my-4 lg:p-8 lg:flex items-start lg:bg-white lg:rounded-lg lg:shadow-md">
         <summary>
@@ -81,6 +81,162 @@
         </summary>
       </div>
     </section>
+    <section class="m-4 md:m-8">
+      <PetaPersebaranAllCases class="rounded-lg shadow-md overflow-hidden" />
+    </section>
+    <section class="mt-8 m-4 md:mt-16 md:m-8">
+      <h2 class="mb-4 md:mb-8 text-left text-2xl md:text-center md:text-3xl">
+        <b>Apa yang Harus Dilakukan</b>
+      </h2>
+      <div v-show="false" class="p-8 md:p-12 rounded-lg bg-brand-green-dark">
+        <h3 class="text-lg lg:text-2xl text-white">
+          <strong>Ketahui Resiko dari COVID-19</strong>
+        </h3>
+        <br>
+        <div class="flex flex-col lg:flex-row justify-between items-start">
+          <p class="text-white w-full lg:w-2/3">
+            COVID-19 merupakan penyakit yang disebabkan Novel Coronavirus 2019.
+            Meski bergejala mirip dengan flu biasa, COVID-19 sampai saat ini memiliki fatalitas lebih tinggi.
+            Virus ini juga menyebar dengan sangat cepat karena bisa pindah dari orang ke orang bahkan sebelum orang tersebut tidak menunjukkan gejala.
+            <br>
+            <br>
+            Penting bagi Anda untuk menilai kondisi secara mandiri. Anda bergejala?
+          </p>
+          <i style="flex: 0 0 2rem;" />
+          <button class="px-10 py-4 rounded-lg text-white border-2 border-solid border-white hover:bg-brand-green-light">
+            Lihat Disini
+          </button>
+        </div>
+      </div>
+      <div class="flex flex-col items-stretch my-8 p-8 md:p-12 bg-white rounded-lg shadow-md">
+        <h3 class="text-lg lg:text-2xl">
+          <strong>Daftar Rumah Sakit Rujukan di Jawa Barat</strong>
+        </h3>
+        <br>
+        <p class="opacity-75">
+          Berikut ini adalah rumah sakit yang menjadi rujukan untuk pasien dengan status Pasien dalam Pengawasan.
+          Anda harus mengunjungi fasilitas kesehatan terdekat terlebih dahulu seperti klinik/rumah sakit umum sebelum akhirnya dapat dirujuk ke rumah sakit khusus di bawah ini.
+        </p>
+        <br>
+        <br>
+        <ul class="hospital-list">
+          <li
+            v-for="(h, index) in hospitals"
+            :key="index"
+          >
+            <ContactListItem v-bind="h" />
+          </li>
+        </ul>
+        <br>
+        <nuxt-link
+          tag="a"
+          to="/hospitals"
+          class="text-center md:self-center w-64 py-4 rounded-lg text-brand-green-darker hover:bg-green-200 border-2 border-solid border-brand-green"
+        >
+          Lihat Rumah Sakit Lainnya
+        </nuxt-link>
+      </div>
+    </section>
+    <section class="mt-8 m-4 md:mt-16 md:m-8">
+      <h2 class="mb-4 md:mb-8 text-left text-2xl md:text-center md:text-3xl">
+        <b>Apa yang Harus Diketahui</b>
+      </h2>
+      <div class="flex flex-col items-stretch p-8 md:p-12 bg-white rounded-lg shadow-md">
+        <article class="html-content text-gray-800">
+          <h3 class="text-xl text-black">
+            <b>Apa Itu COVID-19?</b>
+          </h3>
+          <p>
+            COVID-19 adalah penyakit yang disebabkan oleh Novel Coronavirus (2019-nCoV),
+            jenis baru coronavirus yang pada manusia menyebabkan penyakit mulai flu biasa
+            hingga penyakit yang serius seperti Middle East Respiratory Syndrome (MERS)
+            dan Sindrom Pernapasan Akut Berat/ Severe Acute Respiratory Syndrome (SARS).
+          </p>
+          <p>
+            Pada 11 Februari 2020, World Health Organization (WHO) mengumumkan nama penyakit yang disebabkan 2019-nCov,
+            yaitu <strong>Coronavirus Disease (COVID-19).</strong>
+          </p>
+          <h3 class="text-xl text-black">
+            <b>Gejala</b>
+          </h3>
+          <p>
+            Gejala umum berupa demam ≥380C, batuk kering, dan sesak napas.
+            Jika ada orang yang dalam 14 hari sebelum muncul gejala tersebut pernah melakukan perjalanan ke negara terjangkit,
+            atau pernah merawat/kontak erat dengan penderita COVID-19,
+            maka terhadap orang tersebut akan dilakukan pemeriksaan laboratorium lebih lanjut untuk memastikan diagnosisnya.
+          </p>
+          <h3 class="text-xl text-black">
+            <b>Penularan</b>
+          </h3>
+          <p>
+            Seseorang dapat terinfeksi dari penderita COVID-19.
+            Penyakit ini dapat menyebar melalui tetesan kecil (droplet) dari hidung atau mulut pada saat batuk atau bersin.
+            Droplet tersebut kemudian jatuh pada benda di sekitarnya.
+            Kemudian jika ada orang lain menyentuh benda yang sudah terkontaminasi dengan droplet tersebut,
+            lalu orang itu menyentuh mata, hidung atau mulut (segitiga wajah), maka orang itu dapat terinfeksi COVID-19.
+            Seseorang juga bisa terinfeksi COVID-19 ketika tanpa sengaja menghirup droplet dari penderita.
+            Inilah sebabnya mengapa kita penting untuk menjaga jarak hingga kurang lebih satu meter dari orang yang sakit.
+          </p>
+        </article>
+        <nuxtlink
+          v-show="false"
+          tag="a"
+          to="#"
+          class="text-center md:self-center w-48 py-4 rounded-lg text-brand-green-darker hover:bg-green-200 border-2 border-solid border-brand-green"
+        >
+          Lihat Selengkapnya
+        </nuxtlink>
+      </div>
+    </section>
+    <section class="mt-8 m-4 md:mt-16 md:m-8">
+      <h2 class="text-left text-2xl md:text-3xl">
+        <b>Infografis</b>
+      </h2>
+      <br>
+      <div class="flex flex-col">
+        <ImageSwiper class="w-full" :items="infographics" />
+        <nuxt-link
+          tag="a"
+          class="text-center md:self-center w-48 py-4 mt-8 rounded-lg text-brand-green-darker hover:bg-green-200 border-2 border-solid border-brand-green"
+          to="/infographics"
+        >
+          Lihat Selengkapnya
+        </nuxt-link>
+      </div>
+    </section>
+    <br>
+    <section class="m-4 md:m-8">
+      <div class="flex flex-col items-stretch p-8 rounded-lg bg-white shadow-md">
+        <h2 class="text-left text-2xl md:text-3xl">
+          <b>Rilis Pers</b>
+        </h2>
+        <br>
+        <br>
+        <div>
+          <div
+            v-for="(item, index) in news"
+            :key="index"
+          >
+            <BlogPostPreview
+              :image="item.image"
+              :title="item.title"
+              :content="item.content"
+              :date="formatDateTimeShort(item.published_at)"
+              :to="`/articles/${item.id}`"
+            />
+            <hr v-if="index < news.length - 1" class="my-8">
+          </div>
+        </div>
+        <br>
+        <nuxt-link
+          tag="a"
+          class="text-center md:self-center w-48 py-4 mt-8 rounded-lg text-brand-green-darker hover:bg-green-200 border-2 border-solid border-brand-green"
+          to="/articles?tab=press"
+        >
+          Lihat Selengkapnya
+        </nuxt-link>
+      </div>
+    </section>
     <!--  -->
   </div>
 </template>
@@ -90,22 +246,23 @@ import { faChevronRight } from '@fortawesome/free-solid-svg-icons'
 // import { Timestamp } from '../lib/firebase'
 import { formatDateTimeShort } from '~/lib/date'
 // import ImageCarousel from '~/components/ImageCarousel'
-// import ImageSwiper from '~/components/ImageSwiper'
+import ImageSwiper from '~/components/ImageSwiper'
 import CallCard from '~/components/CallCard'
 // import ContactList from '~/components/ContactList'
-// import BlogPostPreview from '~/components/Blog/BlogPostPreview'
+import ContactListItem from '~/components/ContactList/ContactListItem'
+import BlogPostPreview from '~/components/Blog/BlogPostPreview'
 import CounterCard from '~/components/CounterCard'
-// import PetaPersebaranAllCases from '~/components/Tableau/PetaPersebaranAllCases'
+import PetaPersebaranAllCases from '~/components/Tableau/PetaPersebaranAllCases'
 
 export default {
   components: {
     // ImageCarousel,
-    // ImageSwiper,
+    ImageSwiper,
     CallCard,
-    // ContactList,
-    // BlogPostPreview,
-    CounterCard
-    // PetaPersebaranAllCases
+    BlogPostPreview,
+    CounterCard,
+    PetaPersebaranAllCases,
+    ContactListItem
   },
   data () {
     return {
@@ -145,7 +302,7 @@ export default {
       return {
         odp: odp.total.jabar,
         pdp: pdp.total.jabar,
-        total: aktif.jabar
+        aktif: aktif.jabar
       }
     }
   },
@@ -199,6 +356,15 @@ export default {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
     grid-template-rows: auto 1fr;
+  }
+}
+
+.hospital-list {
+  display: block;
+  @screen lg {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    align-items: stretch;
   }
 }
 

@@ -10,9 +10,9 @@
         class="block text-sm opacity-75"
         v-text="label"
       />
-      <h4 class="text-2xl">
-        {{ count }}
-        <small class="text-lg">{{ unit }}</small>
+      <h4 class="text-xl md:text-2xl">
+        <strong>{{ count }}</strong>
+        <small>{{ unit }}</small>
       </h4>
     </section>
   </div>

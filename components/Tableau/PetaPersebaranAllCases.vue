@@ -4,7 +4,18 @@
     :subtitle="subtitle"
     :disclaimer="disclaimer"
     :url="url"
-  />
+  >
+    <template #action="{renderTableau}">
+      <div class="flex justify-center items-center">
+        <button
+          class="px-10 py-4 rounded-lg bg-brand-green hover:bg-brand-green-lighter text-white"
+          @click="renderTableau"
+        >
+          Lihat Peta
+        </button>
+      </div>
+    </template>
+  </TableauViz>
 </template>
 
 <script>

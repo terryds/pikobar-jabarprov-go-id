@@ -1,6 +1,38 @@
 <template>
   <div class="relative overflow-hidden">
-    <div id="vizContainer" />
+    <div
+      v-show="hasReadDisclaimer && showMap"
+      id="vizContainer"
+      class="w-full"
+      style="min-height: 25vh;"
+    />
+    <div
+      v-show="!hasReadDisclaimer || !showMap"
+      class="relative text-center text-white bg-black"
+    >
+      <img class="absolute z-0 w-full h-full pointer-events-none object-cover object-center opacity-50" src="/img/jabar-map.png">
+      <div
+        class="relative block py-20 md:py-32 w-3/4 max-w-2xl mx-auto flex flex-col justify-center items-center"
+        style="z-index: 1;"
+      >
+        <h4 class="text-lg md:text-xl">
+          <strong>{{ title }}</strong><br>
+          <small class="opacity-75">{{ subtitle }}</small>
+        </h4>
+        <br>
+        <p class="font-bold text-base">
+          {{ disclaimer }}
+        </p>
+        <br>
+        <br>
+        <div
+          :class="[hasReadDisclaimer ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none']"
+          style="transition: opacity 0.5s ease-out;"
+        >
+          <slot name="action" v-bind="{renderTableau: renderTableauViz}" />
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -24,13 +56,22 @@ export default {
       required: true
     }
   },
+  data () {
+    return {
+      hasReadDisclaimer: false,
+      showMap: false
+    }
+  },
   mounted () {
     this.$nextTick(() => {
-      this.renderTableauViz()
+      setTimeout(() => {
+        this.hasReadDisclaimer = true
+      }, 3000)
     })
   },
   methods: {
     renderTableauViz () {
+      this.showMap = false
       const placeholderDiv = document.getElementById('vizContainer')
       const options = {
         showTabs: false,
@@ -39,6 +80,7 @@ export default {
       }
       // eslint-disable-next-line
       this.viz = new tableau.Viz(placeholderDiv, this.url, options)
+      this.showMap = true
     }
   }
 }
