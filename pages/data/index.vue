@@ -760,7 +760,6 @@ export default {
       return function innerSort (a, b) {
         // eslint-disable-next-line no-prototype-builtins
         if (!a.hasOwnProperty(key) || !b.hasOwnProperty(key)) {
-          // property doesn't exist on either object
           return 0
         }
 
@@ -954,16 +953,14 @@ export default {
           // by Kota
           for (let i = 0; i < self.jsonDataSatuan.length; i++) {
             for (let j = 0; j < self.jsonDataKota.length; j++) {
-              if (self.jsonDataSatuan[i].kabkot_str === self.jsonDataKota[j].nama) {
+              if (self.jsonDataSatuan[i].kode_kabkot === self.jsonDataKota[j].kode.toString()) {
                 if (self.jsonDataSatuan[i].status === 'Positif') {
                   self.jsonDataKota[j].jumlah_positif += 1
                   self.jsonDataKota[j].jumlah_positif_persentase = ((self.jsonDataKota[j].jumlah_positif / totalPositif) * 100).toFixed(2)
-                }
-                if (self.jsonDataSatuan[i].status === 'ODP') {
+                } else if (self.jsonDataSatuan[i].status === 'ODP') {
                   self.jsonDataKota[j].jumlah_odp += 1
                   self.jsonDataKota[j].jumlah_odp_persentase = ((self.jsonDataKota[j].jumlah_odp / totalOdp) * 100).toFixed(2)
-                }
-                if (self.jsonDataSatuan[i].status === 'PDP') {
+                } else if (self.jsonDataSatuan[i].status === 'PDP') {
                   self.jsonDataKota[j].jumlah_pdp += 1
                   self.jsonDataKota[j].jumlah_pdp_persentase = ((self.jsonDataKota[j].jumlah_pdp / totalPdp) * 100).toFixed(2)
                 }
@@ -974,7 +971,7 @@ export default {
 
           // count kota
           for (let j = 0; j < self.jsonDataKota.length; j++) {
-            if (self.jsonDataKota[j].jumlah_positif !== 0) {
+            if (self.jsonDataKota[j].jumlah_positif > 0) {
               self.jsonDataResult.count_kota += 1
             }
           }
