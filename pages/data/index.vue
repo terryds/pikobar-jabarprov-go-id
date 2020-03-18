@@ -213,7 +213,7 @@
 
       <nuxt-link
         tag="a"
-        class="block w-full md:inline-block md:w-auto p-3 m-3 rounded-md text-center text-white bg-brand-green hover:bg-brand-green-light font-bold"
+        class="block md:inline-block md:w-auto p-3 m-1 rounded-md text-center text-white bg-brand-green hover:bg-brand-green-light font-bold"
         to=""
       >
         <font-awesome-icon :icon="fontChartBar" /> Angka Harian
@@ -221,7 +221,7 @@
 
       <nuxt-link
         tag="a"
-        class="block w-full md:inline-block md:w-auto p-3 m-3 rounded-md text-center text-white bg-brand-green hover:bg-brand-green-light font-bold"
+        class="block md:inline-block md:w-auto p-3 m-1 rounded-md text-center text-white bg-brand-green hover:bg-brand-green-light font-bold"
         to=""
       >
         <font-awesome-icon :icon="fontChartLine" /> Akumulatif
@@ -276,8 +276,6 @@
           &nbsp;
         </div>
       </section>
-
-      <!-- {{ jsonDataResult }} -->
     </div>
   </div>
 </template>
