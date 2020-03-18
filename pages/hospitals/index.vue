@@ -1,6 +1,6 @@
 <template>
   <div class="container sm:p-5 mx-auto">
-    <div class="py-20 bg-auto bg-green-400">
+    <div class="p-5 py-20 bg-auto">
       <h2 class="text-2xl font-bold leading-tight">
         Kontak Rumah Sakit dan Call Center
       </h2>

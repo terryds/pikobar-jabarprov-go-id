@@ -1,48 +1,48 @@
 <template>
   <div class="">
-    <table class="w-full flex flex-row flex-no-wrap sm:bg-white overflow-hidden sm:shadow-lg my-5">
+    <table class="w-full flex flex-row flex-no-wrap sm:bg-white overflow-hidden my-5">
       <thead>
         <tr class="bg-gray-300 flex flex-col flex-no wrap sm:table-row sm:rounded-none mb-2 sm:mb-0">
-          <th class="border-t border-b border-gray-500 py-2 text-center">
+          <th class="p-3 text-left">
             No
           </th>
-          <th class="border-t border-b border-gray-500 py-2 text-left">
+          <th class="p-3 text-left">
             Kota/Kab
           </th>
-          <th class="border-t border-b border-gray-500 py-2 text-left">
+          <th class="p-3 text-left">
             CALL CENTER
           </th>
-          <th class="border-t border-b border-gray-500 py-2 text-left">
+          <th class="p-3 text-left">
             HOTLINE
           </th>
         </tr>
       </thead>
       <tbody>
-        <tr class="flex flex-col flex-no wrap sm:table-row sm:rounded-none mb-2 sm:mb-0">
-          <td class="border-b border-gray-500 py-2 text-center">
+        <tr class="flex flex-col flex-no wrap sm:table-row mb-2 sm:mb-0">
+          <td class="p-3 text-left">
             1
           </td>
-          <td class="border-b border-gray-500 py-2 text-left">
+          <td class="p-3 text-left">
             Kota Depok
           </td>
-          <td class="border-b border-gray-500 py-2 text-left">
+          <td class="p-3 text-left">
             119
           </td>
-          <td class="border-b border-gray-500 py-2 text-left">
+          <td class="p-3 text-left">
             -
           </td>
         </tr>
-        <tr class="bg-gray-300 flex flex-col flex-no wrap sm:table-row sm:rounded-none mb-2 sm:mb-0">
-          <td class="border-b border-gray-500 py-2 text-center">
+        <tr class="bg-gray-300 flex flex-col flex-no wrap sm:table-row mb-2 sm:mb-0">
+          <td class="p-3 text-left">
             2
           </td>
-          <td class="border-b border-gray-500 py-2 text-left">
+          <td class="p-3 text-left">
             Kota Bandung
           </td>
-          <td class="border-b border-gray-500 py-2 text-left">
+          <td class="p-3 text-left">
             119
           </td>
-          <td class="border-b border-gray-500 py-2 text-left">
+          <td class="p-3 text-left">
             -
           </td>
         </tr>
@@ -50,22 +50,18 @@
     </table>
   </div>
 </template>
-<style lang="scss" scoped>
+ <style lang="scss" scoped>
   @media (min-width: 640px) {
     table {
       display: inline-table !important;
     }
 
-    // thead tr:not(:first-child) {
-    //   display: none;
-    // }
+    thead tr:not(:first-child) {
+      display: none;
+    }
   }
 
   td:not(:last-child) {
-    // border-bottom: 0;
-  }
-
-  th:not(:last-child) {
-    // border-bottom: 2px solid rgba(0, 0, 0, .1);
+    border-bottom: 0;
   }
 </style>
