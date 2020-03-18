@@ -221,7 +221,7 @@
 
       <nuxt-link
         tag="a"
-        class="block w-full md:inline-block md:w-auto p-3 m-3 rounded-md text-center text-white bg-white hover:bg-brand-green-light font-bold"
+        class="block w-full md:inline-block md:w-auto p-3 m-3 rounded-md text-center text-white bg-brand-green hover:bg-brand-green-light font-bold"
         to=""
       >
         <font-awesome-icon :icon="fontChartLine" /> Akumulatif
@@ -233,28 +233,47 @@
           style="border-radius: 0.8rem; box-shadow: 0 0 4px 0px rgba(0,0,0,0.05), 0 4px 24px 0 rgba(0,0,0,0.1);"
         >
           <h4 class="m-3">
-            <b>(Orang Dalam Pemantauan)</b>
+            <b>Angka Harian ODP</b><br>
+            <b style="color: #828282;">(Orang Dalam Pemantauan)</b>
           </h4>
           <hr>
-          <GChart
-            type="PieChart"
-            :data="pieChartJenisKelaminData"
-            :options="pieChartJenisKelaminOptions"
-          />
+          &nbsp;
         </div>
         <div
           class="bg-white p-1 col-md m-2"
           style="border-radius: 0.8rem; box-shadow: 0 0 4px 0px rgba(0,0,0,0.05), 0 4px 24px 0 rgba(0,0,0,0.1);"
         >
           <h4 class="m-3">
-            <b>(Pasien Dalam Pengawasan)</b>
+            <b>Angka Harian PDP</b><br>
+            <b style="color: #828282;">(Pasien Dalam Pengawasan)</b>
           </h4>
           <hr>
-          <GChart
-            type="PieChart"
-            :data="pieChartJenisKelaminData"
-            :options="pieChartJenisKelaminOptions"
-          />
+          &nbsp;
+        </div>
+      </section>
+
+      <section class="row">
+        <div
+          class="bg-white p-1 col-md m-2"
+          style="border-radius: 0.8rem; box-shadow: 0 0 4px 0px rgba(0,0,0,0.05), 0 4px 24px 0 rgba(0,0,0,0.1);"
+        >
+          <h4 class="m-3">
+            <b>Akumulatif ODP</b><br>
+            <b style="color: #828282;">(Orang Dalam Pemantauan)</b>
+          </h4>
+          <hr>
+          &nbsp;
+        </div>
+        <div
+          class="bg-white p-1 col-md m-2"
+          style="border-radius: 0.8rem; box-shadow: 0 0 4px 0px rgba(0,0,0,0.05), 0 4px 24px 0 rgba(0,0,0,0.1);"
+        >
+          <h4 class="m-3">
+            <b>Akumulatif PDP</b><br>
+            <b style="color: #828282;">(Pasien Dalam Pengawasan)</b>
+          </h4>
+          <hr>
+          &nbsp;
         </div>
       </section>
 
@@ -275,6 +294,13 @@ export default {
     GChart,
     MapView,
     FontAwesomeIcon
+  },
+  head () {
+    return {
+      link: [
+        { rel: 'stylesheet', href: 'https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css' }
+      ]
+    }
   },
   data () {
     return {
@@ -1063,8 +1089,6 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-// @media (max-width:767px){.hidden-xs{display:none!important}}
-
 .div-only-mobile {
     display: none !important;
 }
