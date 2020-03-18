@@ -30,6 +30,13 @@ export default {
   name: 'MapView',
   components: {
   },
+  head () {
+    return {
+      link: [
+        { rel: 'stylesheet', href: 'https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css' }
+      ]
+    }
+  },
   data () {
     return {
       kotaGeojson,
@@ -615,7 +622,8 @@ export default {
 
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+
 #map {
   width: 100%; height: 100%;
 }

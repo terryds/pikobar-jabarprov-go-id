@@ -18,9 +18,10 @@
               <br>
               <nuxt-link
                 tag="a"
+                class="text-lg"
                 :to="getInfographicURL(item)"
               >
-                {{ item.title }}
+                <strong>{{ item.title }}</strong>
               </nuxt-link>
             </div>
           </VueCarouselSlide>
@@ -73,13 +74,13 @@ export default {
       carouselConfig: {
         autoplay: false,
         // autoplayTimeout: 4000,
-        spacePadding: 20,
+        spacePadding: 0,
         paginationEnabled: false,
         paginationColor: '#90a4ae',
         paginationActiveColor: '#00b0ff',
         paginationSize: 12,
         perPage: 1.5,
-        perPageCustom: [[1024, 2.5], [1600, 3.5]],
+        perPageCustom: [[800, 2.5], [1200, 3.5]],
         mouseDrag: true,
         loop: true
       },

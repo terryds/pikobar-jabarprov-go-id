@@ -83,7 +83,7 @@
                 <span style="color: #8A8A8A; font-size: 14px; font-weight: normal;">Selesai Pemantauan</span>
               </div>
             </div>
-            <div style="margin-top: auto;" class="ml-4">
+            <div style="margin-top: auto;">
               <div class="col-md m-1">
                 <span style="color: #2DAC55; font-size: 24px; font-weight: bold;">{{ jsonDataResult.odp }}</span><br>
                 <span style="color: #8A8A8A; font-size: 14px; font-weight: normal;">Total ODP</span>
@@ -114,7 +114,7 @@
                 <span style="color: #8A8A8A; font-size: 14px; font-weight: normal;">Selesai Pengawasan</span>
               </div>
             </div>
-            <div style="margin-top: auto;" class="ml-4">
+            <div style="margin-top: auto;">
               <div class="col-md m-1">
                 <span style="color: #2DAC55; font-size: 24px; font-weight: bold;">{{ jsonDataResult.pdp }}</span><br>
                 <span style="color: #8A8A8A; font-size: 14px; font-weight: normal;">Total PDP</span>
@@ -138,7 +138,7 @@
           class="bg-white p-1 col-md m-2 row"
           style="border-radius: 0.8rem; box-shadow: 0 0 4px 0px rgba(0,0,0,0.05), 0 4px 24px 0 rgba(0,0,0,0.1);"
         >
-          <div class="bg-white p-1 col-md-3">
+          <div class="bg-white p-1 col-md-3 col-sm-12">
             <h4 class="m-3 mb-0" style="margin-bottom: 0px !important; font-size: 15px;">
               <b>Area Terdampak Covid-19</b>
             </h4>
@@ -148,8 +148,23 @@
             <span class="m-1" style="color: #8A8A8A; font-weight: bold; margin-top: 0px !important;">Kota/Kab</span>
           </div>
           <div
-            class="bg-white p-1 col-md-9"
-            style="overflow-x: auto; width: 200px; height: 100px; display: flex;"
+            class="bg-white p-1 col-md-9 col-sm-12 div-no-mobile"
+            style="overflow-x: auto; width: 210px; display: flex;"
+          >
+            <div
+              v-for="item in jsonDataKota"
+              :key="item.kode"
+              class="bg-white pl-3 pt-2 pb-2 col-md-3 m-1"
+              style="border-radius: 0.8rem; border: 1.5px solid #CDD0D3;"
+            >
+              <span style="color: #8A8A8A; font-size: 14px; font-weight: normal;">{{ item.nama }}</span><br>
+              <span style="color: #00B167; font-weight: bold;">{{ item.jumlah_positif_persentase }}%</span>
+              <span style="color: #000000; font-weight: bold;">({{ item.jumlah_positif }})</span>
+            </div>
+          </div>
+          <div
+            class="bg-white p-1 col-md-9 col-sm-12 div-only-mobile"
+            style="overflow-y: auto; display: flex;"
           >
             <div
               v-for="item in jsonDataKota"
@@ -167,7 +182,7 @@
 
       <section class="row">
         <div
-          class="bg-white p-1 col-md m-2"
+          class="bg-white p-1 col-lg-5 col-md col-sm col-xs m-2"
           style="border-radius: 0.8rem; box-shadow: 0 0 4px 0px rgba(0,0,0,0.05), 0 4px 24px 0 rgba(0,0,0,0.1);"
         >
           <h4 class="m-3">
@@ -185,7 +200,7 @@
           style="border-radius: 0.8rem; box-shadow: 0 0 4px 0px rgba(0,0,0,0.05), 0 4px 24px 0 rgba(0,0,0,0.1);"
         >
           <h4 class="m-3">
-            <b>Umur dan Gender</b>
+            <b>Umur dan Jenis Kelamin</b>
           </h4>
           <hr>
           <GChart
@@ -196,7 +211,71 @@
         </div>
       </section>
 
-      <!-- {{ jsonDataResult }} -->
+      <nuxt-link
+        tag="a"
+        class="block md:inline-block md:w-auto p-3 m-1 rounded-md text-center text-white bg-brand-green hover:bg-brand-green-light font-bold"
+        to=""
+      >
+        <font-awesome-icon :icon="fontChartBar" /> Angka Harian
+      </nuxt-link>
+
+      <nuxt-link
+        tag="a"
+        class="block md:inline-block md:w-auto p-3 m-1 rounded-md text-center text-white bg-brand-green hover:bg-brand-green-light font-bold"
+        to=""
+      >
+        <font-awesome-icon :icon="fontChartLine" /> Akumulatif
+      </nuxt-link>
+
+      <section class="row">
+        <div
+          class="bg-white p-1 col-md m-2"
+          style="border-radius: 0.8rem; box-shadow: 0 0 4px 0px rgba(0,0,0,0.05), 0 4px 24px 0 rgba(0,0,0,0.1);"
+        >
+          <h4 class="m-3">
+            <b>Angka Harian ODP</b><br>
+            <b style="color: #828282;">(Orang Dalam Pemantauan)</b>
+          </h4>
+          <hr>
+          &nbsp;
+        </div>
+        <div
+          class="bg-white p-1 col-md m-2"
+          style="border-radius: 0.8rem; box-shadow: 0 0 4px 0px rgba(0,0,0,0.05), 0 4px 24px 0 rgba(0,0,0,0.1);"
+        >
+          <h4 class="m-3">
+            <b>Angka Harian PDP</b><br>
+            <b style="color: #828282;">(Pasien Dalam Pengawasan)</b>
+          </h4>
+          <hr>
+          &nbsp;
+        </div>
+      </section>
+
+      <section class="row">
+        <div
+          class="bg-white p-1 col-md m-2"
+          style="border-radius: 0.8rem; box-shadow: 0 0 4px 0px rgba(0,0,0,0.05), 0 4px 24px 0 rgba(0,0,0,0.1);"
+        >
+          <h4 class="m-3">
+            <b>Akumulatif ODP</b><br>
+            <b style="color: #828282;">(Orang Dalam Pemantauan)</b>
+          </h4>
+          <hr>
+          &nbsp;
+        </div>
+        <div
+          class="bg-white p-1 col-md m-2"
+          style="border-radius: 0.8rem; box-shadow: 0 0 4px 0px rgba(0,0,0,0.05), 0 4px 24px 0 rgba(0,0,0,0.1);"
+        >
+          <h4 class="m-3">
+            <b>Akumulatif PDP</b><br>
+            <b style="color: #828282;">(Pasien Dalam Pengawasan)</b>
+          </h4>
+          <hr>
+          &nbsp;
+        </div>
+      </section>
     </div>
   </div>
 </template>
@@ -204,15 +283,27 @@
 <script>
 import axios from 'axios'
 import { GChart } from 'vue-google-charts'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { faChartBar, faChartLine } from '@fortawesome/free-solid-svg-icons'
 import MapView from '~/components/MapView'
 
 export default {
   components: {
     GChart,
-    MapView
+    MapView,
+    FontAwesomeIcon
+  },
+  head () {
+    return {
+      link: [
+        { rel: 'stylesheet', href: 'https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css' }
+      ]
+    }
   },
   data () {
     return {
+      fontChartBar: faChartBar,
+      fontChartLine: faChartLine,
       jsonDataRekap: [
       ],
       jsonDataSatuan: [
@@ -542,6 +633,9 @@ export default {
         height: 50,
         series: {
           0: { color: '#FF4A4B' }
+        },
+        tooltip: {
+          trigger: 'none'
         }
       },
       lineChartSembuhData: [
@@ -578,6 +672,9 @@ export default {
         height: 50,
         series: {
           0: { color: '#36D19B' }
+        },
+        tooltip: {
+          trigger: 'none'
         }
       },
       lineChartMeninggalData: [
@@ -614,16 +711,20 @@ export default {
         height: 50,
         series: {
           0: { color: '#FF9441' }
+        },
+        tooltip: {
+          trigger: 'none'
         }
       },
       pieChartJenisKelaminData: [
         ['Jenis Kelamin', 'Data'],
         ['Pria', 0],
         ['Wanita', 0],
-        ['Tidak Teridentifikasi', 0]
+        ['N/A', 0]
       ],
       pieChartJenisKelaminOptions: {
-        height: 400,
+        height: 350,
+        widht: 350,
         slices: {
           0: { color: '#2DAC55' },
           1: { color: '#F6D039' },
@@ -631,7 +732,8 @@ export default {
         },
         legend: {
           position: 'bottom'
-        }
+        },
+        pieHole: 0.4
       },
       barChartUmurJenisKelaminData: {
         cols: [
@@ -706,7 +808,8 @@ export default {
         ]
       },
       barChartUmurJenisKelaminOptions: {
-        height: 400,
+        height: 350,
+        marginRight: -100,
         series: {
           0: { color: '#2DAC55' },
           1: { color: '#F6D039' },
@@ -857,7 +960,7 @@ export default {
             ['Jenis Kelamin', 'Data'],
             ['Pria', tempJenisKelaminPria],
             ['Wanita', tempJenisKelaminWanita],
-            ['Tidak Teridentifikasi', tempJenisKelaminNull]
+            ['N/A', tempJenisKelaminNull]
           ]
 
           // by umur
@@ -983,3 +1086,22 @@ export default {
   }
 }
 </script>
+<style lang="scss" scoped>
+.div-only-mobile {
+    display: none !important;
+}
+.div-no-mobile {
+    display: flex !important;
+}
+@media screen and (max-width: 549px) {
+
+.div-no-mobile {
+    display:none !important;
+}
+
+.div-only-mobile {
+    display: flex !important;
+}
+
+}
+</style>

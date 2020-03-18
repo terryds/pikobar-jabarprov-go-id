@@ -1,19 +1,18 @@
 <template>
   <div
-    class="p-5 flex flex-row justify-start items-center bg-white"
-    style="border-radius: 1rem; box-shadow: 0 0 4px 0px rgba(0,0,0,0.05), 0 4px 24px 0 rgba(0,0,0,0.1);"
+    class="flex flex-row justify-start items-center"
   >
-    <figure class="mr-4">
+    <figure class="mr-6">
       <slot name="icon" />
     </figure>
     <section>
       <label
-        class="block"
+        class="block text-sm opacity-75"
         v-text="label"
       />
-      <h4 class="text-2xl">
-        {{ count }}
-        <small class="text-lg">{{ unit }}</small>
+      <h4 class="text-xl md:text-2xl">
+        <strong>{{ count }}</strong>
+        <small>{{ unit }}</small>
       </h4>
     </section>
   </div>
