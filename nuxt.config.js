@@ -1,5 +1,8 @@
 require('dotenv').config()
 export default {
+  generate: {
+    fallback: true
+  },
   server: {
     host: process.env.HOST,
     port: process.env.PORT
