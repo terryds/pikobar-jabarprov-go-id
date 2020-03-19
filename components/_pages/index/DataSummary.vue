@@ -10,13 +10,8 @@
             <b>POSITIF COVID-19</b>
           </h4>
           <h3 class="ml-3" style="font-size: 30px;">
-            <b>{{ jsonDataResult.total_positif_saat_ini }}</b>
+            <b>{{ jsonDataResult.total_positif_saat_ini }}</b>&nbsp;&nbsp;<small class="opacity-50">orang</small>
           </h3>
-          <GChart
-            type="LineChart"
-            :data="lineChartPositifData"
-            :options="lineChartPositifOptions"
-          />
         </div>
         <div
           class="p-1 mr-8 mb-8 lg:w-1/3"
@@ -26,13 +21,8 @@
             <b>SEMBUH</b>
           </h4>
           <h3 class="ml-3" style="font-size: 30px;">
-            <b>{{ jsonDataResult.total_sembuh }}</b>
+            <b>{{ jsonDataResult.total_sembuh }}</b>&nbsp;&nbsp;<small class="opacity-50">orang</small>
           </h3>
-          <GChart
-            type="LineChart"
-            :data="lineChartSembuhData"
-            :options="lineChartSembuhOptions"
-          />
         </div>
         <div
           class="p-1 mr-8 mb-8 lg:w-1/3"
@@ -42,13 +32,8 @@
             <b>MENINGGAL</b>
           </h4>
           <h3 class="ml-3" style="font-size: 30px;">
-            <b>{{ jsonDataResult.total_meninggal }}</b>
+            <b>{{ jsonDataResult.total_meninggal }}</b>&nbsp;&nbsp;<small class="opacity-50">orang</small>
           </h3>
-          <GChart
-            type="LineChart"
-            :data="lineChartMeninggalData"
-            :options="lineChartMeninggalOptions"
-          />
         </div>
       </section>
 
@@ -104,32 +89,15 @@
           </div>
         </div>
       </section>
-      <section v-if="false" class="flex flex-col lg:flex-row">
-        <div
-          class="relative w-full bg-white rounded-lg shadow-md overflow-hidden"
-          style="height:500px;"
-        >
-          <MapView />
-        </div>
-      </section>
     </div>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
-import { GChart } from 'vue-google-charts'
 import { faChartBar, faChartLine } from '@fortawesome/free-solid-svg-icons'
-import MapView from '../../MapView'
 
 export default {
-  components: {
-    GChart,
-    MapView
-  },
-  fetch () {
-    console.log('IS FETCHING DATA SUMMARY')
-  },
   data () {
     return {
       stat: {
