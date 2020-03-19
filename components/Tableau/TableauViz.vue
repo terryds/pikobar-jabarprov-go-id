@@ -21,7 +21,7 @@
         </h4>
         <br>
         <!-- eslint-disable-next-line -->
-        <p class="font-bold text-base" v-html="disclaimer">
+        <p class="font-bold text-base md:text-lg lg:text-xl" v-html="disclaimer">
         </p>
         <br>
         <br>
