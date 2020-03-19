@@ -22,7 +22,6 @@ export const actions = {
           }
           return []
         }).then((items) => {
-          console.log({ items })
           commit('setItems', items)
           return state.items
         })
