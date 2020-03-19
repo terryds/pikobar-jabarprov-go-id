@@ -5,7 +5,37 @@
         Pertanyaan yang Sering Ditanyakan
       </h3>
       <br>
-      <div v-show="!items">
+      <div class="flex flex-wrap justify-start items-stretch -mr-4">
+        <input
+          v-model="searchString"
+          list="faqList"
+          class="w-full md:w-0 md:flex-1 inline-block p-4 mr-4 mb-4 md:mr-0 min-w-0"
+          type="text"
+          placeholder="Cari pertanyaan di sini..."
+          @keyup.enter="performFiltering"
+        >
+        <i class="flex-1 md:hidden" />
+        <button
+          class="flex-none inline-flex items-center justify-around mr-4 mb-4 md:mr-0 px-6 py-2 text-white bg-brand-blue hover:bg-brand-blue-lighter"
+          @click="performFiltering"
+        >
+          <FontAwesomeIcon :icon="icon.faSearch" class="mr-4" />
+          <span>
+            Cari
+          </span>
+        </button>
+        <button
+          class="flex-none inline-flex items-center justify-around mr-4 mb-4 px-6 py-2 text-gray-700 bg-gray-400 hover:bg-gray-500"
+          @click="resetFilter"
+        >
+          <FontAwesomeIcon :icon="icon.faTimes" class="mr-4" />
+          <span>
+            Reset
+          </span>
+        </button>
+      </div>
+      <br>
+      <div v-show="!filteredItems">
         <div
           v-for="i in 6"
           :key="i"
@@ -13,7 +43,7 @@
         >
           <ContentLoader
             :width="320"
-            :height="32"
+            :height="16"
             :speed="3"
             primary-color="#eee"
             secondary-color="#fafafa"
@@ -29,15 +59,15 @@
           </ContentLoader>
         </div>
       </div>
-      <div v-show="items && items.length > 0">
+      <div v-show="filteredItems && filteredItems.length > 0">
         <ul class="faq-list my-4">
           <li
-            v-for="(faq, index) in items"
+            v-for="(faq, index) in filteredItems"
             :key="index"
-            class="faq-list__item mb-4 rounded-lg overflow-hidden"
+            class="faq-list__item mb-4 bg-white hover:bg-gray-200 rounded-lg shadow-lg"
           >
             <header
-              class="cursor-pointer relative flex justify-start items-center p-4 pr-16 text-white text-lg font-bold bg-brand-blue shadow-lg clearfix"
+              class="cursor-pointer relative flex justify-start items-center p-4 pr-16 text-gray-900 text-lg font-bold clearfix"
               @click.capture="toggleItem(index)"
             >
               <span>
@@ -52,7 +82,7 @@
             </header>
             <main
               v-show="isItemOpen(index)"
-              class="html-content p-4 md:p-8 text-base bg-white"
+              class="html-content p-4 md:p-8 md:pt-4 text-base border-t border-solid border-gray-300"
               v-html="faq.content"
             />
           </li>
@@ -65,7 +95,7 @@
 <script>
 import { mapState, mapActions } from 'vuex'
 import { ContentLoader } from 'vue-content-loader'
-import { faChevronUp, faChevronDown } from '@fortawesome/free-solid-svg-icons'
+import { faChevronUp, faChevronDown, faSearch, faTimes } from '@fortawesome/free-solid-svg-icons'
 import { analytics } from '~/lib/firebase'
 
 export default {
@@ -75,10 +105,14 @@ export default {
   data () {
     return {
       openedItems: [],
+      filteredItems: null,
       icon: {
         faChevronUp,
-        faChevronDown
-      }
+        faChevronDown,
+        faSearch,
+        faTimes
+      },
+      searchString: ''
     }
   },
   computed: {
@@ -89,6 +123,7 @@ export default {
   mounted () {
     this.getItems()
       .then(() => {
+        this.performFiltering()
         if (process.browser) {
           analytics.logEvent('faqs_view')
         }
@@ -113,6 +148,26 @@ export default {
       } else {
         this.openItem(index)
       }
+    },
+    performFiltering () {
+      if (!this.items || !this.items.length) {
+        this.filteredItems = []
+      }
+      this.filteredItems = null
+      setTimeout(() => {
+        this.filteredItems = this.items.filter((faq) => {
+          if (!this.searchString) {
+            return true
+          }
+          return [faq.title, faq.content].some((str) => {
+            return `${str}`.toLowerCase().includes(this.searchString.toLowerCase())
+          })
+        })
+      }, 1000)
+    },
+    resetFilter () {
+      this.searchString = ''
+      this.performFiltering()
     }
   }
 }
