@@ -306,12 +306,11 @@ import axios from 'axios'
 import { GChart } from 'vue-google-charts'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { faChartBar, faChartLine } from '@fortawesome/free-solid-svg-icons'
-import MapView from '~/components/MapView'
 
 export default {
   components: {
     GChart,
-    MapView,
+    MapView: () => import('~/components/MapView'),
     FontAwesomeIcon
   },
   data () {

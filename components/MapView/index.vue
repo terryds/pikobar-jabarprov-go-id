@@ -45,7 +45,6 @@
 <script>
 import { loadModules } from 'esri-loader'
 import axios from 'axios'
-import kotaGeojson from '~/static/kota.json'
 
 export default {
   name: 'MapView',
@@ -54,7 +53,7 @@ export default {
   data () {
     return {
       activeLayer: 'odp',
-      kotaGeojson,
+      kotaGeojson: {},
       isHidden: false,
       jsonDataSatuan: [],
       jsonDataKota: [
@@ -325,6 +324,12 @@ export default {
     }
   },
   created () {
+    import('../../assets/kota.json')
+      .then((m) => {
+        return m ? m.default || m : null
+      }).then((module) => {
+        this.kotaGeojson = module
+      })
   },
   mounted () {
     this.fetchDataSatuan()
