@@ -262,7 +262,7 @@
     <section class="m-4 md:m-8">
       <div class="flex flex-col items-stretch p-8 rounded-lg bg-white shadow-md">
         <h2 class="text-left text-2xl md:text-3xl">
-          <b>Rilis Pers</b>
+          <b>Berita Jabar</b>
         </h2>
         <br>
         <br>
