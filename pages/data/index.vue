@@ -317,8 +317,8 @@ export default {
   data () {
     return {
       stat: {
-        isActiveHarian: false,
-        isActiveAkumulatif: true
+        isActiveHarian: true,
+        isActiveAkumulatif: false
       },
       fontChartBar: faChartBar,
       fontChartLine: faChartLine,
