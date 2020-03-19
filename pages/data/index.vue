@@ -242,7 +242,11 @@
             <b style="color: #828282;">(Orang Dalam Pemantauan)</b>
           </h4>
           <hr>
-          &nbsp;
+          <GChart
+            type="BarChart"
+            :data="barChartHarianODPData"
+            :options="barChartHarianODPOptions"
+          />
         </div>
         <div
           class="bg-white p-1 col-md m-2"
@@ -253,7 +257,11 @@
             <b style="color: #828282;">(Pasien Dalam Pengawasan)</b>
           </h4>
           <hr>
-          &nbsp;
+          <GChart
+            type="BarChart"
+            :data="barChartHarianPDPData"
+            :options="barChartHarianPDPOptions"
+          />
         </div>
       </section>
 
@@ -833,6 +841,40 @@ export default {
           }
         },
         viewWindowMode: 'explicit'
+      },
+      barChartHarianODPData: [
+        ['Tanggal', 'Selesai Pemantauan', 'Proses Pemantauan']
+      ],
+      barChartHarianODPOptions: {
+        height: 450,
+        orientation: 'horizontal',
+        colors: ['#6DD274', '#1AB762'],
+        legend: {
+          position: 'bottom'
+        },
+        isStacked: true,
+        seriesType: 'bars',
+        hAxis: {
+          slantedText: true,
+          slantedTextAngle: -45
+        }
+      },
+      barChartHarianPDPData: [
+        ['Tanggal', 'Selesai Pengawasan', 'Proses Pengawasan']
+      ],
+      barChartHarianPDPOptions: {
+        height: 450,
+        orientation: 'horizontal',
+        colors: ['#F6D039', '#F18931'],
+        legend: {
+          position: 'bottom'
+        },
+        isStacked: true,
+        seriesType: 'bars',
+        hAxis: {
+          slantedText: true,
+          slantedTextAngle: -45
+        }
       }
     }
   },
@@ -938,6 +980,26 @@ export default {
                 self.jsonDataResult.pdp_selesai = self.ifNullReturnZero(self.jsonDataRekap[i - 1].selesai_pengawasan)
                 self.jsonDataResult.pdp_selesai_persen = ((self.jsonDataResult.pdp_selesai / self.jsonDataResult.pdp) * 100).toFixed(2)
               }
+            }
+          }
+
+          // series
+          let stop = false
+          for (let i = 0; i < self.jsonDataRekap.length; i++) {
+            if (stop === false) {
+              self.barChartHarianODPData.push([
+                self.jsonDataRekap[i].tanggal,
+                self.ifNullReturnZero(self.jsonDataRekap[i].selesai_pemantauan),
+                self.ifNullReturnZero(self.jsonDataRekap[i].proses_pemantauan)
+              ])
+              self.barChartHarianPDPData.push([
+                self.jsonDataRekap[i].tanggal,
+                self.ifNullReturnZero(self.jsonDataRekap[i].selesai_pengawasan),
+                self.ifNullReturnZero(self.jsonDataRekap[i].proses_pengawasan)
+              ])
+            }
+            if (self.jsonDataRekap[i].tanggal === strToday) {
+              stop = true
             }
           }
         })
