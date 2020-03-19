@@ -269,7 +269,7 @@
         <nuxt-link
           tag="a"
           class="text-center md:self-center w-48 py-4 mt-8 rounded-lg text-brand-green-darker hover:bg-green-200 border-2 border-solid border-brand-green"
-          to="/articles?tab=press"
+          to="/articles?tab=jabar"
         >
           Lihat Selengkapnya
         </nuxt-link>

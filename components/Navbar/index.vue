@@ -50,7 +50,7 @@ export default {
         },
         {
           title: 'Berita',
-          to: '/articles?tab=press',
+          to: '/articles?tab=jabar',
           icon: faNewspaper
         },
         {
