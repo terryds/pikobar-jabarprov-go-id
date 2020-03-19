@@ -30,19 +30,11 @@ export default {
 .contact-list  {
   @apply block;
 
-  // @screen md {
-  //   display: grid;
-  //   grid-template-columns: 1fr 1fr;
-  //   column-gap: 1rem;
-  //   row-gap: 1rem;
-  // }
-
-  // @screen lg {
-  //   @apply block;
-  // }
-
-  // @screen xl {
-  //   display: grid;
-  // }
+  @screen lg {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 1rem;
+    row-gap: 1rem;
+  }
 }
 </style>

@@ -86,10 +86,26 @@
         <br>
         <nuxt-link
           tag="a"
-          to="/hospitals"
+          to="/contact"
           class="text-center md:self-center w-64 py-4 rounded-lg text-brand-green-darker hover:bg-green-200 border-2 border-solid border-brand-green"
         >
           Lihat Rumah Sakit Lainnya
+        </nuxt-link>
+      </div>
+    </section>
+    <section class="mt-8 m-4 md:m-8 rounded-lg bg-white shadow-md p-5 md:p-8">
+      <div class="flex flex-col items-stretch">
+        <h3 class="text-lg lg:text-2xl">
+          <strong>Hubungi Call Center</strong>
+        </h3>
+        <CallCenter :count="6" />
+        <br>
+        <nuxt-link
+          tag="a"
+          to="/contact"
+          class="text-center md:self-center w-64 py-4 rounded-lg text-brand-green-darker hover:bg-green-200 border-2 border-solid border-brand-green"
+        >
+          Lihat Selengkapnya
         </nuxt-link>
       </div>
     </section>
@@ -156,7 +172,7 @@
       </h2>
       <article class="flex flex-col lg:flex-row">
         <img
-          src="/img/flatten.png"
+          src="https://firebasestorage.googleapis.com/v0/b/jabarprov-covid19.appspot.com/o/public%2Fflatten.png?alt=media&token=afe8bb16-6cd5-4056-8d14-5c102f34a7c9"
           class="order-2 lg:order-1 w-full h-full mb-8 lg:w-1/2 lg:mr-8 object-cover object-center rounded-lg"
         >
         <div class="order-1 lg:order-2 lg:w-1/2">
@@ -284,6 +300,7 @@ import { formatDateTimeShort } from '~/lib/date'
 import ImageSwiper from '~/components/ImageSwiper'
 import CallCard from '~/components/CallCard'
 import ContactListItem from '~/components/ContactList/ContactListItem'
+import CallCenter from '~/components/CallCenter'
 import BlogPostPreview from '~/components/Blog/BlogPostPreview'
 import DataSummary from '~/components/_pages/index/DataSummary'
 import PetaPersebaranAllCases from '~/components/Tableau/PetaPersebaranAllCases'
@@ -294,6 +311,7 @@ export default {
     CallCard,
     BlogPostPreview,
     ContactListItem,
+    CallCenter,
     DataSummary,
     PetaPersebaranAllCases
   },
@@ -433,12 +451,6 @@ export default {
     column-gap: 1.5rem;
     align-items: stretch;
     row-gap: 1.5rem;
-  }
-}
-
-.container {
-  @screen lg {
-    max-width: 1280px;
   }
 }
 </style>
