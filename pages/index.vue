@@ -329,8 +329,8 @@ export default {
       }
     }
   },
-  async created () {
-    await Promise.all([
+  created () {
+    Promise.all([
       this.$store.dispatch('banners/getItems'),
       this.$store.dispatch('news/getItems'),
       this.$store.dispatch('statistics/getCases'),
