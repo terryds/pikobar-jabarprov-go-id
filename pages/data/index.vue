@@ -17,7 +17,7 @@
             <b>POSITIF COVID-19</b>
           </h4>
           <h3 class="ml-3" style="font-size: 30px;">
-            <b>{{ jsonDataResult.positif }}</b>
+            <b>{{ jsonDataResult.total_positif_saat_ini }}</b>
           </h3>
           <GChart
             type="LineChart"
@@ -33,7 +33,7 @@
             <b>SEMBUH</b>
           </h4>
           <h3 class="ml-3" style="font-size: 30px;">
-            <b>{{ jsonDataResult.sembuh }}</b>
+            <b>{{ jsonDataResult.total_sembuh }}</b>
           </h3>
           <GChart
             type="LineChart"
@@ -49,7 +49,7 @@
             <b>MENINGGAL</b>
           </h4>
           <h3 class="ml-3" style="font-size: 30px;">
-            <b>{{ jsonDataResult.meninggal }}</b>
+            <b>{{ jsonDataResult.total_meninggal }}</b>
           </h3>
           <GChart
             type="LineChart"
@@ -341,6 +341,9 @@ export default {
         perawatan: 0,
         sembuh: 0,
         meninggal: 0,
+        total_positif_saat_ini: 0,
+        total_sembuh: 0,
+        total_meninggal: 0,
         last_update: '',
         umur_max: 0,
         count_kota: 0
@@ -948,7 +951,7 @@ export default {
       const strYesteday = self.formatDate(yesterday)
 
       axios
-        .get('https://coredata.jabarprov.go.id/analytics/covid19/aggregation/')
+        .get('https://coredatajds.id/analytics/covid19/aggregation/')
         .then(function (response) {
           self.jsonDataRekap = response.data
           // by status
@@ -958,6 +961,9 @@ export default {
                 self.jsonDataResult.positif = self.ifNullReturnZero(self.jsonDataRekap[i].positif)
                 self.jsonDataResult.sembuh = self.ifNullReturnZero(self.jsonDataRekap[i].sembuh)
                 self.jsonDataResult.meninggal = self.ifNullReturnZero(self.jsonDataRekap[i].meninggal)
+                self.jsonDataResult.total_positif_saat_ini = self.ifNullReturnZero(self.jsonDataRekap[i].total_positif_saat_ini)
+                self.jsonDataResult.total_sembuh = self.ifNullReturnZero(self.jsonDataRekap[i].total_sembuh)
+                self.jsonDataResult.total_meninggal = self.ifNullReturnZero(self.jsonDataRekap[i].total_meninggal)
                 self.jsonDataResult.odp = self.ifNullReturnZero(self.jsonDataRekap[i].total_odp)
                 self.jsonDataResult.odp_proses = self.ifNullReturnZero(self.jsonDataRekap[i].proses_pemantauan)
                 self.jsonDataResult.odp_proses_persen = ((self.jsonDataResult.odp_proses / self.jsonDataResult.odp) * 100).toFixed(2)
@@ -972,6 +978,9 @@ export default {
                 self.jsonDataResult.positif = self.ifNullReturnZero(self.jsonDataRekap[i - 1].positif)
                 self.jsonDataResult.sembuh = self.ifNullReturnZero(self.jsonDataRekap[i - 1].sembuh)
                 self.jsonDataResult.meninggal = self.ifNullReturnZero(self.jsonDataRekap[i - 1].meninggal)
+                self.jsonDataResult.total_positif_saat_ini = self.ifNullReturnZero(self.jsonDataRekap[i - 1].total_positif_saat_ini)
+                self.jsonDataResult.total_sembuh = self.ifNullReturnZero(self.jsonDataRekap[i - 1].total_sembuh)
+                self.jsonDataResult.total_meninggal = self.ifNullReturnZero(self.jsonDataRekap[i - 1].total_meninggal)
                 self.jsonDataResult.odp = self.ifNullReturnZero(self.jsonDataRekap[i - 1].total_odp)
                 self.jsonDataResult.odp_proses = self.ifNullReturnZero(self.jsonDataRekap[i - 1].proses_pemantauan)
                 self.jsonDataResult.odp_proses_persen = ((self.jsonDataResult.odp_proses / self.jsonDataResult.odp) * 100).toFixed(2)
@@ -1037,7 +1046,7 @@ export default {
     fetchDataSatuan () {
       const self = this
       axios
-        .get('https://coredata.jabarprov.go.id/analytics/covid19/longlat/')
+        .get('https://coredatajds.id/analytics/covid19/longlat/')
         .then(function (response) {
           self.jsonDataResult.last_update = new Date(response.data.last_update).toLocaleString('id-ID', { dateStyle: 'long', timeStyle: 'medium' })
           self.jsonDataSatuan = response.data.data

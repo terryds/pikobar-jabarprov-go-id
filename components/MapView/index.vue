@@ -357,7 +357,7 @@ export default {
     fetchDataSatuan () {
       const self = this
       axios
-        .get('https://coredata.jabarprov.go.id/analytics/covid19/longlat/')
+        .get('https://coredatajds.id/analytics/covid19/longlat/')
         .then(function (response) {
           self.jsonDataSatuan = response.data.data
 
