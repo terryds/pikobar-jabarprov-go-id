@@ -27,13 +27,13 @@
         <small class="opacity-50">Update Terakhir: {{ lastUpdatedAt }}</small>
       </h2>
       <DataSummary class="my-8" />
-      <nuxt-link
-        tag="a"
+      <a
+        target="_blank"
         class="text-center md:self-center w-56 py-4 rounded-lg text-brand-green-darker hover:bg-green-200 border-2 border-solid border-brand-green"
-        to="/data"
+        href="/data"
       >
         Lihat Data Selengkapnya
-      </nuxt-link>
+      </a>
       <br>
     </section>
     <section class="mt-8 m-4 md:mt-16 md:m-8">
@@ -304,7 +304,7 @@ export default {
       banners: state => state.banners.items,
       hospitals: state => state.hospitals.items.filter((_, index) => index < 3),
       remainingHospitalCount: state => state.hospitals.items.length - 3,
-      infographics: state => state.infographics.items.filter((_, index) => index < 3),
+      infographics: state => state.infographics.items,
       news: state => state.news.items,
       cases: state => state.statistics.cases
     }),
