@@ -193,7 +193,7 @@
               <b>Gejala</b>
             </h3>
             <p>
-              Gejala umum berupa demam ≥380C, batuk kering, dan sesak napas.
+              Gejala umum berupa demam ≥38°C, batuk kering, dan sesak napas.
               Jika ada orang yang dalam 14 hari sebelum muncul gejala tersebut pernah melakukan perjalanan ke negara terjangkit,
               atau pernah merawat/kontak erat dengan penderita COVID-19,
               maka terhadap orang tersebut akan dilakukan pemeriksaan laboratorium lebih lanjut untuk memastikan diagnosisnya.
