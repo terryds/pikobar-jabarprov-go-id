@@ -77,7 +77,7 @@
               tag="li"
               :to="item.to"
               :exact="item.exact"
-              class="cursor-pointer mx-2 px-2 py-2 hover:bg-gray-200"
+              class="appbar-menu-item cursor-pointer mx-2 px-2 py-2 hover:bg-gray-200"
             >
               <a>
                 {{ item.label }}
@@ -214,6 +214,8 @@ export default {
 }
 </script>
 
-<style>
-
+<style lang="scss" scoped>
+.appbar-menu-item.nuxt-link-active {
+  @apply text-green-700;
+}
 </style>
