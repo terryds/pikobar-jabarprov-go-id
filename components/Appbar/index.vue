@@ -58,7 +58,7 @@ export default {
       icon: {
         faChevronLeft
       },
-      showPopupNotification: true
+      showPopupNotification: false
     }
   },
   computed: {
