@@ -891,12 +891,10 @@ export default {
     enableHarian () {
       this.stat.isActiveHarian = true
       this.stat.isActiveAkumulatif = false
-      console.log('harian')
     },
     enableAkumulatif () {
       this.stat.isActiveHarian = false
       this.stat.isActiveAkumulatif = true
-      console.log('akumulatif')
     },
     ifNullReturnZero (str) {
       if (str === null) {
