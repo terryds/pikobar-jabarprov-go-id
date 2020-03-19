@@ -670,7 +670,7 @@ export default {
       }
     }
   },
-  created () {
+  mounted () {
     this.fetchDataRekap()
     this.fetchDataSatuan()
   },

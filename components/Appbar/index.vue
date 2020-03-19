@@ -173,13 +173,17 @@ export default {
       const permission = Notification.permission
 
       if (permission === 'default') {
+        console.log('notification permission default')
         this.showPopupNotification = true
       }
 
       if (permission === 'granted') {
         const token = await messaging.getToken()
-
+        console.log('notification permission granted')
         this.saveToken(token)
+      }
+      if (permission === 'denied') {
+        console.log('notification permission denied')
       }
     },
     allowNotification () {

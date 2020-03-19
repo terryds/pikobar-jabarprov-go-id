@@ -1,5 +1,8 @@
 require('dotenv').config()
 export default {
+  router: {
+    prefetchLinks: false
+  },
   generate: {
     fallback: true
   },

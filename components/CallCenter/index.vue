@@ -209,7 +209,7 @@ export default {
   .title-cell::before {
     content: '';
     @apply absolute top-0 left-0 bottom-0 block w-1 bg-orange-300;
-    @screen lg {
+    @screen md {
       @apply hidden;
     }
   }
