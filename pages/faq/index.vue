@@ -1,15 +1,16 @@
 <template>
   <div class="container mx-auto">
     <div class="container mx-4 p-5 max-w-3xl mx-auto">
+      <br>
       <h3 class="text-3xl text-gray-900 font-bold text-left leading-none">
         Pertanyaan yang Sering Ditanyakan
       </h3>
       <br>
-      <div class="flex flex-wrap justify-start items-stretch -mr-4">
+      <div class="flex flex-wrap justify-start items-stretch">
         <input
           v-model="searchString"
           list="faqList"
-          class="w-full md:w-0 md:flex-1 inline-block p-4 mr-4 mb-4 md:mr-0 min-w-0"
+          class="w-full md:w-0 md:flex-1 inline-block p-4 mb-4 md:mr-0 min-w-0"
           type="text"
           placeholder="Cari pertanyaan di sini..."
           @keyup.enter="performFiltering"
@@ -25,7 +26,7 @@
           </span>
         </button>
         <button
-          class="flex-none inline-flex items-center justify-around mr-4 mb-4 px-6 py-2 text-gray-700 bg-gray-400 hover:bg-gray-500"
+          class="flex-none inline-flex items-center justify-around mr-4 mb-4 md:mr-0 px-6 py-2 text-gray-700 bg-gray-400 hover:bg-gray-500"
           @click="resetFilter"
         >
           <FontAwesomeIcon :icon="icon.faTimes" class="mr-4" />

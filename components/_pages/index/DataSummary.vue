@@ -1,9 +1,9 @@
 <template>
   <div class="container mx-auto">
     <div>
-      <section class="flex flex-col lg:flex-row lg:flex-no-wrap -mr-8">
+      <section class="flex flex-col lg:flex-row lg:flex-no-wrap">
         <div
-          class="p-1 mr-8 mb-8 lg:w-1/3"
+          class="p-1 lg:mr-8 mb-8 lg:w-1/3"
           style="border-radius: 0.8rem; box-shadow: 0 0 4px 0px rgba(0,0,0,0.05), 0 4px 24px 0 rgba(0,0,0,0.1); background-color: #FCDFE0 !important; border: solid 1px #FFB4B5;"
         >
           <h4 class="ml-3 mt-3" style="color: #4F4F4F;">
@@ -14,7 +14,7 @@
           </h3>
         </div>
         <div
-          class="p-1 mr-8 mb-8 lg:w-1/3"
+          class="p-1 lg:mr-8 mb-8 lg:w-1/3"
           style="border-radius: 0.8rem; box-shadow: 0 0 4px 0px rgba(0,0,0,0.05), 0 4px 24px 0 rgba(0,0,0,0.1); background-color: #D3EEE3 !important; border: solid 1px #91DCBD; "
         >
           <h4 class="ml-3 mt-3" style="color: #4F4F4F;">
@@ -25,7 +25,7 @@
           </h3>
         </div>
         <div
-          class="p-1 mr-8 mb-8 lg:w-1/3"
+          class="p-1 mb-8 lg:w-1/3"
           style="border-radius: 0.8rem; box-shadow: 0 0 4px 0px rgba(0,0,0,0.05), 0 4px 24px 0 rgba(0,0,0,0.1); background-color: #FBEADF !important; border: solid 1px #FED1B1; "
         >
           <h4 class="ml-3 mt-3" style="color: #4F4F4F;">
@@ -37,9 +37,9 @@
         </div>
       </section>
 
-      <section class="flex flex-col lg:flex-row -mr-8">
+      <section class="flex flex-col lg:flex-row">
         <div
-          class="bg-white mr-8 mb-8 lg:w-1/2"
+          class="bg-white mb-8 lg:mr-8 lg:mb-0 lg:w-1/2"
           style="border-radius: 0.8rem; box-shadow: 0 0 4px 0px rgba(0,0,0,0.05), 0 4px 24px 0 rgba(0,0,0,0.1);"
         >
           <h3 class="p-5" style="font-size: 23px !important;">
@@ -64,7 +64,7 @@
           </div>
         </div>
         <div
-          class="bg-white mr-8 mb-8 lg:w-1/2"
+          class="bg-white lg:w-1/2"
           style="border-radius: 0.8rem; box-shadow: 0 0 4px 0px rgba(0,0,0,0.05), 0 4px 24px 0 rgba(0,0,0,0.1);"
         >
           <h4 class="p-5" style="font-size: 23px !important;">
