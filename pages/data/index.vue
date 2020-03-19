@@ -213,21 +213,26 @@
 
       <nuxt-link
         tag="a"
-        class="block md:inline-block md:w-auto p-3 m-1 rounded-md text-center text-white bg-brand-green hover:bg-brand-green-light font-bold"
+        style="border: 1px solid #2DAC55;"
+        class="block md:inline-block md:w-auto p-3 m-1 rounded-md text-center btnActive font-bold"
+        :class="stat.isActiveHarian ? 'btnActive' : 'btnNonActive'"
         to=""
+        @click.native="enableHarian"
       >
         <font-awesome-icon :icon="fontChartBar" /> Angka Harian
       </nuxt-link>
-
       <nuxt-link
         tag="a"
-        class="block md:inline-block md:w-auto p-3 m-1 rounded-md text-center text-white bg-brand-green hover:bg-brand-green-light font-bold"
+        style="border: 1px solid #2DAC55;"
+        class="block md:inline-block md:w-auto p-3 m-1 rounded-md text-center btnNonAktive font-bold"
+        :class="stat.isActiveAkumulatif ? 'btnActive' : 'btnNonActive'"
         to=""
+        @click.native="enableAkumulatif"
       >
         <font-awesome-icon :icon="fontChartLine" /> Akumulatif
       </nuxt-link>
 
-      <section class="row">
+      <section v-if="stat.isActiveHarian" class="row">
         <div
           class="bg-white p-1 col-md m-2"
           style="border-radius: 0.8rem; box-shadow: 0 0 4px 0px rgba(0,0,0,0.05), 0 4px 24px 0 rgba(0,0,0,0.1);"
@@ -237,7 +242,11 @@
             <b style="color: #828282;">(Orang Dalam Pemantauan)</b>
           </h4>
           <hr>
-          &nbsp;
+          <GChart
+            type="BarChart"
+            :data="barChartHarianODPData"
+            :options="barChartHarianODPOptions"
+          />
         </div>
         <div
           class="bg-white p-1 col-md m-2"
@@ -248,11 +257,15 @@
             <b style="color: #828282;">(Pasien Dalam Pengawasan)</b>
           </h4>
           <hr>
-          &nbsp;
+          <GChart
+            type="BarChart"
+            :data="barChartHarianPDPData"
+            :options="barChartHarianPDPOptions"
+          />
         </div>
       </section>
 
-      <section class="row">
+      <section v-if="stat.isActiveAkumulatif" class="row">
         <div
           class="bg-white p-1 col-md m-2"
           style="border-radius: 0.8rem; box-shadow: 0 0 4px 0px rgba(0,0,0,0.05), 0 4px 24px 0 rgba(0,0,0,0.1);"
@@ -262,7 +275,11 @@
             <b style="color: #828282;">(Orang Dalam Pemantauan)</b>
           </h4>
           <hr>
-          &nbsp;
+          <GChart
+            type="LineChart"
+            :data="barChartAkumulatifODPData"
+            :options="barChartAkumulatifODPOptions"
+          />
         </div>
         <div
           class="bg-white p-1 col-md m-2"
@@ -273,7 +290,11 @@
             <b style="color: #828282;">(Pasien Dalam Pengawasan)</b>
           </h4>
           <hr>
-          &nbsp;
+          <GChart
+            type="LineChart"
+            :data="barChartAkumulatifPDPData"
+            :options="barChartAkumulatifPDPOptions"
+          />
         </div>
       </section>
     </div>
@@ -293,15 +314,12 @@ export default {
     MapView,
     FontAwesomeIcon
   },
-  head () {
-    return {
-      link: [
-        { rel: 'stylesheet', href: 'https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css' }
-      ]
-    }
-  },
   data () {
     return {
+      stat: {
+        isActiveHarian: true,
+        isActiveAkumulatif: false
+      },
       fontChartBar: faChartBar,
       fontChartLine: faChartLine,
       jsonDataRekap: [
@@ -601,20 +619,7 @@ export default {
       ],
       lineChartPositifData: [
         ['Tanggal', 'Jumlah'],
-        ['2020-01-01', 1],
-        ['2020-01-02', 2],
-        ['2020-01-03', 5],
-        ['2020-01-04', 2],
-        ['2020-01-05', 8],
-        ['2020-01-06', 7],
-        ['2020-01-07', 8],
-        ['2020-01-08', 7],
-        ['2020-01-09', 9],
-        ['2020-01-10', 10],
-        ['2020-01-11', 8],
-        ['2020-01-12', 7],
-        ['2020-01-13', 7],
-        ['2020-01-14', 10]
+        ['0', 0]
       ],
       lineChartPositifOptions: {
         backgroundColor: 'transparent',
@@ -640,20 +645,7 @@ export default {
       },
       lineChartSembuhData: [
         ['Tanggal', 'Jumlah'],
-        ['2020-01-01', 1],
-        ['2020-01-02', 2],
-        ['2020-01-03', 5],
-        ['2020-01-04', 2],
-        ['2020-01-05', 8],
-        ['2020-01-06', 7],
-        ['2020-01-07', 8],
-        ['2020-01-08', 7],
-        ['2020-01-09', 9],
-        ['2020-01-10', 10],
-        ['2020-01-11', 8],
-        ['2020-01-12', 7],
-        ['2020-01-13', 7],
-        ['2020-01-14', 10]
+        ['0', 0]
       ],
       lineChartSembuhOptions: {
         backgroundColor: 'transparent',
@@ -679,20 +671,7 @@ export default {
       },
       lineChartMeninggalData: [
         ['Tanggal', 'Jumlah'],
-        ['2020-01-01', 1],
-        ['2020-01-02', 2],
-        ['2020-01-03', 5],
-        ['2020-01-04', 2],
-        ['2020-01-05', 8],
-        ['2020-01-06', 7],
-        ['2020-01-07', 8],
-        ['2020-01-08', 7],
-        ['2020-01-09', 9],
-        ['2020-01-10', 10],
-        ['2020-01-11', 8],
-        ['2020-01-12', 7],
-        ['2020-01-13', 7],
-        ['2020-01-14', 10]
+        ['0', 0]
       ],
       lineChartMeninggalOptions: {
         backgroundColor: 'transparent',
@@ -831,6 +810,76 @@ export default {
           }
         },
         viewWindowMode: 'explicit'
+      },
+      barChartHarianODPData: [
+        ['Tanggal', 'Selesai Pemantauan', 'Proses Pemantauan'],
+        ['0', 0, 0]
+      ],
+      barChartHarianODPOptions: {
+        height: 450,
+        orientation: 'horizontal',
+        colors: ['#6DD274', '#1AB762'],
+        legend: {
+          position: 'bottom'
+        },
+        isStacked: true,
+        seriesType: 'bars',
+        hAxis: {
+          slantedText: true,
+          slantedTextAngle: -45
+        }
+      },
+      barChartHarianPDPData: [
+        ['Tanggal', 'Selesai Pengawasan', 'Proses Pengawasan'],
+        ['0', 0, 0]
+      ],
+      barChartHarianPDPOptions: {
+        height: 450,
+        orientation: 'horizontal',
+        colors: ['#F6D039', '#F18931'],
+        legend: {
+          position: 'bottom'
+        },
+        isStacked: true,
+        seriesType: 'bars',
+        hAxis: {
+          slantedText: true,
+          slantedTextAngle: -45
+        }
+      },
+      barChartAkumulatifODPData: [
+        ['Tanggal', 'Selesai Pemantauan', 'Proses Pemantauan', 'Total ODP'],
+        ['0', 0, 0, 0]
+      ],
+      barChartAkumulatifODPOptions: {
+        height: 450,
+        orientation: 'horizontal',
+        colors: ['#6DD274', '#1AB762', '#009F5D'],
+        legend: {
+          position: 'bottom'
+        },
+        curveType: 'function',
+        hAxis: {
+          slantedText: true,
+          slantedTextAngle: -45
+        }
+      },
+      barChartAkumulatifPDPData: [
+        ['Tanggal', 'Selesai Pengawasan', 'Proses Pengawasan', 'Total PDP'],
+        ['0', 0, 0, 0]
+      ],
+      barChartAkumulatifPDPOptions: {
+        height: 450,
+        orientation: 'horizontal',
+        colors: ['#F6D039', '#F18931', '#F55A2A'],
+        legend: {
+          position: 'bottom'
+        },
+        curveType: 'function',
+        hAxis: {
+          slantedText: true,
+          slantedTextAngle: -45
+        }
       }
     }
   },
@@ -839,6 +888,14 @@ export default {
     this.fetchDataSatuan()
   },
   methods: {
+    enableHarian () {
+      this.stat.isActiveHarian = true
+      this.stat.isActiveAkumulatif = false
+    },
+    enableAkumulatif () {
+      this.stat.isActiveHarian = false
+      this.stat.isActiveAkumulatif = true
+    },
     ifNullReturnZero (str) {
       if (str === null) {
         return 0
@@ -886,9 +943,9 @@ export default {
       const self = this
       const today = new Date()
       const strToday = self.formatDate(today)
-      // const yesterday = new Date()
-      // yesterday.setDate(today.getDate() - 1)
-      // const strYesteday = self.formatDate(yesterday)
+      const yesterday = new Date()
+      yesterday.setDate(today.getDate() - 1)
+      const strYesteday = self.formatDate(yesterday)
 
       axios
         .get('https://coredata.jabarprov.go.id/analytics/covid19/aggregation/')
@@ -926,6 +983,50 @@ export default {
                 self.jsonDataResult.pdp_selesai = self.ifNullReturnZero(self.jsonDataRekap[i - 1].selesai_pengawasan)
                 self.jsonDataResult.pdp_selesai_persen = ((self.jsonDataResult.pdp_selesai / self.jsonDataResult.pdp) * 100).toFixed(2)
               }
+            }
+          }
+
+          // series
+          let stop = false
+          for (let i = 0; i < self.jsonDataRekap.length; i++) {
+            if (stop === false) {
+              self.barChartHarianODPData.push([
+                self.jsonDataRekap[i].tanggal,
+                self.ifNullReturnZero(self.jsonDataRekap[i].selesai_pemantauan),
+                self.ifNullReturnZero(self.jsonDataRekap[i].proses_pemantauan)
+              ])
+              self.barChartHarianPDPData.push([
+                self.jsonDataRekap[i].tanggal,
+                self.ifNullReturnZero(self.jsonDataRekap[i].selesai_pengawasan),
+                self.ifNullReturnZero(self.jsonDataRekap[i].proses_pengawasan)
+              ])
+              self.barChartAkumulatifODPData.push([
+                self.jsonDataRekap[i].tanggal,
+                self.ifNullReturnZero(self.jsonDataRekap[i].selesai_pemantauan),
+                self.ifNullReturnZero(self.jsonDataRekap[i].proses_pemantauan),
+                self.ifNullReturnZero(self.jsonDataRekap[i].total_odp)
+              ])
+              self.barChartAkumulatifPDPData.push([
+                self.jsonDataRekap[i].tanggal,
+                self.ifNullReturnZero(self.jsonDataRekap[i].selesai_pengawasan),
+                self.ifNullReturnZero(self.jsonDataRekap[i].proses_pengawasan),
+                self.ifNullReturnZero(self.jsonDataRekap[i].total_pdp)
+              ])
+              self.lineChartPositifData.push([
+                self.jsonDataRekap[i].tanggal,
+                self.ifNullReturnZero(self.jsonDataRekap[i].positif)
+              ])
+              self.lineChartSembuhData.push([
+                self.jsonDataRekap[i].tanggal,
+                self.ifNullReturnZero(self.jsonDataRekap[i].sembuh)
+              ])
+              self.lineChartMeninggalData.push([
+                self.jsonDataRekap[i].tanggal,
+                self.ifNullReturnZero(self.jsonDataRekap[i].meninggal)
+              ])
+            }
+            if (self.jsonDataRekap[i].tanggal === strYesteday) {
+              stop = true
             }
           }
         })
@@ -1083,10 +1184,26 @@ export default {
           console.log(error)
         })
     }
+  },
+  head () {
+    return {
+      link: [
+        { rel: 'stylesheet', href: 'https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css' }
+      ]
+    }
   }
 }
 </script>
 <style lang="scss" scoped>
+
+.btnActive {
+  color: #ffffff;
+  background-color: #2DAC55;
+}
+.btnNonActive {
+  color: #2DAC55;
+  background-color: #FFFFFF;
+}
 .div-only-mobile {
     display: none !important;
 }
@@ -1095,13 +1212,13 @@ export default {
 }
 @media screen and (max-width: 549px) {
 
-.div-no-mobile {
-    display:none !important;
-}
+  .div-no-mobile {
+      display:none !important;
+  }
 
-.div-only-mobile {
-    display: flex !important;
-}
+  .div-only-mobile {
+      display: flex !important;
+  }
 
 }
 </style>
