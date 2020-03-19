@@ -951,7 +951,7 @@ export default {
       const strYesteday = self.formatDate(yesterday)
 
       axios
-        .get('https://coredatajds.id/analytics/covid19/aggregation/')
+        .get('https://covid19-public.digitalservice.id/analytics/aggregation/')
         .then(function (response) {
           self.jsonDataRekap = response.data
           // by status
@@ -1046,7 +1046,7 @@ export default {
     fetchDataSatuan () {
       const self = this
       axios
-        .get('https://coredatajds.id/analytics/covid19/longlat/')
+        .get('https://covid19-public.digitalservice.id/analytics/longlat/')
         .then(function (response) {
           self.jsonDataResult.last_update = new Date(response.data.last_update).toLocaleString('id-ID', { dateStyle: 'long', timeStyle: 'medium' })
           self.jsonDataSatuan = response.data.data
