@@ -1,19 +1,27 @@
 <template>
   <div style="width:100%; height:100%">
-    <div id="corona-filter" class="esri-widget">
-      <div class="corona-item visible-corona" data-corona="Semua">Semua Status</div>
-      <div class="corona-item visible-corona" data-corona="Positif">Positif</div>
-      <div class="corona-item visible-corona" data-corona="PDP">PDP</div>
-      <div class="corona-item visible-corona" data-corona="ODP">ODP</div>
-    </div>
     <div id="map" />
+    <div id="corona-filter" class="esri-widget">
+      <div data-corona="Positif" class="corona-item visible-corona" v-bind:class="[activeLayer === 'positif' ? 'legend-active' : 'legend-disabled']">
+        <div class="legend-color" style="background:rgb(235, 87, 87, 0.7)" />
+        <div class="legend-text">Positif</div>
+      </div>
+      <div data-corona="PDP" class="corona-item visible-corona"  v-bind:class="[activeLayer === 'pdp' ? 'legend-active' : 'legend-disabled']">
+        <div class="legend-color" style="background:rgb(242, 201, 76, 0.7)" />
+        <div class="legend-text">PDP</div>
+      </div>
+      <div data-corona="ODP" class="corona-item visible-corona" v-bind:class="[activeLayer === 'odp' ? 'legend-active' : 'legend-disabled']">
+        <div class="legend-color" style="background:rgb(45, 156, 219, 0.7)" />
+        <div class="legend-text">ODP</div>
+      </div>
+    </div>
     <div class="disclaimer" v-if="!isHidden">
     <div class="backdrop" />
       <div class="text-disclaimer">
         <div class="title">Peta Sebaran Kasus COVID-19 di Jawa Barat</div>
-        <div class="subtitle">Sumber: Dinas Kesehatan Provinsi Jawa Barat | Update 16 Maret 2020</div>
+        <div class="subtitle">Sumber: Dinas Kesehatan Provinsi Jawa Barat</div>
         <div class="description mt-2">
-          <b>Titik lokasi merupakan titik acak (random by system) wilayah yang tertera pada identitas kasus dan tidak menunjuk pada alamat persis masing-masing kasus, data yang ditampilkan akan terus diperbarui sesuai dengan informasi yang diterima melalui Pemerintah Provinsi Jawa</b>
+          <b>Data yang ditampilkan akan terus diperbarui sesuai dengan informasi yang diterima melalui Pemerintah Provinsi Jawa Barat.</b>
         </div>
         <button class="btn btn-success mt-3" style="color: #fff" v-on:click="isHidden = !isHidden"><b>Lihat Peta</b></button>
       </div>
@@ -32,13 +40,20 @@ export default {
   },
   head () {
     return {
+      script: [
+        { src: 'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js' },
+        { src: 'https://unpkg.com/leaflet@1.6.0/dist/leaflet.js' },
+        { src: 'https://unpkg.com/esri-leaflet@2.3.3/dist/esri-leaflet.js' }
+      ],
       link: [
-        { rel: 'stylesheet', href: 'https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css' }
+        { rel: 'stylesheet', href: 'https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css' },
+        { rel: 'stylesheet', href: 'https://unpkg.com/leaflet@1.6.0/dist/leaflet.css' }
       ]
     }
   },
   data () {
     return {
+      activeLayer: 'odp',
       kotaGeojson,
       isHidden: false,
       jsonDataSatuan: [],
@@ -367,9 +382,28 @@ export default {
     },
     createMap () {
       // lazy load the required ArcGIS API for JavaScript modules and CSS
-      loadModules(['esri/Map', 'esri/Graphic', 'esri/PopupTemplate', 'esri/views/MapView', 'esri/layers/FeatureLayer', 'esri/widgets/Legend', 'esri/geometry/Point', 'esri/symbols/SimpleMarkerSymbol', 'esri/widgets/Expand', 'esri/renderers/UniqueValueRenderer', 'esri/geometry/Polygon', 'esri/layers/GeoJSONLayer', 'esri/symbols/SimpleFillSymbol', 'esri/layers/GraphicsLayer'], { css: true }).then(([ArcGISMap, Graphic, PopupTemplate, MapView, FeatureLayer, Legend, Point, SimpleMarkerSymbol, Expand, UniqueValueRenderer, Polygon, GeoJSONLayer, SimpleFillSymbol, GraphicsLayer]) => {
+      loadModules(['esri/Map', 'esri/Graphic', 'esri/PopupTemplate', 'esri/views/MapView', 'esri/layers/FeatureLayer', 'esri/widgets/Legend', 'esri/geometry/Point', 'esri/symbols/SimpleMarkerSymbol', 'esri/widgets/Expand', 'esri/renderers/UniqueValueRenderer', 'esri/geometry/Polygon', 'esri/layers/GeoJSONLayer', 'esri/symbols/SimpleFillSymbol', 'esri/layers/GraphicsLayer', 'esri/Basemap', 'esri/layers/TileLayer'], { css: true }).then(([ArcGISMap, Graphic, PopupTemplate, MapView, FeatureLayer, Legend, Point, SimpleMarkerSymbol, Expand, UniqueValueRenderer, Polygon, GeoJSONLayer, SimpleFillSymbol, GraphicsLayer, Basemap, TileLayer]) => {
+        // const rbi = new Basemap({
+        //   baseLayers: [
+        //     // Menggunakan TileLayer untuk ambil mapserver supaya lebih cepat load peta nya
+        //     // https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-TileLayer.html
+        //     new TileLayer({
+        //       // Popular basemap
+        //       // https://developers.arcgis.com/javascript/latest/api-reference/esri-Map.html#basemap
+        //       url: 'https://services.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer'
+        //     }),
+        //     new TileLayer({
+        //       url: 'https://portal.ina-sdi.or.id/arcgis/rest/services/RBI/Basemap/MapServer'
+        //     })
+        //   ],
+        //   title: 'Rupa Bumi Indonesia',
+        //   id: 'rbi',
+        //   thumbnailUrl: 'https://portal.ina-sdi.or.id/arcgis/rest/services/RBI/Basemap/MapServer/info/thumbnail'
+        // })
+
         const maps = new ArcGISMap({
-          basemap: 'topo-vector'
+          // basemap: rbi
+          basemap: 'topo'
         })
         this.view = new MapView({
           container: 'map',
@@ -552,7 +586,7 @@ export default {
           fields,
           popupTemplate: template
         })
-        maps.add(featureLayerCorona.positif)
+        // maps.add(featureLayerCorona.positif)
 
         featureLayerCorona.pdp = new FeatureLayer({
           source: pgCorona.pdp,
@@ -560,7 +594,7 @@ export default {
           fields,
           popupTemplate: template
         })
-        maps.add(featureLayerCorona.pdp)
+        // maps.add(featureLayerCorona.pdp)
 
         featureLayerCorona.odp = new FeatureLayer({
           source: pgCorona.odp,
@@ -584,29 +618,33 @@ export default {
         this.view.ui.add(expandLegend, 'bottom-left')
 
         const coronaElement = document.getElementById('corona-filter')
-        coronaElement.style.visibility = 'visible'
+        // coronaElement.style.visibility = 'visible'
 
-        const coronaExpand = new Expand({
-          view: this.view,
-          content: coronaElement,
-          expandIconClass: 'esri-icon-filter',
-          group: 'bottom-left'
-        })
-        this.view.ui.add(coronaExpand, 'top-right')
+        // const coronaExpand = new Expand({
+        //   view: this.view,
+        //   content: coronaElement,
+        //   expandIconClass: 'esri-icon-filter',
+        //   group: 'bottom-left'
+        // })
+        // this.view.ui.add(coronaExpand, 'top-right')
 
         coronaElement.addEventListener('click', (event) => {
           const selectedStatus = event.target.getAttribute('data-corona')
           maps.removeAll()
-          if (selectedStatus === 'Semua') {
+          // if (selectedStatus === 'Semua') {
+          //   maps.add(featureLayerCorona.positif)
+          //   maps.add(featureLayerCorona.pdp)
+          //   maps.add(featureLayerCorona.odp)
+          // } else
+          if (selectedStatus === 'Positif') {
             maps.add(featureLayerCorona.positif)
-            maps.add(featureLayerCorona.pdp)
-            maps.add(featureLayerCorona.odp)
-          } else if (selectedStatus === 'Positif') {
-            maps.add(featureLayerCorona.positif)
+            this.activeLayer = 'positif'
           } else if (selectedStatus === 'PDP') {
             maps.add(featureLayerCorona.pdp)
+            this.activeLayer = 'pdp'
           } else {
             maps.add(featureLayerCorona.odp)
+            this.activeLayer = 'odp'
           }
         })
       })
@@ -658,17 +696,24 @@ export default {
   font-weight: bold;
 }
 #corona-filter {
-  width: 120px;
   height: 160px;
-  visibility: hidden;
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin-right: 1em;
+  margin-top: 1em;
+  background: none
 }
 
 .corona-item {
-  padding: 12px;
+  padding: 5px;
   text-align: center;
   vertical-align: baseline;
   cursor: pointer;
-  height: 40px;
+  height: 30px;
+  background: #fff;
+  margin: 1em;
+  border-radius: 5px;
 }
 
 .corona-item:focus {
@@ -677,5 +722,23 @@ export default {
 
 .corona-item:hover {
   background-color: dimgrey;
+}
+
+.legend-color {
+  width: 1.5em;
+  height: 1.5em;
+  float: left;
+  border-radius: 5px;
+}
+
+.legend-disabled {
+  opacity: 0.6;
+  background: #d3d3d3;
+}
+
+.legend-text{
+  float: left;
+  padding: 4px;
+  margin-left: 10px;
 }
 </style>

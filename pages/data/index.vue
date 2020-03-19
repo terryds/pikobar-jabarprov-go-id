@@ -126,7 +126,7 @@
 
       <section class="row">
         <div
-          class="bg-white p-3 col-md m-2"
+          class="bg-white p-3 col-md m-2 row"
           style="border-radius: 0.8rem; box-shadow: 0 0 4px 0px rgba(0,0,0,0.05), 0 4px 24px 0 rgba(0,0,0,0.1); height:400px;"
         >
           <MapView />
