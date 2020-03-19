@@ -83,17 +83,17 @@ export const mutations = {
 }
 
 export const actions = {
-  getAggregrationJSON ({ state, commit }) {
+  getAggregationJSON ({ state, commit }) {
     return axios.get('https://coredata.jabarprov.go.id/analytics/covid19/aggregation.json')
       .then((res) => {
-        commit('corona/updateAggregation', res.data)
+        commit('updateAggregation', res.data)
         return state.aggregation
       })
   },
   getLongLatJSON ({ state, commit }) {
     return axios.get('https://coredata.jabarprov.go.id/analytics/covid19/longlat.json')
       .then((res) => {
-        commit('corona/updateLongLat', res.data)
+        commit('updateLongLat', res.data)
         return state.longlat
       })
   }
