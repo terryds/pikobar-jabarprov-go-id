@@ -21,7 +21,8 @@
         <div class="title">Peta Sebaran Kasus COVID-19 di Jawa Barat</div>
         <div class="subtitle">Sumber: Dinas Kesehatan Provinsi Jawa Barat</div>
         <div class="description mt-2">
-          <b>Data yang ditampilkan akan terus diperbarui sesuai dengan informasi yang diterima melalui Pemerintah Provinsi Jawa Barat.</b>
+          <br>
+          <b>Data yang ditampilkan akan terus diperbarui sesuai dengan informasi yang diterima melalui <br>Pemerintah Provinsi Jawa Barat.</b>
         </div>
         <button class="btn btn-success mt-3" style="color: #fff" v-on:click="isHidden = !isHidden"><b>Lihat Peta</b></button>
       </div>
@@ -677,6 +678,7 @@ export default {
 }
 .text-disclaimer {
   top:20%;
+  width: 100%;
   position: absolute;
   text-align: center;
   color: #fff;
