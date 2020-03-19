@@ -144,11 +144,7 @@ export default {
   },
   computed: {
     callCenters () {
-      const items = this.$store.state['call-centers'].items
-      if (!items) {
-        return null
-      }
-      return items.filter((_, index) => index < this.count)
+      return this.$store.state['call-centers'].items
     }
   },
   mounted () {
@@ -170,12 +166,12 @@ export default {
         this.filteredCallCenters = null
       }
       if (!this.searchString) {
-        this.filteredCallCenters = this.callCenters
+        this.filteredCallCenters = this.callCenters.filter((_, index) => index < this.count)
       }
       if (this.searchString) {
         this.filteredCallCenters = this.callCenters.filter((cc) => {
           return cc.nama_kotkab.toLowerCase().includes(this.searchString.toLowerCase())
-        })
+        }).filter((_, index) => index < this.count)
       }
     },
     onReset () {
