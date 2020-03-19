@@ -213,21 +213,26 @@
 
       <nuxt-link
         tag="a"
-        class="block md:inline-block md:w-auto p-3 m-1 rounded-md text-center text-white bg-brand-green hover:bg-brand-green-light font-bold"
+        style="border: 1px solid #2DAC55;"
+        class="block md:inline-block md:w-auto p-3 m-1 rounded-md text-center btnActive font-bold"
+        :class="stat.isActiveHarian ? 'btnActive' : 'btnNonActive'"
         to=""
+        @click.native="enableHarian"
       >
         <font-awesome-icon :icon="fontChartBar" /> Angka Harian
       </nuxt-link>
-
       <nuxt-link
         tag="a"
-        class="block md:inline-block md:w-auto p-3 m-1 rounded-md text-center text-white bg-brand-green hover:bg-brand-green-light font-bold"
+        style="border: 1px solid #2DAC55;"
+        class="block md:inline-block md:w-auto p-3 m-1 rounded-md text-center btnNonAktive font-bold"
+        :class="stat.isActiveAkumulatif ? 'btnActive' : 'btnNonActive'"
         to=""
+        @click.native="enableAkumulatif"
       >
         <font-awesome-icon :icon="fontChartLine" /> Akumulatif
       </nuxt-link>
 
-      <section class="row">
+      <section v-if="stat.isActiveHarian" class="row">
         <div
           class="bg-white p-1 col-md m-2"
           style="border-radius: 0.8rem; box-shadow: 0 0 4px 0px rgba(0,0,0,0.05), 0 4px 24px 0 rgba(0,0,0,0.1);"
@@ -252,7 +257,7 @@
         </div>
       </section>
 
-      <section class="row">
+      <section v-if="stat.isActiveAkumulatif" class="row">
         <div
           class="bg-white p-1 col-md m-2"
           style="border-radius: 0.8rem; box-shadow: 0 0 4px 0px rgba(0,0,0,0.05), 0 4px 24px 0 rgba(0,0,0,0.1);"
@@ -293,15 +298,12 @@ export default {
     MapView,
     FontAwesomeIcon
   },
-  head () {
-    return {
-      link: [
-        { rel: 'stylesheet', href: 'https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css' }
-      ]
-    }
-  },
   data () {
     return {
+      stat: {
+        isActiveHarian: true,
+        isActiveAkumulatif: false
+      },
       fontChartBar: faChartBar,
       fontChartLine: faChartLine,
       jsonDataRekap: [
@@ -839,6 +841,16 @@ export default {
     this.fetchDataSatuan()
   },
   methods: {
+    enableHarian () {
+      this.stat.isActiveHarian = true
+      this.stat.isActiveAkumulatif = false
+      console.log('harian')
+    },
+    enableAkumulatif () {
+      this.stat.isActiveHarian = false
+      this.stat.isActiveAkumulatif = true
+      console.log('akumulatif')
+    },
     ifNullReturnZero (str) {
       if (str === null) {
         return 0
@@ -1083,10 +1095,26 @@ export default {
           console.log(error)
         })
     }
+  },
+  head () {
+    return {
+      link: [
+        { rel: 'stylesheet', href: 'https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css' }
+      ]
+    }
   }
 }
 </script>
 <style lang="scss" scoped>
+
+.btnActive {
+  color: #ffffff;
+  background-color: #2DAC55;
+}
+.btnNonActive {
+  color: #2DAC55;
+  background-color: #FFFFFF;
+}
 .div-only-mobile {
     display: none !important;
 }
@@ -1095,13 +1123,13 @@ export default {
 }
 @media screen and (max-width: 549px) {
 
-.div-no-mobile {
-    display:none !important;
-}
+  .div-no-mobile {
+      display:none !important;
+  }
 
-.div-only-mobile {
-    display: flex !important;
-}
+  .div-only-mobile {
+      display: flex !important;
+  }
 
 }
 </style>
