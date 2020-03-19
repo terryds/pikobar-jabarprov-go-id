@@ -104,7 +104,7 @@
           </div>
         </div>
       </section>
-      <section class="flex flex-col lg:flex-row">
+      <section v-if="false" class="flex flex-col lg:flex-row">
         <div
           class="relative w-full bg-white rounded-lg shadow-md overflow-hidden"
           style="height:500px;"
@@ -126,6 +126,9 @@ export default {
   components: {
     GChart,
     MapView
+  },
+  fetch () {
+    console.log('IS FETCHING DATA SUMMARY')
   },
   data () {
     return {

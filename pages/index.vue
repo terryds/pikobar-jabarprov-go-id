@@ -27,6 +27,9 @@
         <small class="opacity-50">Update Terakhir: {{ lastUpdatedAt }}</small>
       </h2>
       <DataSummary class="my-8" />
+      <div class="rounded-lg bg-white shadow-md overflow-hidden">
+        <PetaPersebaranAllCases />
+      </div>
       <a
         v-show="false"
         target="_blank"
@@ -283,6 +286,7 @@ import CallCard from '~/components/CallCard'
 import ContactListItem from '~/components/ContactList/ContactListItem'
 import BlogPostPreview from '~/components/Blog/BlogPostPreview'
 import DataSummary from '~/components/_pages/index/DataSummary'
+import PetaPersebaranAllCases from '~/components/Tableau/PetaPersebaranAllCases'
 
 export default {
   components: {
@@ -290,7 +294,8 @@ export default {
     CallCard,
     BlogPostPreview,
     ContactListItem,
-    DataSummary
+    DataSummary,
+    PetaPersebaranAllCases
   },
   data () {
     return {
