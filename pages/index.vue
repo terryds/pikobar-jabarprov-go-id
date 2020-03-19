@@ -28,6 +28,7 @@
       </h2>
       <DataSummary class="my-8" />
       <a
+        v-show="false"
         target="_blank"
         class="text-center md:self-center w-56 py-4 rounded-lg text-brand-green-darker hover:bg-green-200 border-2 border-solid border-brand-green"
         href="/data"
