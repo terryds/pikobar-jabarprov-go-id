@@ -17,7 +17,7 @@
             <b>POSITIF COVID-19</b>
           </h4>
           <h3 class="ml-3" style="font-size: 30px;">
-            <b>{{ jsonDataResult.positif }}</b>
+            <b>{{ jsonDataResult.total_positif_saat_ini }}</b>
           </h3>
           <GChart
             type="LineChart"
@@ -33,7 +33,7 @@
             <b>SEMBUH</b>
           </h4>
           <h3 class="ml-3" style="font-size: 30px;">
-            <b>{{ jsonDataResult.sembuh }}</b>
+            <b>{{ jsonDataResult.total_sembuh }}</b>
           </h3>
           <GChart
             type="LineChart"
@@ -49,7 +49,7 @@
             <b>MENINGGAL</b>
           </h4>
           <h3 class="ml-3" style="font-size: 30px;">
-            <b>{{ jsonDataResult.meninggal }}</b>
+            <b>{{ jsonDataResult.total_meninggal }}</b>
           </h3>
           <GChart
             type="LineChart"
@@ -83,7 +83,7 @@
                 <span style="color: #8A8A8A; font-size: 14px; font-weight: normal;">Selesai Pemantauan</span>
               </div>
             </div>
-            <div style="margin-top: auto;" class="ml-4">
+            <div style="margin-top: auto;">
               <div class="col-md m-1">
                 <span style="color: #2DAC55; font-size: 24px; font-weight: bold;">{{ jsonDataResult.odp }}</span><br>
                 <span style="color: #8A8A8A; font-size: 14px; font-weight: normal;">Total ODP</span>
@@ -114,7 +114,7 @@
                 <span style="color: #8A8A8A; font-size: 14px; font-weight: normal;">Selesai Pengawasan</span>
               </div>
             </div>
-            <div style="margin-top: auto;" class="ml-4">
+            <div style="margin-top: auto;">
               <div class="col-md m-1">
                 <span style="color: #2DAC55; font-size: 24px; font-weight: bold;">{{ jsonDataResult.pdp }}</span><br>
                 <span style="color: #8A8A8A; font-size: 14px; font-weight: normal;">Total PDP</span>
@@ -126,8 +126,8 @@
 
       <section class="row">
         <div
-          class="bg-white p-3 col-md m-2"
-          style="border-radius: 0.8rem; box-shadow: 0 0 4px 0px rgba(0,0,0,0.05), 0 4px 24px 0 rgba(0,0,0,0.1); height:400px;"
+          class="bg-white p-3 col-md m-2 row"
+          style="border-radius: 0.8rem; box-shadow: 0 0 4px 0px rgba(0,0,0,0.05), 0 4px 24px 0 rgba(0,0,0,0.1); height:500px;"
         >
           <MapView />
         </div>
@@ -138,7 +138,7 @@
           class="bg-white p-1 col-md m-2 row"
           style="border-radius: 0.8rem; box-shadow: 0 0 4px 0px rgba(0,0,0,0.05), 0 4px 24px 0 rgba(0,0,0,0.1);"
         >
-          <div class="bg-white p-1 col-md-3">
+          <div class="bg-white p-1 col-md-3 col-sm-12">
             <h4 class="m-3 mb-0" style="margin-bottom: 0px !important; font-size: 15px;">
               <b>Area Terdampak Covid-19</b>
             </h4>
@@ -148,8 +148,23 @@
             <span class="m-1" style="color: #8A8A8A; font-weight: bold; margin-top: 0px !important;">Kota/Kab</span>
           </div>
           <div
-            class="bg-white p-1 col-md-9"
-            style="overflow-x: auto; width: 200px; height: 100px; display: flex;"
+            class="bg-white p-1 col-md-9 col-sm-12 div-no-mobile"
+            style="overflow-x: auto; width: 210px; display: flex;"
+          >
+            <div
+              v-for="item in jsonDataKota"
+              :key="item.kode"
+              class="bg-white pl-3 pt-2 pb-2 col-md-3 m-1"
+              style="border-radius: 0.8rem; border: 1.5px solid #CDD0D3;"
+            >
+              <span style="color: #8A8A8A; font-size: 14px; font-weight: normal;">{{ item.nama }}</span><br>
+              <span style="color: #00B167; font-weight: bold;">{{ item.jumlah_positif_persentase }}%</span>
+              <span style="color: #000000; font-weight: bold;">({{ item.jumlah_positif }})</span>
+            </div>
+          </div>
+          <div
+            class="bg-white p-1 col-md-9 col-sm-12 div-only-mobile"
+            style="overflow-y: auto; display: flex;"
           >
             <div
               v-for="item in jsonDataKota"
@@ -167,7 +182,7 @@
 
       <section class="row">
         <div
-          class="bg-white p-1 col-md m-2"
+          class="bg-white p-1 col-lg-5 col-md col-sm col-xs m-2"
           style="border-radius: 0.8rem; box-shadow: 0 0 4px 0px rgba(0,0,0,0.05), 0 4px 24px 0 rgba(0,0,0,0.1);"
         >
           <h4 class="m-3">
@@ -185,7 +200,7 @@
           style="border-radius: 0.8rem; box-shadow: 0 0 4px 0px rgba(0,0,0,0.05), 0 4px 24px 0 rgba(0,0,0,0.1);"
         >
           <h4 class="m-3">
-            <b>Umur dan Gender</b>
+            <b>Umur dan Jenis Kelamin</b>
           </h4>
           <hr>
           <GChart
@@ -196,7 +211,92 @@
         </div>
       </section>
 
-      <!-- {{ jsonDataResult }} -->
+      <nuxt-link
+        tag="a"
+        style="border: 1px solid #2DAC55;"
+        class="block md:inline-block md:w-auto p-3 m-1 rounded-md text-center btnActive font-bold"
+        :class="stat.isActiveHarian ? 'btnActive' : 'btnNonActive'"
+        to=""
+        @click.native="enableHarian"
+      >
+        <font-awesome-icon :icon="fontChartBar" /> Angka Harian
+      </nuxt-link>
+      <nuxt-link
+        tag="a"
+        style="border: 1px solid #2DAC55;"
+        class="block md:inline-block md:w-auto p-3 m-1 rounded-md text-center btnNonAktive font-bold"
+        :class="stat.isActiveAkumulatif ? 'btnActive' : 'btnNonActive'"
+        to=""
+        @click.native="enableAkumulatif"
+      >
+        <font-awesome-icon :icon="fontChartLine" /> Akumulatif
+      </nuxt-link>
+
+      <section v-if="stat.isActiveHarian" class="row">
+        <div
+          class="bg-white p-1 col-md m-2"
+          style="border-radius: 0.8rem; box-shadow: 0 0 4px 0px rgba(0,0,0,0.05), 0 4px 24px 0 rgba(0,0,0,0.1);"
+        >
+          <h4 class="m-3">
+            <b>Angka Harian ODP</b><br>
+            <b style="color: #828282;">(Orang Dalam Pemantauan)</b>
+          </h4>
+          <hr>
+          <GChart
+            type="BarChart"
+            :data="barChartHarianODPData"
+            :options="barChartHarianODPOptions"
+          />
+        </div>
+        <div
+          class="bg-white p-1 col-md m-2"
+          style="border-radius: 0.8rem; box-shadow: 0 0 4px 0px rgba(0,0,0,0.05), 0 4px 24px 0 rgba(0,0,0,0.1);"
+        >
+          <h4 class="m-3">
+            <b>Angka Harian PDP</b><br>
+            <b style="color: #828282;">(Pasien Dalam Pengawasan)</b>
+          </h4>
+          <hr>
+          <GChart
+            type="BarChart"
+            :data="barChartHarianPDPData"
+            :options="barChartHarianPDPOptions"
+          />
+        </div>
+      </section>
+
+      <section v-if="stat.isActiveAkumulatif" class="row">
+        <div
+          class="bg-white p-1 col-md m-2"
+          style="border-radius: 0.8rem; box-shadow: 0 0 4px 0px rgba(0,0,0,0.05), 0 4px 24px 0 rgba(0,0,0,0.1);"
+        >
+          <h4 class="m-3">
+            <b>Akumulatif ODP</b><br>
+            <b style="color: #828282;">(Orang Dalam Pemantauan)</b>
+          </h4>
+          <hr>
+          <GChart
+            type="LineChart"
+            :data="barChartAkumulatifODPData"
+            :options="barChartAkumulatifODPOptions"
+          />
+        </div>
+        <div
+          class="bg-white p-1 col-md m-2"
+          style="border-radius: 0.8rem; box-shadow: 0 0 4px 0px rgba(0,0,0,0.05), 0 4px 24px 0 rgba(0,0,0,0.1);"
+        >
+          <h4 class="m-3">
+            <b>Akumulatif PDP</b><br>
+            <b style="color: #828282;">(Pasien Dalam Pengawasan)</b>
+          </h4>
+          <hr>
+          <GChart
+            type="LineChart"
+            :data="barChartAkumulatifPDPData"
+            :options="barChartAkumulatifPDPOptions"
+          />
+        </div>
+      </section>
     </div>
   </div>
 </template>
@@ -204,15 +304,24 @@
 <script>
 import axios from 'axios'
 import { GChart } from 'vue-google-charts'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { faChartBar, faChartLine } from '@fortawesome/free-solid-svg-icons'
 import MapView from '~/components/MapView'
 
 export default {
   components: {
     GChart,
-    MapView
+    MapView,
+    FontAwesomeIcon
   },
   data () {
     return {
+      stat: {
+        isActiveHarian: true,
+        isActiveAkumulatif: false
+      },
+      fontChartBar: faChartBar,
+      fontChartLine: faChartLine,
       jsonDataRekap: [
       ],
       jsonDataSatuan: [
@@ -232,6 +341,9 @@ export default {
         perawatan: 0,
         sembuh: 0,
         meninggal: 0,
+        total_positif_saat_ini: 0,
+        total_sembuh: 0,
+        total_meninggal: 0,
         last_update: '',
         umur_max: 0,
         count_kota: 0
@@ -510,20 +622,7 @@ export default {
       ],
       lineChartPositifData: [
         ['Tanggal', 'Jumlah'],
-        ['2020-01-01', 1],
-        ['2020-01-02', 2],
-        ['2020-01-03', 5],
-        ['2020-01-04', 2],
-        ['2020-01-05', 8],
-        ['2020-01-06', 7],
-        ['2020-01-07', 8],
-        ['2020-01-08', 7],
-        ['2020-01-09', 9],
-        ['2020-01-10', 10],
-        ['2020-01-11', 8],
-        ['2020-01-12', 7],
-        ['2020-01-13', 7],
-        ['2020-01-14', 10]
+        ['0', 0]
       ],
       lineChartPositifOptions: {
         backgroundColor: 'transparent',
@@ -542,24 +641,14 @@ export default {
         height: 50,
         series: {
           0: { color: '#FF4A4B' }
+        },
+        tooltip: {
+          trigger: 'none'
         }
       },
       lineChartSembuhData: [
         ['Tanggal', 'Jumlah'],
-        ['2020-01-01', 1],
-        ['2020-01-02', 2],
-        ['2020-01-03', 5],
-        ['2020-01-04', 2],
-        ['2020-01-05', 8],
-        ['2020-01-06', 7],
-        ['2020-01-07', 8],
-        ['2020-01-08', 7],
-        ['2020-01-09', 9],
-        ['2020-01-10', 10],
-        ['2020-01-11', 8],
-        ['2020-01-12', 7],
-        ['2020-01-13', 7],
-        ['2020-01-14', 10]
+        ['0', 0]
       ],
       lineChartSembuhOptions: {
         backgroundColor: 'transparent',
@@ -578,24 +667,14 @@ export default {
         height: 50,
         series: {
           0: { color: '#36D19B' }
+        },
+        tooltip: {
+          trigger: 'none'
         }
       },
       lineChartMeninggalData: [
         ['Tanggal', 'Jumlah'],
-        ['2020-01-01', 1],
-        ['2020-01-02', 2],
-        ['2020-01-03', 5],
-        ['2020-01-04', 2],
-        ['2020-01-05', 8],
-        ['2020-01-06', 7],
-        ['2020-01-07', 8],
-        ['2020-01-08', 7],
-        ['2020-01-09', 9],
-        ['2020-01-10', 10],
-        ['2020-01-11', 8],
-        ['2020-01-12', 7],
-        ['2020-01-13', 7],
-        ['2020-01-14', 10]
+        ['0', 0]
       ],
       lineChartMeninggalOptions: {
         backgroundColor: 'transparent',
@@ -614,16 +693,20 @@ export default {
         height: 50,
         series: {
           0: { color: '#FF9441' }
+        },
+        tooltip: {
+          trigger: 'none'
         }
       },
       pieChartJenisKelaminData: [
         ['Jenis Kelamin', 'Data'],
         ['Pria', 0],
         ['Wanita', 0],
-        ['Tidak Teridentifikasi', 0]
+        ['N/A', 0]
       ],
       pieChartJenisKelaminOptions: {
-        height: 400,
+        height: 350,
+        widht: 350,
         slices: {
           0: { color: '#2DAC55' },
           1: { color: '#F6D039' },
@@ -631,7 +714,8 @@ export default {
         },
         legend: {
           position: 'bottom'
-        }
+        },
+        pieHole: 0.4
       },
       barChartUmurJenisKelaminData: {
         cols: [
@@ -706,7 +790,8 @@ export default {
         ]
       },
       barChartUmurJenisKelaminOptions: {
-        height: 400,
+        height: 350,
+        marginRight: -100,
         series: {
           0: { color: '#2DAC55' },
           1: { color: '#F6D039' },
@@ -728,6 +813,76 @@ export default {
           }
         },
         viewWindowMode: 'explicit'
+      },
+      barChartHarianODPData: [
+        ['Tanggal', 'Selesai Pemantauan', 'Proses Pemantauan'],
+        ['0', 0, 0]
+      ],
+      barChartHarianODPOptions: {
+        height: 450,
+        orientation: 'horizontal',
+        colors: ['#6DD274', '#1AB762'],
+        legend: {
+          position: 'bottom'
+        },
+        isStacked: true,
+        seriesType: 'bars',
+        hAxis: {
+          slantedText: true,
+          slantedTextAngle: -45
+        }
+      },
+      barChartHarianPDPData: [
+        ['Tanggal', 'Selesai Pengawasan', 'Proses Pengawasan'],
+        ['0', 0, 0]
+      ],
+      barChartHarianPDPOptions: {
+        height: 450,
+        orientation: 'horizontal',
+        colors: ['#F6D039', '#F18931'],
+        legend: {
+          position: 'bottom'
+        },
+        isStacked: true,
+        seriesType: 'bars',
+        hAxis: {
+          slantedText: true,
+          slantedTextAngle: -45
+        }
+      },
+      barChartAkumulatifODPData: [
+        ['Tanggal', 'Selesai Pemantauan', 'Proses Pemantauan', 'Total ODP'],
+        ['0', 0, 0, 0]
+      ],
+      barChartAkumulatifODPOptions: {
+        height: 450,
+        orientation: 'horizontal',
+        colors: ['#6DD274', '#1AB762', '#009F5D'],
+        legend: {
+          position: 'bottom'
+        },
+        curveType: 'function',
+        hAxis: {
+          slantedText: true,
+          slantedTextAngle: -45
+        }
+      },
+      barChartAkumulatifPDPData: [
+        ['Tanggal', 'Selesai Pengawasan', 'Proses Pengawasan', 'Total PDP'],
+        ['0', 0, 0, 0]
+      ],
+      barChartAkumulatifPDPOptions: {
+        height: 450,
+        orientation: 'horizontal',
+        colors: ['#F6D039', '#F18931', '#F55A2A'],
+        legend: {
+          position: 'bottom'
+        },
+        curveType: 'function',
+        hAxis: {
+          slantedText: true,
+          slantedTextAngle: -45
+        }
       }
     }
   },
@@ -736,6 +891,14 @@ export default {
     this.fetchDataSatuan()
   },
   methods: {
+    enableHarian () {
+      this.stat.isActiveHarian = true
+      this.stat.isActiveAkumulatif = false
+    },
+    enableAkumulatif () {
+      this.stat.isActiveHarian = false
+      this.stat.isActiveAkumulatif = true
+    },
     ifNullReturnZero (str) {
       if (str === null) {
         return 0
@@ -783,12 +946,12 @@ export default {
       const self = this
       const today = new Date()
       const strToday = self.formatDate(today)
-      // const yesterday = new Date()
-      // yesterday.setDate(today.getDate() - 1)
-      // const strYesteday = self.formatDate(yesterday)
+      const yesterday = new Date()
+      yesterday.setDate(today.getDate() - 1)
+      const strYesteday = self.formatDate(yesterday)
 
       axios
-        .get('https://coredata.jabarprov.go.id/analytics/covid19/aggregation/')
+        .get('https://covid19-public.digitalservice.id/analytics/aggregation/')
         .then(function (response) {
           self.jsonDataRekap = response.data
           // by status
@@ -798,6 +961,9 @@ export default {
                 self.jsonDataResult.positif = self.ifNullReturnZero(self.jsonDataRekap[i].positif)
                 self.jsonDataResult.sembuh = self.ifNullReturnZero(self.jsonDataRekap[i].sembuh)
                 self.jsonDataResult.meninggal = self.ifNullReturnZero(self.jsonDataRekap[i].meninggal)
+                self.jsonDataResult.total_positif_saat_ini = self.ifNullReturnZero(self.jsonDataRekap[i].total_positif_saat_ini)
+                self.jsonDataResult.total_sembuh = self.ifNullReturnZero(self.jsonDataRekap[i].total_sembuh)
+                self.jsonDataResult.total_meninggal = self.ifNullReturnZero(self.jsonDataRekap[i].total_meninggal)
                 self.jsonDataResult.odp = self.ifNullReturnZero(self.jsonDataRekap[i].total_odp)
                 self.jsonDataResult.odp_proses = self.ifNullReturnZero(self.jsonDataRekap[i].proses_pemantauan)
                 self.jsonDataResult.odp_proses_persen = ((self.jsonDataResult.odp_proses / self.jsonDataResult.odp) * 100).toFixed(2)
@@ -812,6 +978,9 @@ export default {
                 self.jsonDataResult.positif = self.ifNullReturnZero(self.jsonDataRekap[i - 1].positif)
                 self.jsonDataResult.sembuh = self.ifNullReturnZero(self.jsonDataRekap[i - 1].sembuh)
                 self.jsonDataResult.meninggal = self.ifNullReturnZero(self.jsonDataRekap[i - 1].meninggal)
+                self.jsonDataResult.total_positif_saat_ini = self.ifNullReturnZero(self.jsonDataRekap[i - 1].total_positif_saat_ini)
+                self.jsonDataResult.total_sembuh = self.ifNullReturnZero(self.jsonDataRekap[i - 1].total_sembuh)
+                self.jsonDataResult.total_meninggal = self.ifNullReturnZero(self.jsonDataRekap[i - 1].total_meninggal)
                 self.jsonDataResult.odp = self.ifNullReturnZero(self.jsonDataRekap[i - 1].total_odp)
                 self.jsonDataResult.odp_proses = self.ifNullReturnZero(self.jsonDataRekap[i - 1].proses_pemantauan)
                 self.jsonDataResult.odp_proses_persen = ((self.jsonDataResult.odp_proses / self.jsonDataResult.odp) * 100).toFixed(2)
@@ -825,6 +994,50 @@ export default {
               }
             }
           }
+
+          // series
+          let stop = false
+          for (let i = 0; i < self.jsonDataRekap.length; i++) {
+            if (stop === false) {
+              self.barChartHarianODPData.push([
+                self.jsonDataRekap[i].tanggal,
+                self.ifNullReturnZero(self.jsonDataRekap[i].selesai_pemantauan),
+                self.ifNullReturnZero(self.jsonDataRekap[i].proses_pemantauan)
+              ])
+              self.barChartHarianPDPData.push([
+                self.jsonDataRekap[i].tanggal,
+                self.ifNullReturnZero(self.jsonDataRekap[i].selesai_pengawasan),
+                self.ifNullReturnZero(self.jsonDataRekap[i].proses_pengawasan)
+              ])
+              self.barChartAkumulatifODPData.push([
+                self.jsonDataRekap[i].tanggal,
+                self.ifNullReturnZero(self.jsonDataRekap[i].selesai_pemantauan),
+                self.ifNullReturnZero(self.jsonDataRekap[i].proses_pemantauan),
+                self.ifNullReturnZero(self.jsonDataRekap[i].total_odp)
+              ])
+              self.barChartAkumulatifPDPData.push([
+                self.jsonDataRekap[i].tanggal,
+                self.ifNullReturnZero(self.jsonDataRekap[i].selesai_pengawasan),
+                self.ifNullReturnZero(self.jsonDataRekap[i].proses_pengawasan),
+                self.ifNullReturnZero(self.jsonDataRekap[i].total_pdp)
+              ])
+              self.lineChartPositifData.push([
+                self.jsonDataRekap[i].tanggal,
+                self.ifNullReturnZero(self.jsonDataRekap[i].positif)
+              ])
+              self.lineChartSembuhData.push([
+                self.jsonDataRekap[i].tanggal,
+                self.ifNullReturnZero(self.jsonDataRekap[i].sembuh)
+              ])
+              self.lineChartMeninggalData.push([
+                self.jsonDataRekap[i].tanggal,
+                self.ifNullReturnZero(self.jsonDataRekap[i].meninggal)
+              ])
+            }
+            if (self.jsonDataRekap[i].tanggal === strYesteday) {
+              stop = true
+            }
+          }
         })
         .catch(function (error) {
           console.log(error)
@@ -833,7 +1046,7 @@ export default {
     fetchDataSatuan () {
       const self = this
       axios
-        .get('https://coredata.jabarprov.go.id/analytics/covid19/longlat/')
+        .get('https://covid19-public.digitalservice.id/analytics/longlat/')
         .then(function (response) {
           self.jsonDataResult.last_update = new Date(response.data.last_update).toLocaleString('id-ID', { dateStyle: 'long', timeStyle: 'medium' })
           self.jsonDataSatuan = response.data.data
@@ -857,7 +1070,7 @@ export default {
             ['Jenis Kelamin', 'Data'],
             ['Pria', tempJenisKelaminPria],
             ['Wanita', tempJenisKelaminWanita],
-            ['Tidak Teridentifikasi', tempJenisKelaminNull]
+            ['N/A', tempJenisKelaminNull]
           ]
 
           // by umur
@@ -980,6 +1193,41 @@ export default {
           console.log(error)
         })
     }
+  },
+  head () {
+    return {
+      link: [
+        { rel: 'stylesheet', href: 'https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css' }
+      ]
+    }
   }
 }
 </script>
+<style lang="scss" scoped>
+
+.btnActive {
+  color: #ffffff;
+  background-color: #2DAC55;
+}
+.btnNonActive {
+  color: #2DAC55;
+  background-color: #FFFFFF;
+}
+.div-only-mobile {
+    display: none !important;
+}
+.div-no-mobile {
+    display: flex !important;
+}
+@media screen and (max-width: 549px) {
+
+  .div-no-mobile {
+      display:none !important;
+  }
+
+  .div-only-mobile {
+      display: flex !important;
+  }
+
+}
+</style>
