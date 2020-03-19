@@ -3,7 +3,7 @@
   <div class="container mx-auto">
     <section class="top-grid m-4 md:m-8">
       <div class="top-grid__banner rounded-lg overflow-hidden">
-        <img class="absolute inset-0 w-full h-full object-cover object-left-top" :src="bannerImage">
+        <img v-lazy="bannerImage" class="absolute inset-0 w-full h-full object-cover object-left-top">
       </div>
       <CallCard class="top-grid__call-card" title="Call Center" subtitle="Nomor Darurat" number="119" />
       <CallCard class="top-grid__call-card" title="Dinkes Jabar" subtitle="Pertanyaan Umum" number="0811 2093 306" />
@@ -172,7 +172,7 @@
       </h2>
       <article class="flex flex-col lg:flex-row">
         <img
-          src="https://firebasestorage.googleapis.com/v0/b/jabarprov-covid19.appspot.com/o/public%2Fflatten.png?alt=media&token=afe8bb16-6cd5-4056-8d14-5c102f34a7c9"
+          v-lazy="'https://firebasestorage.googleapis.com/v0/b/jabarprov-covid19.appspot.com/o/public%2Fflatten.png?alt=media&token=afe8bb16-6cd5-4056-8d14-5c102f34a7c9'"
           class="order-2 lg:order-1 w-full h-full mb-8 lg:w-1/2 lg:mr-8 object-cover object-center rounded-lg"
         >
         <div class="order-1 lg:order-2 lg:w-1/2">
@@ -194,7 +194,7 @@
       </h2>
       <div class="flex flex-col items-stretch">
         <article class="html-content text-gray-800 flex flex-col lg:flex-row">
-          <img src="/img/covid-19.png" class="hidden lg:block w-full h-full lg:w-1/2 lg:mr-8 object-cover object-center rounded-lg">
+          <img v-lazy="'/img/covid-19.png'" class="hidden lg:block w-full h-full lg:w-1/2 lg:mr-8 object-cover object-center rounded-lg">
           <div class="w-full lg:w-1/2">
             <h3 class="text-xl text-black">
               <b>Apa Itu COVID-19?</b>

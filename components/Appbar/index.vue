@@ -191,6 +191,7 @@ export default {
         return
       }
       Notification.requestPermission(async (permission) => {
+        console.log({ allowedPermission: permission })
         if (permission === 'granted') {
           const token = await messaging.getToken()
           this.saveToken(token)
