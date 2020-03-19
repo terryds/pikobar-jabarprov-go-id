@@ -104,6 +104,14 @@
           </div>
         </div>
       </section>
+      <section class="flex flex-col lg:flex-row">
+        <div
+          class="relative w-full bg-white rounded-lg shadow-md overflow-hidden"
+          style="height:500px;"
+        >
+          <MapView />
+        </div>
+      </section>
     </div>
   </div>
 </template>
@@ -112,10 +120,12 @@
 import axios from 'axios'
 import { GChart } from 'vue-google-charts'
 import { faChartBar, faChartLine } from '@fortawesome/free-solid-svg-icons'
+import MapView from '../../MapView'
 
 export default {
   components: {
-    GChart
+    GChart,
+    MapView
   },
   data () {
     return {

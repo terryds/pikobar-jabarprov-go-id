@@ -2,29 +2,41 @@
   <div style="width:100%; height:100%">
     <div id="map" />
     <div id="corona-filter" class="esri-widget">
-      <div data-corona="Positif" class="corona-item visible-corona" v-bind:class="[activeLayer === 'positif' ? 'legend-active' : 'legend-disabled']">
+      <div data-corona="Positif" class="corona-item visible-corona" :class="[activeLayer === 'positif' ? 'legend-active' : 'legend-disabled']">
         <div class="legend-color" style="background:rgb(235, 87, 87, 0.7)" />
-        <div class="legend-text">Positif</div>
+        <div class="legend-text">
+          Positif
+        </div>
       </div>
-      <div data-corona="PDP" class="corona-item visible-corona"  v-bind:class="[activeLayer === 'pdp' ? 'legend-active' : 'legend-disabled']">
+      <div data-corona="PDP" class="corona-item visible-corona" :class="[activeLayer === 'pdp' ? 'legend-active' : 'legend-disabled']">
         <div class="legend-color" style="background:rgb(242, 201, 76, 0.7)" />
-        <div class="legend-text">PDP</div>
+        <div class="legend-text">
+          PDP
+        </div>
       </div>
-      <div data-corona="ODP" class="corona-item visible-corona" v-bind:class="[activeLayer === 'odp' ? 'legend-active' : 'legend-disabled']">
+      <div data-corona="ODP" class="corona-item visible-corona" :class="[activeLayer === 'odp' ? 'legend-active' : 'legend-disabled']">
         <div class="legend-color" style="background:rgb(45, 156, 219, 0.7)" />
-        <div class="legend-text">ODP</div>
+        <div class="legend-text">
+          ODP
+        </div>
       </div>
     </div>
-    <div class="disclaimer" v-if="!isHidden">
-    <div class="backdrop" />
+    <div v-if="!isHidden" class="disclaimer">
+      <div class="backdrop" />
       <div class="text-disclaimer">
-        <div class="title">Peta Sebaran Kasus COVID-19 di Jawa Barat</div>
-        <div class="subtitle">Sumber: Dinas Kesehatan Provinsi Jawa Barat</div>
+        <div class="title">
+          Peta Sebaran Kasus COVID-19 di Jawa Barat
+        </div>
+        <div class="subtitle">
+          Sumber: Dinas Kesehatan Provinsi Jawa Barat
+        </div>
         <div class="description mt-2">
           <br>
           <b>Data yang ditampilkan akan terus diperbarui sesuai dengan informasi yang diterima melalui <br>Pemerintah Provinsi Jawa Barat.</b>
         </div>
-        <button class="btn btn-success mt-3" style="color: #fff" v-on:click="isHidden = !isHidden"><b>Lihat Peta</b></button>
+        <button class="px-6 py-2 bg-brand-green hover:bg-brand-green-lighter text-white rounded-lg shadow-md mt-8" style="color: #fff" @click="isHidden = !isHidden">
+          <b>Lihat Peta</b>
+        </button>
       </div>
     </div>
   </div>
@@ -38,19 +50,6 @@ import kotaGeojson from '~/static/kota.json'
 export default {
   name: 'MapView',
   components: {
-  },
-  head () {
-    return {
-      script: [
-        { src: 'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js' },
-        { src: 'https://unpkg.com/leaflet@1.6.0/dist/leaflet.js' },
-        { src: 'https://unpkg.com/esri-leaflet@2.3.3/dist/esri-leaflet.js' }
-      ],
-      link: [
-        { rel: 'stylesheet', href: 'https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css' },
-        { rel: 'stylesheet', href: 'https://unpkg.com/leaflet@1.6.0/dist/leaflet.css' }
-      ]
-    }
   },
   data () {
     return {
@@ -329,6 +328,12 @@ export default {
   },
   mounted () {
     this.fetchDataSatuan()
+  },
+  beforeDestroy () {
+    if (this.view) {
+      // destroy the map view
+      this.view.container = null
+    }
   },
   methods: {
     fetch () {
@@ -651,10 +656,17 @@ export default {
       })
     }
   },
-  beforeDestroy () {
-    if (this.view) {
-      // destroy the map view
-      this.view.container = null
+  head () {
+    return {
+      script: [
+        { src: 'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js' },
+        { src: 'https://unpkg.com/leaflet@1.6.0/dist/leaflet.js' },
+        { src: 'https://unpkg.com/esri-leaflet@2.3.3/dist/esri-leaflet.js' }
+      ],
+      link: [
+        // { rel: 'stylesheet', href: 'https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css' },
+        { rel: 'stylesheet', href: 'https://unpkg.com/leaflet@1.6.0/dist/leaflet.css' }
+      ]
     }
   }
 }
