@@ -25,7 +25,7 @@
             :category="categoryName"
             :title="item.title"
             :content="item.content"
-            :to="`/articles/${item.id}`"
+            :to="item.backlink"
             :date="formatDateTimeShort(item.published_at)"
             class="bg-white rounded-lg mb-8 p-6 shadow-lg"
           />
@@ -99,9 +99,7 @@ export default {
       items: null,
       lastDocumentSnapshot: null,
       currentPage: 0,
-      perPage: 5,
-      eventName: 'article_list_view',
-      pageTitle: 'Rilis Pers'
+      perPage: 5
     }
   },
   computed: {
@@ -112,6 +110,20 @@ export default {
       switch (this.type) {
         case 'national': return 'Nasional'
         case 'world': return 'Dunia'
+        default: return null
+      }
+    },
+    eventName () {
+      switch (this.type) {
+        case 'national': return 'article_national_list_view'
+        case 'world': return 'article_world_list_view'
+        default: return null
+      }
+    },
+    pageTitle () {
+      switch (this.type) {
+        case 'national': return 'Berita Nasional'
+        case 'world': return 'Berita Dunia'
         default: return null
       }
     }
@@ -170,7 +182,7 @@ export default {
         }).catch((e) => {
           return null
         }).finally(() => {
-          if (process.client || process.browser) {
+          if ((process.client || process.browser) && this.eventName) {
             analytics.logEvent(this.eventName)
           }
         })

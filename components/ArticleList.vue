@@ -105,7 +105,7 @@ export default {
       perPage: 5,
       collectionName: 'articles',
       eventName: 'article_list_view',
-      pageTitle: 'Rilis Pers'
+      pageTitle: 'Berita Jabar'
     }
   },
   mounted () {
