@@ -1,5 +1,11 @@
 require('dotenv').config()
 export default {
+  router: {
+    prefetchLinks: false
+  },
+  generate: {
+    fallback: true
+  },
   server: {
     host: process.env.HOST,
     port: process.env.PORT
@@ -35,8 +41,9 @@ export default {
   plugins: [
     { src: '~/plugins/service-worker.js', mode: 'client' },
     '~/plugins/vuex-router-sync.js',
-    { src: '~/plugins/vue-carousel.js', mode: 'client' },
-    { src: '~/plugins/vue-leaflet.js', ssr: false }
+    { src: '~/plugins/vue-leaflet.js', ssr: false },
+    { src: '~/plugins/vue-lazyload.js', mode: 'client' },
+    { src: '~/plugins/vue-carousel.js', mode: 'client' }
   ],
   /*
   ** Nuxt.js dev-modules

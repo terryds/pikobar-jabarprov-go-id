@@ -1,13 +1,49 @@
 <template>
-  <div style="width:100%; height:100%; z-index:0">
-    <div id="map-wrap" style="height: 100%" />
-    <div id="info-legend" class="info legend" />
+  <div style="width:100%; height:100%;">
+    <div id="map-wrap" style="height: 100%;z-index:0;" />
+    <!-- <div id="corona-filter" class="esri-widget">
+      <div data-corona="Positif" class="corona-item visible-corona" :class="[activeLayer === 'positif' ? 'legend-active' : 'legend-disabled']">
+        <div class="legend-color" style="background:rgb(235, 87, 87, 0.7)" />
+        <div class="legend-text">
+          Positif
+        </div>
+      </div>
+      <div data-corona="PDP" class="corona-item visible-corona" :class="[activeLayer === 'pdp' ? 'legend-active' : 'legend-disabled']">
+        <div class="legend-color" style="background:rgb(242, 201, 76, 0.7)" />
+        <div class="legend-text">
+          PDP
+        </div>
+      </div>
+      <div data-corona="ODP" class="corona-item visible-corona" :class="[activeLayer === 'odp' ? 'legend-active' : 'legend-disabled']">
+        <div class="legend-color" style="background:rgb(45, 156, 219, 0.7)" />
+        <div class="legend-text">
+          ODP
+        </div>
+      </div>
+    </div> -->
+    <div v-if="!isHidden" class="disclaimer">
+      <div class="backdrop" />
+      <div class="text-disclaimer">
+        <div class="title">
+          Peta Sebaran Kasus COVID-19 di Jawa Barat
+        </div>
+        <div class="subtitle">
+          Sumber: Dinas Kesehatan Provinsi Jawa Barat
+        </div>
+        <div class="description mt-2">
+          <br>
+          <b>Data yang ditampilkan akan terus diperbarui sesuai dengan informasi yang diterima melalui <br>Pemerintah Provinsi Jawa Barat.</b>
+        </div>
+        <button class="px-6 py-2 bg-brand-green hover:bg-brand-green-lighter text-white rounded-lg shadow-md mt-8" style="color: #fff" @click="isHidden = !isHidden">
+          <b>Lihat Peta</b>
+        </button>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
-import * as turf from '@turf/turf'
 // import reverse from 'turf-reverse'
 import kotaGeojson from '~/static/kota.json'
 
@@ -15,6 +51,8 @@ export default {
   name: 'MapView',
   data () {
     return {
+      isHidden: false,
+      activeLayer: 'ODP',
       kotaGeojson,
       jsonData: [],
       jsonDataKota: [
@@ -132,96 +170,26 @@ export default {
   mounted () {
     this.fetchData()
   },
+  beforeDestroy () {
+    if (this.view) {
+      // destroy the map view
+      this.view.container = null
+    }
+  },
   methods: {
-    createMap () {
-      // const blueIcon = this.$L.icon({ iconUrl: 'blue.png' })
-      const map = this.$L.map('map-wrap').setView([-6.914744, 107.609810], 8)
-      this.$L.tileLayer('https://cartodb-basemaps-d.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png', {
-        attribution: '© OpenStreetMap contributors',
-        maxZoom: 18,
-        tileSize: 512,
-        zoomOffset: -1
-      }).addTo(map)
-
-      const markerClusters = {}
-      markerClusters.positif = this.$L.markerClusterGroup({
-        singleMarkerMode: true,
-        iconCreateFunction: (cluster) => {
-          // get the number of items in the cluster
-          let count = cluster.getChildCount()
-          const digits = (count + '').length
-          if (count === 1) {
-            count = ''
-          }
-          return this.$L.divIcon({
-            html: count,
-            className: 'cluster cluster-positif digits-' + digits,
-            iconSize: null
-          })
-        }
-      })
-      markerClusters.pdp = this.$L.markerClusterGroup({
-        singleMarkerMode: true,
-        iconCreateFunction: (cluster) => {
-          // get the number of items in the cluster
-          let count = cluster.getChildCount()
-          const digits = (count + '').length
-          if (count === 1) {
-            count = ''
-          }
-          return this.$L.divIcon({
-            html: count,
-            className: 'cluster cluster-pdp digits-' + digits,
-            iconSize: null
-          })
-        }
-      })
-      markerClusters.odp = this.$L.markerClusterGroup({
-        singleMarkerMode: true,
-        iconCreateFunction: (cluster) => {
-          // get the number of items in the cluster
-          let count = cluster.getChildCount()
-          const digits = (count + '').length
-          if (count === 1) {
-            count = ''
-          }
-          return this.$L.divIcon({
-            html: count,
-            className: 'cluster cluster-odp digits-' + digits,
-            iconSize: null
-          })
-        }
-      })
-      this.jsonData.forEach((element) => {
-        console.log(element)
-        if (element.alamat_latitude !== null) {
-          const m = this.$L.marker([element.alamat_latitude, element.alamat_longitude])
-          if (element.status === 'Positif') {
-            markerClusters.positif.addLayer(m)
-          } else if (element.status === 'PDP') {
-            markerClusters.pdp.addLayer(m)
-          } else {
-            markerClusters.odp.addLayer(m)
-          }
-        }
-      })
-      map.addLayer(markerClusters.positif)
-      map.addLayer(markerClusters.pdp)
-      map.addLayer(markerClusters.odp)
-    },
     fetchData () {
       const self = this
       axios
         .get('https://covid19-public.digitalservice.id/analytics/longlat/')
         .then(function (response) {
           self.jsonData = response.data.data
-          self.tesMap()
+          self.createMap()
         })
         .catch(function (error) {
           console.log(error)
         })
     },
-    tesMap () {
+    createMap () {
       const map = this.$L.map('map-wrap').setView([-7.004126726629371, 107.17987060546874], 8)
       this.$L.tileLayer('https://cartodb-basemaps-d.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png', {
         attribution: '© OpenStreetMap contributors',
@@ -229,11 +197,6 @@ export default {
         tileSize: 512,
         zoomOffset: -1
       }).addTo(map)
-      // const kotaLeaflet = this.$L.geoJSON(this.kotaGeojson, {
-      //   onEachFeature: (feature, layer) => {
-      //     console.log(layer)
-      //   }
-      // })
       const kotaCluster = []
       this.jsonDataKota.forEach((element) => {
         const markerClusters = []
@@ -300,9 +263,7 @@ export default {
         })
         kotaCluster[element.kode] = markerClusters
       })
-      console.log(this.kotaGeojson)
       this.jsonData.forEach((element) => {
-        console.log('tes')
         if (element.alamat_latitude !== null) {
           const m = this.$L.marker([element.alamat_latitude, element.alamat_longitude])
           m.bindPopup(`
@@ -332,97 +293,21 @@ export default {
         map.addLayer(kotaCluster[element.kode].odp)
 
         kotaCluster[element.kode].positif.on('clusterclick', (c) => {
-          console.log(c)
           this.$L.popup().setLatLng(c.layer.getLatLng()).setContent(c.layer._childCount + ' kasus Positif di ' + element.nama).openOn(map)
         }).on('clustermouseout', (c) => {
           map.closePopup()
         })
         kotaCluster[element.kode].pdp.on('clusterclick', (c) => {
-          console.log(c)
           this.$L.popup().setLatLng(c.layer.getLatLng()).setContent(c.layer._childCount + ' kasus PDP di ' + element.nama).openOn(map)
         }).on('clustermouseout', (c) => {
           map.closePopup()
         })
         kotaCluster[element.kode].odp.on('clusterclick', (c) => {
-          console.log(c)
           this.$L.popup().setLatLng(c.layer.getLatLng()).setContent(c.layer._childCount + ' kasus ODP di ' + element.nama).openOn(map)
         }).on('clustermouseout', (c) => {
           map.closePopup()
         })
       })
-      // console.log(kotaLeaflet)
-      // const m = this.$L.marker([-7.004126726629371, 108.17987060546874])
-      // const polygon = this.$L.polygon([
-      //   [
-      //     -7.177200757107744,
-      //     107.11257934570312
-      //   ],
-      //   [
-      //     -7.177200757107744,
-      //     107.4462890625
-      //   ],
-      //   [
-      //     -6.908704023900704,
-      //     107.4462890625
-      //   ],
-      //   [
-      //     -6.908704023900704,
-      //     107.11257934570312
-      //   ],
-      //   [
-      //     -7.177200757107744,
-      //     107.11257934570312
-      //   ]
-      // ])
-
-      const polygon = {
-        type: 'Feature',
-        properties: {},
-        geometry: {
-          type: 'Polygon',
-          coordinates: [
-            [
-              [
-                107.11257934570312,
-                -7.177200757107744
-              ],
-              [
-                107.4462890625,
-                -7.177200757107744
-              ],
-              [
-                107.4462890625,
-                -6.908704023900704
-              ],
-              [
-                107.11257934570312,
-                -6.908704023900704
-              ],
-              [
-                107.11257934570312,
-                -7.177200757107744
-              ]
-            ]
-          ]
-        }
-      }
-
-      const point = turf.point([109.17987060546874, -7.004126726629371])
-
-      const isInside1 = turf.inside(point, polygon)
-
-      console.log(isInside1)
-
-      // console.log(reverse(polygon))
-      // your json var: states
-      // this.kotaGeojson.features.forEach((kota) => {
-      //   this.$L.polygon(kota.geometry.coordinates[0], {
-      //     weight: 1,
-      //     fillOpacity: 0.7,
-      //     color: 'red',
-      //     dashArray: '3'
-      //   }).addTo(map)
-      // })
     }
   }
 }
@@ -448,6 +333,27 @@ export default {
 .legend {
     line-height: 18px;
     color: #555;
+}
+.text-disclaimer {
+  top:20%;
+  width: 100%;
+  position: absolute;
+  text-align: center;
+  color: #fff;
+}
+.backdrop {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background: black;
+  opacity: 0.5;
+}
+
+.title{
+  font-size: large;
+  font-weight: bold;
 }
 
 </style>
