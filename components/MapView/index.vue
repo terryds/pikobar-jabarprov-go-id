@@ -1,746 +1,533 @@
 <template>
-  <div style="width:100%; height:100%">
-    <div id="map" />
-    <div id="corona-filter" class="esri-widget">
-      <div data-corona="Positif" class="corona-item visible-corona" v-bind:class="[activeLayer === 'positif' ? 'legend-active' : 'legend-disabled']">
-        <div class="legend-color" style="background:rgb(235, 87, 87, 0.7)" />
-        <div class="legend-text">Positif</div>
-      </div>
-      <div data-corona="PDP" class="corona-item visible-corona"  v-bind:class="[activeLayer === 'pdp' ? 'legend-active' : 'legend-disabled']">
-        <div class="legend-color" style="background:rgb(242, 201, 76, 0.7)" />
-        <div class="legend-text">PDP</div>
-      </div>
-      <div data-corona="ODP" class="corona-item visible-corona" v-bind:class="[activeLayer === 'odp' ? 'legend-active' : 'legend-disabled']">
-        <div class="legend-color" style="background:rgb(45, 156, 219, 0.7)" />
-        <div class="legend-text">ODP</div>
-      </div>
-    </div>
-    <div class="disclaimer" v-if="!isHidden">
-    <div class="backdrop" />
-      <div class="text-disclaimer">
-        <div class="title">Peta Sebaran Kasus COVID-19 di Jawa Barat</div>
-        <div class="subtitle">Sumber: Dinas Kesehatan Provinsi Jawa Barat</div>
-        <div class="description mt-2">
-          <br>
-          <b>Data yang ditampilkan akan terus diperbarui sesuai dengan informasi yang diterima melalui <br>Pemerintah Provinsi Jawa Barat.</b>
-        </div>
-        <button class="btn btn-success mt-3" style="color: #fff" v-on:click="isHidden = !isHidden"><b>Lihat Peta</b></button>
-      </div>
-    </div>
+  <div style="width:100%; height:100%; z-index:0">
+    <div id="map-wrap" style="height: 100%" />
+    <div id="info-legend" class="info legend" />
   </div>
 </template>
 
 <script>
-import { loadModules } from 'esri-loader'
 import axios from 'axios'
+import * as turf from '@turf/turf'
+// import reverse from 'turf-reverse'
 import kotaGeojson from '~/static/kota.json'
 
 export default {
   name: 'MapView',
-  components: {
-  },
-  head () {
-    return {
-      script: [
-        { src: 'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js' },
-        { src: 'https://unpkg.com/leaflet@1.6.0/dist/leaflet.js' },
-        { src: 'https://unpkg.com/esri-leaflet@2.3.3/dist/esri-leaflet.js' }
-      ],
-      link: [
-        { rel: 'stylesheet', href: 'https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css' },
-        { rel: 'stylesheet', href: 'https://unpkg.com/leaflet@1.6.0/dist/leaflet.css' }
-      ]
-    }
-  },
   data () {
     return {
-      activeLayer: 'odp',
       kotaGeojson,
-      isHidden: false,
-      jsonDataSatuan: [],
+      jsonData: [],
       jsonDataKota: [
         {
           kode: '3204',
-          nama: 'Kab. Bandung',
-          jumlah_positif: 0,
-          jumlah_odp: 0,
-          jumlah_pdp: 0
+          nama: 'Kab. Bandung'
         },
         {
           kode: '3217',
-          nama: 'Kab. Bandung Barat',
-          jumlah_positif: 0,
-          jumlah_odp: 0,
-          jumlah_pdp: 0
+          nama: 'Kab. Bandung Barat'
         },
         {
           kode: '3216',
-          nama: 'Kab. Bekasi',
-          jumlah_positif: 0,
-          jumlah_odp: 0,
-          jumlah_pdp: 0
+          nama: 'Kab. Bekasi'
         },
         {
           kode: '3201',
-          nama: 'Kab. Bogor',
-          jumlah_positif: 0,
-          jumlah_odp: 0,
-          jumlah_pdp: 0
+          nama: 'Kab. Bogor'
         },
         {
           kode: '3207',
-          nama: 'Kab. Ciamis',
-          jumlah_positif: 0,
-          jumlah_positif_persentase: 0,
-          jumlah_odp: 0,
-          jumlah_odp_persentase: 0,
-          jumlah_pdp: 0,
-          jumlah_pdp_persentase: 0
+          nama: 'Kab. Ciamis'
         },
         {
           kode: '3203',
-          nama: 'Kab. Cianjur',
-          jumlah_positif: 0,
-          jumlah_positif_persentase: 0,
-          jumlah_odp: 0,
-          jumlah_odp_persentase: 0,
-          jumlah_pdp: 0,
-          jumlah_pdp_persentase: 0
+          nama: 'Kab. Cianjur'
         },
         {
           kode: '3209',
-          nama: 'Kab. Cirebon',
-          jumlah_positif: 0,
-          jumlah_positif_persentase: 0,
-          jumlah_odp: 0,
-          jumlah_odp_persentase: 0,
-          jumlah_pdp: 0,
-          jumlah_pdp_persentase: 0
+          nama: 'Kab. Cirebon'
         },
         {
           kode: '3205',
-          nama: 'Kab. Garut',
-          jumlah_positif: 0,
-          jumlah_positif_persentase: 0,
-          jumlah_odp: 0,
-          jumlah_odp_persentase: 0,
-          jumlah_pdp: 0,
-          jumlah_pdp_persentase: 0
+          nama: 'Kab. Garut'
         },
         {
           kode: '3212',
-          nama: 'Kab. Indramayu',
-          jumlah_positif: 0,
-          jumlah_positif_persentase: 0,
-          jumlah_odp: 0,
-          jumlah_odp_persentase: 0,
-          jumlah_pdp: 0,
-          jumlah_pdp_persentase: 0
+          nama: 'Kab. Indramayu'
         },
         {
           kode: '3215',
-          nama: 'Kab. Karawang',
-          jumlah_positif: 0,
-          jumlah_positif_persentase: 0,
-          jumlah_odp: 0,
-          jumlah_odp_persentase: 0,
-          jumlah_pdp: 0,
-          jumlah_pdp_persentase: 0
+          nama: 'Kab. Karawang'
         },
         {
           kode: '3208',
-          nama: 'Kab. Kuningan',
-          jumlah_positif: 0,
-          jumlah_positif_persentase: 0,
-          jumlah_odp: 0,
-          jumlah_odp_persentase: 0,
-          jumlah_pdp: 0,
-          jumlah_pdp_persentase: 0
+          nama: 'Kab. Kuningan'
         },
         {
           kode: '3210',
-          nama: 'Kab. Majalengka',
-          jumlah_positif: 0,
-          jumlah_positif_persentase: 0,
-          jumlah_odp: 0,
-          jumlah_odp_persentase: 0,
-          jumlah_pdp: 0,
-          jumlah_pdp_persentase: 0
+          nama: 'Kab. Majalengka'
         },
         {
           kode: '3218',
-          nama: 'Kab. Pangandaran',
-          jumlah_positif: 0,
-          jumlah_positif_persentase: 0,
-          jumlah_odp: 0,
-          jumlah_odp_persentase: 0,
-          jumlah_pdp: 0,
-          jumlah_pdp_persentase: 0
+          nama: 'Kab. Pangandaran'
         },
         {
           kode: '3214',
-          nama: 'Kab. Purwarkarta',
-          jumlah_positif: 0,
-          jumlah_positif_persentase: 0,
-          jumlah_odp: 0,
-          jumlah_odp_persentase: 0,
-          jumlah_pdp: 0,
-          jumlah_pdp_persentase: 0
+          nama: 'Kab. Purwarkarta'
         },
         {
           kode: '3213',
-          nama: 'Kab. Subang',
-          jumlah_positif: 0,
-          jumlah_positif_persentase: 0,
-          jumlah_odp: 0,
-          jumlah_odp_persentase: 0,
-          jumlah_pdp: 0,
-          jumlah_pdp_persentase: 0
+          nama: 'Kab. Subang'
         },
         {
           kode: '3202',
-          nama: 'Kab. Sukabumi',
-          jumlah_positif: 0,
-          jumlah_positif_persentase: 0,
-          jumlah_odp: 0,
-          jumlah_odp_persentase: 0,
-          jumlah_pdp: 0,
-          jumlah_pdp_persentase: 0
+          nama: 'Kab. Sukabumi'
         },
         {
           kode: '3211',
-          nama: 'Kab. Sumedang',
-          jumlah_positif: 0,
-          jumlah_positif_persentase: 0,
-          jumlah_odp: 0,
-          jumlah_odp_persentase: 0,
-          jumlah_pdp: 0,
-          jumlah_pdp_persentase: 0
+          nama: 'Kab. Sumedang'
         },
         {
           kode: '3206',
-          nama: 'Kab. Tasikmalaya',
-          jumlah_positif: 0,
-          jumlah_positif_persentase: 0,
-          jumlah_odp: 0,
-          jumlah_odp_persentase: 0,
-          jumlah_pdp: 0,
-          jumlah_pdp_persentase: 0
+          nama: 'Kab. Tasikmalaya'
         },
         {
           kode: '3273',
-          nama: 'Kota Bandung',
-          jumlah_positif: 0,
-          jumlah_positif_persentase: 0,
-          jumlah_odp: 0,
-          jumlah_odp_persentase: 0,
-          jumlah_pdp: 0,
-          jumlah_pdp_persentase: 0
+          nama: 'Kota Bandung'
         },
         {
           kode: '3279',
-          nama: 'Kota Banjar',
-          jumlah_positif: 0,
-          jumlah_positif_persentase: 0,
-          jumlah_odp: 0,
-          jumlah_odp_persentase: 0,
-          jumlah_pdp: 0,
-          jumlah_pdp_persentase: 0
+          nama: 'Kota Banjar'
         },
         {
           kode: '3275',
-          nama: 'Kota Bekasi',
-          jumlah_positif: 0,
-          jumlah_positif_persentase: 0,
-          jumlah_odp: 0,
-          jumlah_odp_persentase: 0,
-          jumlah_pdp: 0,
-          jumlah_pdp_persentase: 0
+          nama: 'Kota Bekasi'
         },
         {
           kode: '3271',
-          nama: 'Kota Bogor',
-          jumlah_positif: 0,
-          jumlah_positif_persentase: 0,
-          jumlah_odp: 0,
-          jumlah_odp_persentase: 0,
-          jumlah_pdp: 0,
-          jumlah_pdp_persentase: 0
+          nama: 'Kota Bogor'
         },
         {
           kode: '3277',
-          nama: 'Kota Cimahi',
-          jumlah_positif: 0,
-          jumlah_positif_persentase: 0,
-          jumlah_odp: 0,
-          jumlah_odp_persentase: 0,
-          jumlah_pdp: 0,
-          jumlah_pdp_persentase: 0
+          nama: 'Kota Cimahi'
         },
         {
           kode: '3274',
-          nama: 'Kota Cirebon',
-          jumlah_positif: 0,
-          jumlah_positif_persentase: 0,
-          jumlah_odp: 0,
-          jumlah_odp_persentase: 0,
-          jumlah_pdp: 0,
-          jumlah_pdp_persentase: 0
+          nama: 'Kota Cirebon'
         },
         {
           kode: '3276',
-          nama: 'Kota Depok',
-          jumlah_positif: 0,
-          jumlah_positif_persentase: 0,
-          jumlah_odp: 0,
-          jumlah_odp_persentase: 0,
-          jumlah_pdp: 0,
-          jumlah_pdp_persentase: 0
+          nama: 'Kota Depok'
         },
         {
           kode: '3272',
-          nama: 'Kota Sukabumi',
-          jumlah_positif: 0,
-          jumlah_positif_persentase: 0,
-          jumlah_odp: 0,
-          jumlah_odp_persentase: 0,
-          jumlah_pdp: 0,
-          jumlah_pdp_persentase: 0
+          nama: 'Kota Sukabumi'
         },
         {
           kode: '3278',
-          nama: 'Kota Tasikmalaya',
-          jumlah_positif: 0,
-          jumlah_positif_persentase: 0,
-          jumlah_odp: 0,
-          jumlah_odp_persentase: 0,
-          jumlah_pdp: 0,
-          jumlah_pdp_persentase: 0
+          nama: 'Kota Tasikmalaya'
         }
-      ],
-      maxPasien: {
-        positif: 0,
-        pdp: 0,
-        odp: 0
-      }
+      ]
     }
   },
-  created () {
-  },
   mounted () {
-    this.fetchDataSatuan()
+    this.fetchData()
   },
   methods: {
-    fetch () {
-      let j = 0
-      this.kotaGeojson.features.forEach((element) => {
-        const pasienCorona = this.jsonDataKota.find(x => x.kode === element.properties.bps_kode)
-        this.kotaGeojson.features[j].properties.jumlah_positif = pasienCorona.jumlah_positif
-        this.kotaGeojson.features[j].properties.jumlah_odp = pasienCorona.jumlah_odp
-        this.kotaGeojson.features[j].properties.jumlah_pdp = pasienCorona.jumlah_pdp
+    createMap () {
+      // const blueIcon = this.$L.icon({ iconUrl: 'blue.png' })
+      const map = this.$L.map('map-wrap').setView([-6.914744, 107.609810], 8)
+      this.$L.tileLayer('https://cartodb-basemaps-d.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors',
+        maxZoom: 18,
+        tileSize: 512,
+        zoomOffset: -1
+      }).addTo(map)
 
-        if (this.maxPasien.positif < pasienCorona.jumlah_positif) {
-          this.maxPasien.positif = pasienCorona.jumlah_positif
+      const markerClusters = {}
+      markerClusters.positif = this.$L.markerClusterGroup({
+        singleMarkerMode: true,
+        iconCreateFunction: (cluster) => {
+          // get the number of items in the cluster
+          let count = cluster.getChildCount()
+          const digits = (count + '').length
+          if (count === 1) {
+            count = ''
+          }
+          return this.$L.divIcon({
+            html: count,
+            className: 'cluster cluster-positif digits-' + digits,
+            iconSize: null
+          })
         }
-
-        if (this.maxPasien.pdp < pasienCorona.jumlah_pdp) {
-          this.maxPasien.pdp = pasienCorona.jumlah_pdp
-        }
-
-        if (this.maxPasien.odp < pasienCorona.jumlah_odp) {
-          this.maxPasien.odp = pasienCorona.jumlah_odp
-        }
-        j++
       })
-      this.createMap()
+      markerClusters.pdp = this.$L.markerClusterGroup({
+        singleMarkerMode: true,
+        iconCreateFunction: (cluster) => {
+          // get the number of items in the cluster
+          let count = cluster.getChildCount()
+          const digits = (count + '').length
+          if (count === 1) {
+            count = ''
+          }
+          return this.$L.divIcon({
+            html: count,
+            className: 'cluster cluster-pdp digits-' + digits,
+            iconSize: null
+          })
+        }
+      })
+      markerClusters.odp = this.$L.markerClusterGroup({
+        singleMarkerMode: true,
+        iconCreateFunction: (cluster) => {
+          // get the number of items in the cluster
+          let count = cluster.getChildCount()
+          const digits = (count + '').length
+          if (count === 1) {
+            count = ''
+          }
+          return this.$L.divIcon({
+            html: count,
+            className: 'cluster cluster-odp digits-' + digits,
+            iconSize: null
+          })
+        }
+      })
+      this.jsonData.forEach((element) => {
+        console.log(element)
+        if (element.alamat_latitude !== null) {
+          const m = this.$L.marker([element.alamat_latitude, element.alamat_longitude])
+          if (element.status === 'Positif') {
+            markerClusters.positif.addLayer(m)
+          } else if (element.status === 'PDP') {
+            markerClusters.pdp.addLayer(m)
+          } else {
+            markerClusters.odp.addLayer(m)
+          }
+        }
+      })
+      map.addLayer(markerClusters.positif)
+      map.addLayer(markerClusters.pdp)
+      map.addLayer(markerClusters.odp)
     },
-    fetchDataSatuan () {
+    fetchData () {
       const self = this
       axios
         .get('https://covid19-public.digitalservice.id/analytics/longlat/')
         .then(function (response) {
-          self.jsonDataSatuan = response.data.data
-
-          // by Kota
-          for (let i = 0; i < self.jsonDataSatuan.length; i++) {
-            for (let j = 0; j < self.jsonDataKota.length; j++) {
-              if (self.jsonDataSatuan[i].kode_kabkot === self.jsonDataKota[j].kode.toString()) {
-                if (self.jsonDataSatuan[i].status === 'Positif') {
-                  self.jsonDataKota[j].jumlah_positif += 1
-                } else if (self.jsonDataSatuan[i].status === 'ODP') {
-                  self.jsonDataKota[j].jumlah_odp += 1
-                } else if (self.jsonDataSatuan[i].status === 'PDP') {
-                  self.jsonDataKota[j].jumlah_pdp += 1
-                }
-              }
-            }
-          }
-          self.fetch()
+          self.jsonData = response.data.data
+          self.tesMap()
         })
         .catch(function (error) {
           console.log(error)
         })
     },
-    createMap () {
-      // lazy load the required ArcGIS API for JavaScript modules and CSS
-      loadModules(['esri/Map', 'esri/Graphic', 'esri/PopupTemplate', 'esri/views/MapView', 'esri/layers/FeatureLayer', 'esri/widgets/Legend', 'esri/geometry/Point', 'esri/symbols/SimpleMarkerSymbol', 'esri/widgets/Expand', 'esri/renderers/UniqueValueRenderer', 'esri/geometry/Polygon', 'esri/layers/GeoJSONLayer', 'esri/symbols/SimpleFillSymbol', 'esri/layers/GraphicsLayer', 'esri/Basemap', 'esri/layers/TileLayer'], { css: true }).then(([ArcGISMap, Graphic, PopupTemplate, MapView, FeatureLayer, Legend, Point, SimpleMarkerSymbol, Expand, UniqueValueRenderer, Polygon, GeoJSONLayer, SimpleFillSymbol, GraphicsLayer, Basemap, TileLayer]) => {
-        // const rbi = new Basemap({
-        //   baseLayers: [
-        //     // Menggunakan TileLayer untuk ambil mapserver supaya lebih cepat load peta nya
-        //     // https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-TileLayer.html
-        //     new TileLayer({
-        //       // Popular basemap
-        //       // https://developers.arcgis.com/javascript/latest/api-reference/esri-Map.html#basemap
-        //       url: 'https://services.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer'
-        //     }),
-        //     new TileLayer({
-        //       url: 'https://portal.ina-sdi.or.id/arcgis/rest/services/RBI/Basemap/MapServer'
-        //     })
-        //   ],
-        //   title: 'Rupa Bumi Indonesia',
-        //   id: 'rbi',
-        //   thumbnailUrl: 'https://portal.ina-sdi.or.id/arcgis/rest/services/RBI/Basemap/MapServer/info/thumbnail'
-        // })
-
-        const maps = new ArcGISMap({
-          // basemap: rbi
-          basemap: 'topo'
-        })
-        this.view = new MapView({
-          container: 'map',
-          map: maps,
-          center: [107.609810, -6.914744],
-          zoom: 8
-        })
-        this.view.ui.move('zoom', 'bottom-right')
-        const simpleSymbol = {
-          positif: [],
-          pdp: [],
-          odp: []
-        }
-        simpleSymbol.positif = new SimpleFillSymbol({
-          color: [235, 87, 87, 0.7],
-          style: 'solid',
-          outline: {
-            color: 'white',
-            width: 0
-          }
-        })
-        simpleSymbol.pdp = new SimpleFillSymbol({
-          color: [242, 201, 76, 0.7],
-          style: 'solid',
-          outline: {
-            color: 'white',
-            width: 0
-          }
-        })
-        simpleSymbol.odp = new SimpleFillSymbol({
-          color: [45, 156, 219, 0.7],
-          style: 'solid',
-          outline: {
-            color: 'white',
-            width: 0
-          }
-        })
-
-        const pgCorona = {
-          positif: [],
-          pdp: [],
-          odp: []
-        }
-        const polygonGraphic = []
-        this.kotaGeojson.features.forEach((element) => {
-          const polygon = new Polygon({
-            rings: element.geometry.coordinates[0]
-          })
-
-          polygonGraphic.positif = new Graphic({
-            geometry: polygon,
-            attributes: {
-              status: 'Positif',
-              kota: element.properties.kemendagri_nama,
-              jumlah: element.properties.jumlah_positif
-            },
-            symbol: simpleSymbol.positif
-          })
-          pgCorona.positif.push(polygonGraphic.positif)
-
-          polygonGraphic.pdp = new Graphic({
-            geometry: polygon,
-            attributes: {
-              status: 'PDP',
-              kota: element.properties.kemendagri_nama,
-              jumlah: element.properties.jumlah_pdp
-            },
-            symbol: simpleSymbol.pdp
-          })
-          pgCorona.pdp.push(polygonGraphic.pdp)
-
-          polygonGraphic.odp = new Graphic({
-            geometry: polygon,
-            attributes: {
-              status: 'ODP',
-              kota: element.properties.kemendagri_nama,
-              jumlah: element.properties.jumlah_odp
-            },
-            symbol: simpleSymbol.odp
-          })
-          pgCorona.odp.push(polygonGraphic.odp)
-        })
-
-        const template = new PopupTemplate({
-          title: 'Detail Data',
-          content: [
-            {
-              type: 'fields',
-              fieldInfos: [
-                {
-                  fieldName: 'kota',
-                  label: 'Kota'
-                },
-                {
-                  fieldName: 'status',
-                  label: 'Status'
-                },
-                {
-                  fieldName: 'jumlah',
-                  label: 'Jumlah'
-                }
-              ]
+    tesMap () {
+      const map = this.$L.map('map-wrap').setView([-7.004126726629371, 107.17987060546874], 8)
+      this.$L.tileLayer('https://cartodb-basemaps-d.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors',
+        maxZoom: 18,
+        tileSize: 512,
+        zoomOffset: -1
+      }).addTo(map)
+      // const kotaLeaflet = this.$L.geoJSON(this.kotaGeojson, {
+      //   onEachFeature: (feature, layer) => {
+      //     console.log(layer)
+      //   }
+      // })
+      const kotaCluster = []
+      this.jsonDataKota.forEach((element) => {
+        const markerClusters = []
+        markerClusters.positif = this.$L.markerClusterGroup({
+          singleMarkerMode: true,
+          maxClusterRadius: 10000,
+          spiderfyOnMaxZoom: false,
+          showCoverageOnHover: false,
+          zoomToBoundsOnClick: false,
+          spiderLegPolylineOptions: { weight: 1.5, color: '#222', opacity: 0 },
+          iconCreateFunction: (cluster) => {
+            // get the number of items in the cluster
+            let count = cluster.getChildCount()
+            const digits = (count + '').length
+            if (count === 1) {
+              count = ''
             }
-          ]
-        })
-        const fields = [
-          {
-            name: 'ObjectID',
-            alias: 'ObjectID',
-            type: 'oid'
-          },
-          {
-            name: 'status',
-            alias: 'Status',
-            type: 'string'
-          },
-          {
-            name: 'kota',
-            alias: 'Kab/Kota',
-            type: 'string'
-          },
-          {
-            name: 'jumlah',
-            alias: 'Jumlah',
-            type: 'string'
+            return this.$L.divIcon({
+              html: count,
+              className: 'cluster cluster-positif digits-' + digits,
+              iconSize: null
+            })
           }
-        ]
-        const renderer = []
-        renderer.positif = {
-          type: 'simple',
-          symbol: simpleSymbol.positif,
-          visualVariables: {
-            type: 'opacity',
-            field: 'jumlah',
-            stops: [
-              { value: 0, opacity: 0 },
-              { value: this.maxPasien.positif / 4, opacity: 0.5 },
-              { value: this.maxPasien.odp / 3, opacity: 0.6 },
-              { value: this.maxPasien.positif / 2, opacity: 0.8 },
-              { value: this.maxPasien.positif, opacity: 1 }
-            ]
+        })
+        markerClusters.pdp = this.$L.markerClusterGroup({
+          singleMarkerMode: true,
+          maxClusterRadius: 10000,
+          spiderfyOnMaxZoom: false,
+          showCoverageOnHover: false,
+          zoomToBoundsOnClick: false,
+          iconCreateFunction: (cluster) => {
+            // get the number of items in the cluster
+            let count = cluster.getChildCount()
+            const digits = (count + '').length
+            if (count === 1) {
+              count = ''
+            }
+            return this.$L.divIcon({
+              html: count,
+              className: 'cluster cluster-pdp digits-' + digits,
+              iconSize: null
+            })
           }
-        }
-
-        renderer.pdp = {
-          type: 'simple',
-          symbol: simpleSymbol.pdp,
-          visualVariables: {
-            type: 'opacity',
-            field: 'jumlah',
-            stops: [
-              { value: 0, opacity: 0 },
-              { value: this.maxPasien.pdp / 4, opacity: 0.5 },
-              { value: this.maxPasien.odp / 3, opacity: 0.6 },
-              { value: this.maxPasien.pdp / 2, opacity: 0.8 },
-              { value: this.maxPasien.pdp, opacity: 1 }
-            ]
+        })
+        markerClusters.odp = this.$L.markerClusterGroup({
+          singleMarkerMode: true,
+          maxClusterRadius: 10000,
+          spiderfyOnMaxZoom: false,
+          showCoverageOnHover: false,
+          zoomToBoundsOnClick: false,
+          iconCreateFunction: (cluster) => {
+            // get the number of items in the cluster
+            let count = cluster.getChildCount()
+            const digits = (count + '').length
+            if (count === 1) {
+              count = ''
+            }
+            return this.$L.divIcon({
+              html: count,
+              className: 'cluster cluster-odp digits-' + digits,
+              iconSize: null
+            })
           }
-        }
-
-        renderer.odp = {
-          type: 'simple',
-          symbol: simpleSymbol.odp,
-          visualVariables: {
-            type: 'opacity',
-            field: 'jumlah',
-            stops: [
-              { value: 0, opacity: 0 },
-              { value: this.maxPasien.odp / 4, opacity: 0.5 },
-              { value: this.maxPasien.odp / 3, opacity: 0.6 },
-              { value: this.maxPasien.odp / 2, opacity: 0.8 },
-              { value: this.maxPasien.odp, opacity: 1 }
-            ]
-          }
-        }
-        const featureLayerCorona = []
-        featureLayerCorona.positif = new FeatureLayer({
-          source: pgCorona.positif,
-          renderer: renderer.positif,
-          fields,
-          popupTemplate: template
         })
-        // maps.add(featureLayerCorona.positif)
-
-        featureLayerCorona.pdp = new FeatureLayer({
-          source: pgCorona.pdp,
-          renderer: renderer.pdp,
-          fields,
-          popupTemplate: template
-        })
-        // maps.add(featureLayerCorona.pdp)
-
-        featureLayerCorona.odp = new FeatureLayer({
-          source: pgCorona.odp,
-          renderer: renderer.odp,
-          fields,
-          popupTemplate: template
-        })
-        maps.add(featureLayerCorona.odp)
-
-        const legend = new Legend({
-          view: this.view
-          // layerInfos: [{
-          //   layers: featureLayerCorona,
-          //   title: 'Jumlah Data Pasien'
-          // }]
-        })
-        const expandLegend = new Expand({
-          view: this.view,
-          content: legend
-        })
-        this.view.ui.add(expandLegend, 'bottom-left')
-
-        const coronaElement = document.getElementById('corona-filter')
-        // coronaElement.style.visibility = 'visible'
-
-        // const coronaExpand = new Expand({
-        //   view: this.view,
-        //   content: coronaElement,
-        //   expandIconClass: 'esri-icon-filter',
-        //   group: 'bottom-left'
-        // })
-        // this.view.ui.add(coronaExpand, 'top-right')
-
-        coronaElement.addEventListener('click', (event) => {
-          const selectedStatus = event.target.getAttribute('data-corona')
-          maps.removeAll()
-          // if (selectedStatus === 'Semua') {
-          //   maps.add(featureLayerCorona.positif)
-          //   maps.add(featureLayerCorona.pdp)
-          //   maps.add(featureLayerCorona.odp)
-          // } else
-          if (selectedStatus === 'Positif') {
-            maps.add(featureLayerCorona.positif)
-            this.activeLayer = 'positif'
-          } else if (selectedStatus === 'PDP') {
-            maps.add(featureLayerCorona.pdp)
-            this.activeLayer = 'pdp'
+        kotaCluster[element.kode] = markerClusters
+      })
+      console.log(this.kotaGeojson)
+      this.jsonData.forEach((element) => {
+        console.log('tes')
+        if (element.alamat_latitude !== null) {
+          const m = this.$L.marker([element.alamat_latitude, element.alamat_longitude])
+          m.bindPopup(`
+            <b> Kab/Kota </b> : ${element.kabkot_str} <br>
+            <b> Status </b> : ${element.status} <br>
+            <b> Jenis Kelamin </b> : ${element.jenis_kelamin_str} <br>
+            <b> Usia </b> : ${element.umur} 
+          `)
+          m.on('mouseover', function (e) {
+            this.openPopup()
+          })
+          m.on('mouseout', function (e) {
+            this.closePopup()
+          })
+          if (element.status === 'Positif') {
+            kotaCluster[element.kode_kabkot].positif.addLayer(m)
+          } else if (element.status === 'PDP') {
+            kotaCluster[element.kode_kabkot].pdp.addLayer(m)
           } else {
-            maps.add(featureLayerCorona.odp)
-            this.activeLayer = 'odp'
+            kotaCluster[element.kode_kabkot].odp.addLayer(m)
           }
+        }
+      })
+      this.jsonDataKota.forEach((element) => {
+        map.addLayer(kotaCluster[element.kode].positif)
+        map.addLayer(kotaCluster[element.kode].pdp)
+        map.addLayer(kotaCluster[element.kode].odp)
+
+        kotaCluster[element.kode].positif.on('clusterclick', (c) => {
+          console.log(c)
+          this.$L.popup().setLatLng(c.layer.getLatLng()).setContent(c.layer._childCount + ' kasus Positif di ' + element.nama).openOn(map)
+        }).on('clustermouseout', (c) => {
+          map.closePopup()
+        })
+        kotaCluster[element.kode].pdp.on('clusterclick', (c) => {
+          console.log(c)
+          this.$L.popup().setLatLng(c.layer.getLatLng()).setContent(c.layer._childCount + ' kasus PDP di ' + element.nama).openOn(map)
+        }).on('clustermouseout', (c) => {
+          map.closePopup()
+        })
+        kotaCluster[element.kode].odp.on('clusterclick', (c) => {
+          console.log(c)
+          this.$L.popup().setLatLng(c.layer.getLatLng()).setContent(c.layer._childCount + ' kasus ODP di ' + element.nama).openOn(map)
+        }).on('clustermouseout', (c) => {
+          map.closePopup()
         })
       })
-    }
-  },
-  beforeDestroy () {
-    if (this.view) {
-      // destroy the map view
-      this.view.container = null
+      // console.log(kotaLeaflet)
+      // const m = this.$L.marker([-7.004126726629371, 108.17987060546874])
+      // const polygon = this.$L.polygon([
+      //   [
+      //     -7.177200757107744,
+      //     107.11257934570312
+      //   ],
+      //   [
+      //     -7.177200757107744,
+      //     107.4462890625
+      //   ],
+      //   [
+      //     -6.908704023900704,
+      //     107.4462890625
+      //   ],
+      //   [
+      //     -6.908704023900704,
+      //     107.11257934570312
+      //   ],
+      //   [
+      //     -7.177200757107744,
+      //     107.11257934570312
+      //   ]
+      // ])
+
+      const polygon = {
+        type: 'Feature',
+        properties: {},
+        geometry: {
+          type: 'Polygon',
+          coordinates: [
+            [
+              [
+                107.11257934570312,
+                -7.177200757107744
+              ],
+              [
+                107.4462890625,
+                -7.177200757107744
+              ],
+              [
+                107.4462890625,
+                -6.908704023900704
+              ],
+              [
+                107.11257934570312,
+                -6.908704023900704
+              ],
+              [
+                107.11257934570312,
+                -7.177200757107744
+              ]
+            ]
+          ]
+        }
+      }
+
+      const point = turf.point([109.17987060546874, -7.004126726629371])
+
+      const isInside1 = turf.inside(point, polygon)
+
+      console.log(isInside1)
+
+      // console.log(reverse(polygon))
+      // your json var: states
+      // this.kotaGeojson.features.forEach((kota) => {
+      //   this.$L.polygon(kota.geometry.coordinates[0], {
+      //     weight: 1,
+      //     fillOpacity: 0.7,
+      //     color: 'red',
+      //     dashArray: '3'
+      //   }).addTo(map)
+      // })
     }
   }
 }
-
 </script>
-
-<style lang="scss" scoped>
-
-#map {
-  width: 100%; height: 100%;
+<style scoped>
+.leaflet-popup-content {
+    width: 130px;
+    padding: 5px;
+    line-height: 1.4;
 }
-#exampleModal {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
+.info {
+    padding: 6px 8px;
+    font: 14px/16px Arial, Helvetica, sans-serif;
+    background: white;
+    background: rgba(255,255,255,0.8);
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    border-radius: 5px;
 }
-.modal-dialog {
-  width: 100%;
-  height: 100%;
+.info h4 {
+    margin: 0 0 5px;
+    color: #777;
 }
-.text-disclaimer {
-  top:20%;
-  width: 100%;
-  position: absolute;
-  text-align: center;
-  color: #fff;
-}
-.backdrop {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  background: black;
-  opacity: 0.5;
+.legend {
+    line-height: 18px;
+    color: #555;
 }
 
-.title{
-  font-size: large;
-  font-weight: bold;
-}
-#corona-filter {
-  height: 160px;
-  position: absolute;
-  top: 0;
-  right: 0;
-  margin-right: 1em;
-  margin-top: 1em;
-  background: none
-}
+</style>
+<style>
+@import "leaflet.markercluster/dist/MarkerCluster.css";
+@import "leaflet.markercluster/dist/MarkerCluster.Default.css";
 
-.corona-item {
-  padding: 5px;
-  text-align: center;
-  vertical-align: baseline;
-  cursor: pointer;
-  height: 30px;
-  background: #fff;
-  margin: 1em;
-  border-radius: 5px;
+.legend i {
+    width: 18px;
+    height: 18px;
+    float: left;
+    margin-right: 8px;
+    opacity: 0.7;
 }
+  .cluster {
+    border-radius: 50%;
+    text-align: center;
+    color: white;
+    font-weight: 700;
+    font-family: monospace;
+  }
 
-.corona-item:focus {
-  background-color: dimgrey;
-}
+  .cluster-positif {
+    background: rgb(235, 87, 87, 0.9);
+  }
+  .cluster-pdp {
+    background: rgb(242, 201, 76, 0.9);
+  }
 
-.corona-item:hover {
-  background-color: dimgrey;
-}
+  .cluster-odp {
+    background: rgb(45, 156, 219, 0.9);
+  }
+  .cluster:before {
+    content: ' ';
+    position: absolute;
+    border-radius: 50%;
+    z-index: -1;
+    top: 1px;
+    left: 1px;
+    right: 1px;
+    bottom: 1px;
+    /* border: 1px solid white; */
+  }
 
-.legend-color {
-  width: 1.5em;
-  height: 1.5em;
-  float: left;
-  border-radius: 5px;
-}
+  .digits-1 {
+    font-size: 14px;
+    height: 28px;
+    width: 28px;
+    line-height: 28px;
+    margin-top: -14px;
+    margin-left: -14px;
+  }
 
-.legend-disabled {
-  opacity: 0.6;
-  background: #d3d3d3;
-}
+  .digits-2 {
+    font-size: 16px;
+    height: 34px;
+    width: 34px;
+    line-height: 35px;
+    margin-top: -17px;
+    margin-left: -17px;
+  }
 
-.legend-text{
-  float: left;
-  padding: 4px;
-  margin-left: 10px;
-}
+  .digits-3 {
+    font-size: 18px;
+    height: 48px;
+    width: 47px;
+    line-height: 47px;
+    /* border-width: 3px; */
+    margin-top: -24px;
+    margin-left: -24px;
+  }
+
+  .digits-4 {
+    font-size: 18px;
+    height: 58px;
+    width: 58px;
+    line-height: 57px;
+    /* border-width: 4px; */
+    margin-top: -29px;
+    margin-left: -29px;
+  }
+
 </style>

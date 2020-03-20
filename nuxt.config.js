@@ -35,7 +35,8 @@ export default {
   plugins: [
     { src: '~/plugins/service-worker.js', mode: 'client' },
     '~/plugins/vuex-router-sync.js',
-    { src: '~/plugins/vue-carousel.js', mode: 'client' }
+    { src: '~/plugins/vue-carousel.js', mode: 'client' },
+    { src: '~/plugins/vue-leaflet.js', ssr: false }
   ],
   /*
   ** Nuxt.js dev-modules
@@ -53,7 +54,8 @@ export default {
   ** Nuxt.js modules
   */
   modules: [
-    '@nuxtjs/pwa'
+    '@nuxtjs/pwa',
+    'nuxt-leaflet'
   ],
   pwa: {
     workbox: {
