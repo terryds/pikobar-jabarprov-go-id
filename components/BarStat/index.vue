@@ -4,10 +4,10 @@
       class="p-2 col-md m-2 "
       style="border-radius: 0.8rem; box-shadow: 0 0 4px 0px rgba(0,0,0,0.05), 0 4px 24px 0 rgba(0,0,0,0.1); background-color: #FCDFE0 !important; border: solid 1px #FFB4B5;"
     >
-      <h4 class="ml-3 mt-3" style="color: #4F4F4F;">
+      <h4 class="ml-3 mt-2" style="color: #4F4F4F;">
         <b>POSITIF COVID-19</b>
       </h4>
-      <div class="mt-3" style="display: flow-root;">
+      <div class="mt-1" style="display: flow-root;">
         <h3 class="ml-3 mr-3" style="font-size: 27px; float: left;">
           <b>Jawa Barat</b>
         </h3>
@@ -15,7 +15,7 @@
           <b>{{ jsonDataResult.total_positif_saat_ini }}</b>
         </h3>
       </div>
-      <div class="mt-1 mb-3" style="display: flow-root;">
+      <div class="mt-1 mb-2" style="display: flow-root;">
         <h3 class="ml-3 mr-3" style="font-size: 20px; float: left;">
           <b>Indonesia</b>
         </h3>
@@ -27,16 +27,17 @@
         type="LineChart"
         :data="lineChartPositifData"
         :options="lineChartPositifOptions"
+        style="position: absolute; bottom: 0px;"
       /> -->
     </div>
     <div
       class="p-1 col-md m-2 "
       style="border-radius: 0.8rem; box-shadow: 0 0 4px 0px rgba(0,0,0,0.05), 0 4px 24px 0 rgba(0,0,0,0.1); background-color: #D3EEE3 !important; border: solid 1px #91DCBD; "
     >
-      <h4 class="ml-3 mt-3" style="color: #4F4F4F;">
+      <h4 class="ml-3 mt-2" style="color: #4F4F4F;">
         <b>SEMBUH</b>
       </h4>
-      <div class="mt-3" style="display: flow-root;">
+      <div class="mt-1" style="display: flow-root;">
         <h3 class="ml-3 mr-3" style="font-size: 27px; float: left;">
           <b>Jawa Barat</b>
         </h3>
@@ -44,7 +45,7 @@
           <b>{{ jsonDataResult.total_sembuh }}</b>
         </h3>
       </div>
-      <div class="mt-1 mb-3" style="display: flow-root;">
+      <div class="mt-1 mb-1" style="display: flow-root;">
         <h3 class="ml-3 mr-3" style="font-size: 22px; float: left;">
           <b>Indonesia</b>
         </h3>
@@ -56,16 +57,17 @@
         type="LineChart"
         :data="lineChartSembuhData"
         :options="lineChartSembuhOptions"
+        style="position: absolute; bottom: 0px;"
       /> -->
     </div>
     <div
       class="p-1 col-md m-2 "
       style="border-radius: 0.8rem; box-shadow: 0 0 4px 0px rgba(0,0,0,0.05), 0 4px 24px 0 rgba(0,0,0,0.1); background-color: #FBEADF !important; border: solid 1px #FED1B1; "
     >
-      <h4 class="ml-3 mt-3" style="color: #4F4F4F;">
+      <h4 class="ml-3 mt-2" style="color: #4F4F4F;">
         <b>MENINGGAL</b>
       </h4>
-      <div class="mt-3" style="display: flow-root;">
+      <div class="mt-1" style="display: flow-root;">
         <h3 class="ml-3 mr-3" style="font-size: 27px; float: left;">
           <b>Jawa Barat</b>
         </h3>
@@ -73,7 +75,7 @@
           <b>{{ jsonDataResult.total_meninggal }}</b>
         </h3>
       </div>
-      <div class="mt-1 mb-3" style="display: flow-root;">
+      <div class="mt-1 mb-1" style="display: flow-root;">
         <h3 class="ml-3 mr-3" style="font-size: 20px; float: left;">
           <b>Indonesia</b>
         </h3>
@@ -85,6 +87,7 @@
         type="LineChart"
         :data="lineChartMeninggalData"
         :options="lineChartMeninggalOptions"
+        style="position: absolute; bottom: 0px;"
       /> -->
     </div>
   </div>

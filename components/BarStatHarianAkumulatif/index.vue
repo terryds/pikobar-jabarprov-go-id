@@ -1,11 +1,10 @@
 <template>
   <div>
-    <div>
-      <br>
+    <div class="row mt-2 mb-2 pl-2">
       <nuxt-link
         tag="a"
         style="border: 1px solid #2DAC55;"
-        class="block md:inline-block md:w-auto p-3 m-1 rounded-md text-center btnActive font-bold"
+        class="btn btn-md mr-2"
         :class="stat.isActiveHarian ? 'btnActive' : 'btnNonActive'"
         to=""
         @click.native="enableHarian"
@@ -15,14 +14,13 @@
       <nuxt-link
         tag="a"
         style="border: 1px solid #2DAC55;"
-        class="block md:inline-block md:w-auto p-3 m-1 rounded-md text-center btnNonAktive font-bold"
+        class="btn btn-md mr-2"
         :class="stat.isActiveAkumulatif ? 'btnActive' : 'btnNonActive'"
         to=""
         @click.native="enableAkumulatif"
       >
-        <font-awesome-icon :icon="fontChartLine" /> Akumulasi
+        <font-awesome-icon :icon="fontChartLine" /> Kumulatif
       </nuxt-link>
-      <br>
     </div>
 
     <div v-if="stat.isActiveHarian" class="row">
