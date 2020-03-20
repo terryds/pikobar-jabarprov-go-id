@@ -317,10 +317,6 @@ export default {
       axios
         .get('https://indonesia-covid-19.mathdro.id/api')
         .then(function (response) {
-          console.log(response.data)
-          console.log(response.data.jumlahKasus)
-          console.log(response.data.sembuh)
-          console.log(response.data.meninggal)
           self.jsonDataResult.total_positif_saat_ini_nasional = response.data.jumlahKasus
           self.jsonDataResult.total_sembuh_nasional = response.data.sembuh
           self.jsonDataResult.total_meninggal_nasional = response.data.meninggal
