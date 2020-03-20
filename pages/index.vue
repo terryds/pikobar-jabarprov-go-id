@@ -173,7 +173,7 @@
       <article class="flex flex-col lg:flex-row">
         <img
           v-lazy="'https://firebasestorage.googleapis.com/v0/b/jabarprov-covid19.appspot.com/o/public%2Fflatten.png?alt=media&token=afe8bb16-6cd5-4056-8d14-5c102f34a7c9'"
-          class="order-2 lg:order-1 w-full h-full mb-8 lg:w-1/2 lg:mr-8 object-cover object-center rounded-lg"
+          class="order-2 lg:order-1 w-full h-full mb-8 lg:w-1/2 lg:mr-8 object-contain md:object-cover object-center rounded-lg"
         >
         <div class="order-1 lg:order-2 lg:w-1/2">
           <p class="mb-4">
