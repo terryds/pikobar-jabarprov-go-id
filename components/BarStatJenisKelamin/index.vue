@@ -7,6 +7,38 @@
       <b>Jenis Kelamin</b>
     </h4>
     <hr>
+    <div class="row ml-2">
+      <nuxt-link
+        tag="a"
+        style="border: 1px solid #2DAC55;"
+        class="btn btn-sm m-1"
+        :class="stat.isPositif ? 'btnActive' : 'btnNonActive'"
+        to=""
+        @click.native="changeGroupJenisKelamin('Positif')"
+      >
+        Positif
+      </nuxt-link>
+      <nuxt-link
+        tag="a"
+        style="border: 1px solid #2DAC55;"
+        class="btn btn-sm m-1"
+        :class="stat.isODP ? 'btnActive' : 'btnNonActive'"
+        to=""
+        @click.native="changeGroupJenisKelamin('ODP')"
+      >
+        ODP
+      </nuxt-link>
+      <nuxt-link
+        tag="a"
+        style="border: 1px solid #2DAC55;"
+        class="btn btn-sm m-1"
+        :class="stat.isPDP ? 'btnActive' : 'btnNonActive'"
+        to=""
+        @click.native="changeGroupJenisKelamin('PDP')"
+      >
+        PDP
+      </nuxt-link>
+    </div>
     <GChart
       type="PieChart"
       :data="pieChartJenisKelaminData"
@@ -26,6 +58,11 @@ export default {
   },
   data () {
     return {
+      stat: {
+        isPositif: false,
+        isODP: false,
+        isPDP: true
+      },
       jsonDataSatuan: [
       ],
       jsonDataResult: {
@@ -105,30 +142,58 @@ export default {
           self.jsonDataSatuan = response.data.data
 
           // by jenis_kelamin
-          let tempJenisKelaminPria = 0
-          let tempJenisKelaminWanita = 0
-          let tempJenisKelaminNull = 0
-          for (let i = 0; i < self.jsonDataSatuan.length; i++) {
-            if (self.jsonDataSatuan[i].status === 'ODP') {
-              if (self.jsonDataSatuan[i].jenis_kelamin_str === 'Laki-laki') {
-                tempJenisKelaminPria += 1
-              } else if (self.jsonDataSatuan[i].jenis_kelamin_str === 'Perempuan') {
-                tempJenisKelaminWanita += 1
-              } else {
-                tempJenisKelaminNull += 1
-              }
-            }
-          }
-          self.pieChartJenisKelaminData = [
-            ['Jenis Kelamin', 'Data'],
-            ['Pria', tempJenisKelaminPria],
-            ['Wanita', tempJenisKelaminWanita],
-            ['N/A', tempJenisKelaminNull]
-          ]
+          self.changeGroupJenisKelamin('PDP')
         })
         .catch(function (error) {
           console.log(error)
         })
+    },
+    resetPieChartJenisKelaminData () {
+      this.pieChartJenisKelaminData = [
+        ['Jenis Kelamin', 'Data'],
+        ['Pria', 0],
+        ['Wanita', 0],
+        ['N/A', 0]
+      ]
+    },
+    changeGroupJenisKelamin (stat) {
+      const self = this
+      this.resetPieChartJenisKelaminData()
+      if (stat === 'Positif') {
+        this.stat.isPositif = true
+        this.stat.isODP = false
+        this.stat.isPDP = false
+      }
+      if (stat === 'ODP') {
+        this.stat.isPositif = false
+        this.stat.isODP = true
+        this.stat.isPDP = false
+      }
+      if (stat === 'PDP') {
+        this.stat.isPositif = false
+        this.stat.isODP = false
+        this.stat.isPDP = true
+      }
+      let tempJenisKelaminPria = 0
+      let tempJenisKelaminWanita = 0
+      let tempJenisKelaminNull = 0
+      for (let i = 0; i < self.jsonDataSatuan.length; i++) {
+        if (self.jsonDataSatuan[i].status === stat) {
+          if (self.jsonDataSatuan[i].jenis_kelamin_str === 'Laki-laki') {
+            tempJenisKelaminPria += 1
+          } else if (self.jsonDataSatuan[i].jenis_kelamin_str === 'Perempuan') {
+            tempJenisKelaminWanita += 1
+          } else {
+            tempJenisKelaminNull += 1
+          }
+        }
+      }
+      self.pieChartJenisKelaminData = [
+        ['Jenis Kelamin', 'Data'],
+        ['Pria', tempJenisKelaminPria],
+        ['Wanita', tempJenisKelaminWanita],
+        ['N/A', tempJenisKelaminNull]
+      ]
     }
   },
   head () {
@@ -141,3 +206,15 @@ export default {
 }
 
 </script>
+
+<style lang="scss" scoped>
+
+.btnActive {
+  color: #ffffff;
+  background-color: #2DAC55;
+}
+.btnNonActive {
+  color: #2DAC55;
+  background-color: #FFFFFF;
+}
+</style>
