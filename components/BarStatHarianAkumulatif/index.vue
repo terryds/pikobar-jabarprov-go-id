@@ -67,7 +67,7 @@
           style="border-radius: 0.8rem; box-shadow: 0 0 4px 0px rgba(0,0,0,0.05), 0 4px 24px 0 rgba(0,0,0,0.1);"
         >
           <h4 class="m-3">
-            <b>Akumulatif ODP</b><br>
+            <b>Kumulatif ODP</b><br>
             <b style="color: #828282;">(Orang Dalam Pemantauan)</b>
           </h4>
           <hr>
@@ -84,7 +84,7 @@
           style="border-radius: 0.8rem; box-shadow: 0 0 4px 0px rgba(0,0,0,0.05), 0 4px 24px 0 rgba(0,0,0,0.1);"
         >
           <h4 class="m-3">
-            <b>Akumulatif PDP</b><br>
+            <b>Kumulatif PDP</b><br>
             <b style="color: #828282;">(Pasien Dalam Pengawasan)</b>
           </h4>
           <hr>

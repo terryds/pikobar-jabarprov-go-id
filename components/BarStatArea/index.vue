@@ -54,7 +54,7 @@
           <div class="row m-1">
             <span style="width: 50%">
               <h4 style="color: #828282; font-weight: bolder;">
-                Jawa barat
+                Jawa Barat
               </h4>
             </span>
             <span style="width: 50%">
@@ -128,7 +128,7 @@
           <div class="row m-1">
             <span style="width: 50%">
               <h4 style="color: #828282; font-weight: bolder;">
-                Jawa barat
+                Jawa Barat
               </h4>
             </span>
             <span style="width: 50%">

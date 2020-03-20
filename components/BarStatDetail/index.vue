@@ -17,7 +17,7 @@
           </div>
         </div>
         <div style="margin-top: auto;">
-          <div class="col-md m-2 mr-4 ml-4">
+          <div class="col-md m-2 mr-4">
             <span style="color: #2DAC55; font-size: 27px; font-weight: bold;">{{ jsonDataResult.odp_selesai }}</span>
             <span style="color: #000000; font-size: 12px; font-weight: bold;">({{ jsonDataResult.odp_selesai_persen }}%)</span><br>
             <span style="color: #8A8A8A; font-size: 14px; font-weight: normal;">Selesai Pemantauan</span>
@@ -56,7 +56,7 @@
           </div>
         </div>
         <div style="margin-top: auto;">
-          <div class="col-md m-2 mr-4 ml-4">
+          <div class="col-md m-2 mr-4">
             <span style="color: #2DAC55; font-size: 27px; font-weight: bold;">{{ jsonDataResult.pdp_selesai }}</span>
             <span style="color: #000000; font-size: 12px; font-weight: bold;">({{ jsonDataResult.pdp_selesai_persen }}%)</span><br>
             <span style="color: #8A8A8A; font-size: 14px; font-weight: normal;">Selesai Pengawasan</span>
