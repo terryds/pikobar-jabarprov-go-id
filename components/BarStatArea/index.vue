@@ -1,8 +1,179 @@
 <template>
-  <div class="row">
-    <div
+  <div>
+    <div class="row mt-2 mb-2 pl-2">
+      <nuxt-link
+        tag="a"
+        style="border: 1px solid #2DAC55;"
+        class="btn btn-md mr-2"
+        :class="stat.isActiveHarian ? 'btnActive' : 'btnNonActive'"
+        to=""
+        @click.native="enableHarian"
+      >
+        <font-awesome-icon :icon="fontChartBar" /> Angka Harian
+      </nuxt-link>
+      <nuxt-link
+        tag="a"
+        style="border: 1px solid #2DAC55;"
+        class="btn btn-md mr-2"
+        :class="stat.isActiveAkumulatif ? 'btnActive' : 'btnNonActive'"
+        to=""
+        @click.native="enableAkumulatif"
+      >
+        <font-awesome-icon :icon="fontChartLine" /> Kumulatif
+      </nuxt-link>
+    </div>
+
+    <div v-if="stat.isActiveHarian" class="row mt-2 mb-2 p3">
+      <div style="overflow-x: auto; width: 100%; height: 100%; display: flex;">
+        <div
+          class="bg-white m-2 p-2"
+          style="border-radius: 0.8rem; box-shadow: 0 0 4px 0px rgba(0,0,0,0.05)"
+        >
+          <div class="row m-1">
+            <span style="width: 50%">
+              <h4 style="color: #828282; font-weight: bolder;">
+                Nasional
+              </h4>
+            </span>
+            <span style="width: 50%">
+              <h4 style="color: #000000; font-weight: bolder; text-align: right; margin-right: 20px;">
+                ({{ dataTotalPositifAll[0] }})
+              </h4>
+            </span>
+          </div>
+          <GChart
+            type="BarChart"
+            :data="ChartNasionalDataHarian"
+            :options="barChartNasionalOptions"
+          />
+        </div>
+        <div
+          class="bg-white m-2 p-2"
+          style="border-radius: 0.8rem; box-shadow: 0 0 4px 0px rgba(0,0,0,0.05)"
+        >
+          <div class="row m-1">
+            <span style="width: 50%">
+              <h4 style="color: #828282; font-weight: bolder;">
+                Jawa barat
+              </h4>
+            </span>
+            <span style="width: 50%">
+              <h4 style="color: #000000; font-weight: bolder; text-align: right; margin-right: 20px;">
+                ({{ dataTotalPositifAll[1] }})
+              </h4>
+            </span>
+          </div>
+          <GChart
+            type="BarChart"
+            :data="ChartJawaBaratDataHarian"
+            :options="barChartNasionalOptions"
+          />
+        </div>
+        <div
+          v-for="(item, index) in jsonDataKota"
+          :key="item.kode"
+          class="bg-white m-2 p-2"
+          style="border-radius: 0.8rem; box-shadow: 0 0 4px 0px rgba(0,0,0,0.05)"
+        >
+          <div class="row m-1">
+            <div style="width: 50%">
+              <h4 style="color: #828282; font-weight: bolder;">
+                {{ item.nama }}
+              </h4>
+            </div>
+            <div style="width: 50%">
+              <h4 style="text-align: right; margin-right: 20px;">
+                <span style="color: #4FB769; font-weight: bolder;">{{ item.jumlah_positif_persentase }} %</span>
+                <span style="color: #000000; font-weight: bolder;">({{ item.jumlah_positif }})</span>
+              </h4>
+            </div>
+          </div>
+          <GChart
+            type="BarChart"
+            :data="jsonDataKota[index].dataHarian"
+            :options="barChartNasionalOptions"
+          />
+        </div>
+      </div>
+    </div>
+
+    <div v-if="stat.isActiveAkumulatif" class="row mt-2 mb-2 p3">
+      <div style="overflow-x: auto; width: 100%; height: 100%; display: flex;">
+        <div
+          class="bg-white m-2 p-2"
+          style="border-radius: 0.8rem; box-shadow: 0 0 4px 0px rgba(0,0,0,0.05)"
+        >
+          <div class="row m-1">
+            <span style="width: 50%">
+              <h4 style="color: #828282; font-weight: bolder;">
+                Nasional
+              </h4>
+            </span>
+            <span style="width: 50%">
+              <h4 style="color: #000000; font-weight: bolder; text-align: right; margin-right: 20px;">
+                ({{ dataTotalPositifAll[0] }})
+              </h4>
+            </span>
+          </div>
+          <GChart
+            type="LineChart"
+            :data="ChartNasionalDataAkumulatif"
+            :options="lineChartNasionalOptions"
+          />
+        </div>
+        <div
+          class="bg-white m-2 p-2"
+          style="border-radius: 0.8rem; box-shadow: 0 0 4px 0px rgba(0,0,0,0.05)"
+        >
+          <div class="row m-1">
+            <span style="width: 50%">
+              <h4 style="color: #828282; font-weight: bolder;">
+                Jawa barat
+              </h4>
+            </span>
+            <span style="width: 50%">
+              <h4 style="color: #000000; font-weight: bolder; text-align: right; margin-right: 20px;">
+                ({{ dataTotalPositifAll[1] }})
+              </h4>
+            </span>
+          </div>
+          <GChart
+            type="LineChart"
+            :data="ChartJawaBaratDataAkumulatif"
+            :options="lineChartNasionalOptions"
+          />
+        </div>
+        <div
+          v-for="(item, index) in jsonDataKota"
+          :key="item.kode"
+          class="bg-white m-2 p-2"
+          style="border-radius: 0.8rem; box-shadow: 0 0 4px 0px rgba(0,0,0,0.05)"
+        >
+          <div class="row m-1">
+            <div style="width: 50%">
+              <h4 style="color: #828282; font-weight: bolder;">
+                {{ item.nama }}
+              </h4>
+            </div>
+            <div style="width: 50%">
+              <h4 style="text-align: right; margin-right: 20px;">
+                <span style="color: #4FB769; font-weight: bolder;">{{ item.jumlah_positif_persentase }} %</span>
+                <span style="color: #000000; font-weight: bolder;">({{ item.jumlah_positif }})</span>
+              </h4>
+            </div>
+          </div>
+          <GChart
+            type="LineChart"
+            :data="jsonDataKota[index].dataAkumulatif"
+            :options="lineChartNasionalOptions"
+          />
+        </div>
+      </div>
+    </div>
+
+    <!-- <div
       class="bg-white p-1 col-md m-2 row"
-      style="border-radius: 0.8rem; box-shadow: 0 0 4px 0px rgba(0,0,0,0.05), 0 4px 24px 0 rgba(0,0,0,0.1);"
+      style="border-radius: 0.8rem; box-shadow: 0 0 4px 0px rgba(0,0,0,0.05)"
     >
       <div class="bg-white p-1 col-md-3 col-sm-12">
         <h4 class="m-3 mb-0" style="margin-bottom: 0px !important; font-size: 15px;">
@@ -43,22 +214,35 @@
           <span style="color: #000000; font-weight: bold;">({{ item.jumlah_positif }})</span>
         </div>
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 
 <script>
 import axios from 'axios'
+import { GChart } from 'vue-google-charts'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { faChartBar, faChartLine } from '@fortawesome/free-solid-svg-icons'
 
 export default {
   name: 'BarStatArea',
   components: {
+    GChart,
+    FontAwesomeIcon
   },
   data () {
     return {
+      stat: {
+        isActiveHarian: true,
+        isActiveAkumulatif: false
+      },
+      fontChartBar: faChartBar,
+      fontChartLine: faChartLine,
       jsonDataRekap: [
       ],
       jsonDataSatuan: [
+      ],
+      jsonDataNasional: [
       ],
       jsonDataResult: {
         odp: 0,
@@ -91,7 +275,15 @@ export default {
           jumlah_odp: 0,
           jumlah_odp_persentase: 0,
           jumlah_pdp: 0,
-          jumlah_pdp_persentase: 0
+          jumlah_pdp_persentase: 0,
+          dataHarian: [
+            ['Tanggal', 'Kasus Positif'],
+            ['0', 0]
+          ],
+          dataAkumulatif: [
+            ['Tanggal', 'Kasus Positif'],
+            ['0', 0]
+          ]
         },
         {
           kode: '3217',
@@ -101,7 +293,15 @@ export default {
           jumlah_odp: 0,
           jumlah_odp_persentase: 0,
           jumlah_pdp: 0,
-          jumlah_pdp_persentase: 0
+          jumlah_pdp_persentase: 0,
+          dataHarian: [
+            ['Tanggal', 'Kasus Positif'],
+            ['0', 0]
+          ],
+          dataAkumulatif: [
+            ['Tanggal', 'Kasus Positif'],
+            ['0', 0]
+          ]
         },
         {
           kode: '3216',
@@ -111,7 +311,15 @@ export default {
           jumlah_odp: 0,
           jumlah_odp_persentase: 0,
           jumlah_pdp: 0,
-          jumlah_pdp_persentase: 0
+          jumlah_pdp_persentase: 0,
+          dataHarian: [
+            ['Tanggal', 'Kasus Positif'],
+            ['0', 0]
+          ],
+          dataAkumulatif: [
+            ['Tanggal', 'Kasus Positif'],
+            ['0', 0]
+          ]
         },
         {
           kode: '3201',
@@ -121,7 +329,15 @@ export default {
           jumlah_odp: 0,
           jumlah_odp_persentase: 0,
           jumlah_pdp: 0,
-          jumlah_pdp_persentase: 0
+          jumlah_pdp_persentase: 0,
+          dataHarian: [
+            ['Tanggal', 'Kasus Positif'],
+            ['0', 0]
+          ],
+          dataAkumulatif: [
+            ['Tanggal', 'Kasus Positif'],
+            ['0', 0]
+          ]
         },
         {
           kode: '3207',
@@ -131,7 +347,15 @@ export default {
           jumlah_odp: 0,
           jumlah_odp_persentase: 0,
           jumlah_pdp: 0,
-          jumlah_pdp_persentase: 0
+          jumlah_pdp_persentase: 0,
+          dataHarian: [
+            ['Tanggal', 'Kasus Positif'],
+            ['0', 0]
+          ],
+          dataAkumulatif: [
+            ['Tanggal', 'Kasus Positif'],
+            ['0', 0]
+          ]
         },
         {
           kode: '3203',
@@ -141,7 +365,15 @@ export default {
           jumlah_odp: 0,
           jumlah_odp_persentase: 0,
           jumlah_pdp: 0,
-          jumlah_pdp_persentase: 0
+          jumlah_pdp_persentase: 0,
+          dataHarian: [
+            ['Tanggal', 'Kasus Positif'],
+            ['0', 0]
+          ],
+          dataAkumulatif: [
+            ['Tanggal', 'Kasus Positif'],
+            ['0', 0]
+          ]
         },
         {
           kode: '3209',
@@ -151,7 +383,15 @@ export default {
           jumlah_odp: 0,
           jumlah_odp_persentase: 0,
           jumlah_pdp: 0,
-          jumlah_pdp_persentase: 0
+          jumlah_pdp_persentase: 0,
+          dataHarian: [
+            ['Tanggal', 'Kasus Positif'],
+            ['0', 0]
+          ],
+          dataAkumulatif: [
+            ['Tanggal', 'Kasus Positif'],
+            ['0', 0]
+          ]
         },
         {
           kode: '3205',
@@ -161,7 +401,15 @@ export default {
           jumlah_odp: 0,
           jumlah_odp_persentase: 0,
           jumlah_pdp: 0,
-          jumlah_pdp_persentase: 0
+          jumlah_pdp_persentase: 0,
+          dataHarian: [
+            ['Tanggal', 'Kasus Positif'],
+            ['0', 0]
+          ],
+          dataAkumulatif: [
+            ['Tanggal', 'Kasus Positif'],
+            ['0', 0]
+          ]
         },
         {
           kode: '3212',
@@ -171,7 +419,15 @@ export default {
           jumlah_odp: 0,
           jumlah_odp_persentase: 0,
           jumlah_pdp: 0,
-          jumlah_pdp_persentase: 0
+          jumlah_pdp_persentase: 0,
+          dataHarian: [
+            ['Tanggal', 'Kasus Positif'],
+            ['0', 0]
+          ],
+          dataAkumulatif: [
+            ['Tanggal', 'Kasus Positif'],
+            ['0', 0]
+          ]
         },
         {
           kode: '3215',
@@ -181,7 +437,15 @@ export default {
           jumlah_odp: 0,
           jumlah_odp_persentase: 0,
           jumlah_pdp: 0,
-          jumlah_pdp_persentase: 0
+          jumlah_pdp_persentase: 0,
+          dataHarian: [
+            ['Tanggal', 'Kasus Positif'],
+            ['0', 0]
+          ],
+          dataAkumulatif: [
+            ['Tanggal', 'Kasus Positif'],
+            ['0', 0]
+          ]
         },
         {
           kode: '3208',
@@ -191,7 +455,15 @@ export default {
           jumlah_odp: 0,
           jumlah_odp_persentase: 0,
           jumlah_pdp: 0,
-          jumlah_pdp_persentase: 0
+          jumlah_pdp_persentase: 0,
+          dataHarian: [
+            ['Tanggal', 'Kasus Positif'],
+            ['0', 0]
+          ],
+          dataAkumulatif: [
+            ['Tanggal', 'Kasus Positif'],
+            ['0', 0]
+          ]
         },
         {
           kode: '3210',
@@ -201,7 +473,15 @@ export default {
           jumlah_odp: 0,
           jumlah_odp_persentase: 0,
           jumlah_pdp: 0,
-          jumlah_pdp_persentase: 0
+          jumlah_pdp_persentase: 0,
+          dataHarian: [
+            ['Tanggal', 'Kasus Positif'],
+            ['0', 0]
+          ],
+          dataAkumulatif: [
+            ['Tanggal', 'Kasus Positif'],
+            ['0', 0]
+          ]
         },
         {
           kode: '3218',
@@ -211,7 +491,15 @@ export default {
           jumlah_odp: 0,
           jumlah_odp_persentase: 0,
           jumlah_pdp: 0,
-          jumlah_pdp_persentase: 0
+          jumlah_pdp_persentase: 0,
+          dataHarian: [
+            ['Tanggal', 'Kasus Positif'],
+            ['0', 0]
+          ],
+          dataAkumulatif: [
+            ['Tanggal', 'Kasus Positif'],
+            ['0', 0]
+          ]
         },
         {
           kode: '3214',
@@ -221,7 +509,15 @@ export default {
           jumlah_odp: 0,
           jumlah_odp_persentase: 0,
           jumlah_pdp: 0,
-          jumlah_pdp_persentase: 0
+          jumlah_pdp_persentase: 0,
+          dataHarian: [
+            ['Tanggal', 'Kasus Positif'],
+            ['0', 0]
+          ],
+          dataAkumulatif: [
+            ['Tanggal', 'Kasus Positif'],
+            ['0', 0]
+          ]
         },
         {
           kode: '3213',
@@ -231,7 +527,15 @@ export default {
           jumlah_odp: 0,
           jumlah_odp_persentase: 0,
           jumlah_pdp: 0,
-          jumlah_pdp_persentase: 0
+          jumlah_pdp_persentase: 0,
+          dataHarian: [
+            ['Tanggal', 'Kasus Positif'],
+            ['0', 0]
+          ],
+          dataAkumulatif: [
+            ['Tanggal', 'Kasus Positif'],
+            ['0', 0]
+          ]
         },
         {
           kode: '3202',
@@ -241,7 +545,15 @@ export default {
           jumlah_odp: 0,
           jumlah_odp_persentase: 0,
           jumlah_pdp: 0,
-          jumlah_pdp_persentase: 0
+          jumlah_pdp_persentase: 0,
+          dataHarian: [
+            ['Tanggal', 'Kasus Positif'],
+            ['0', 0]
+          ],
+          dataAkumulatif: [
+            ['Tanggal', 'Kasus Positif'],
+            ['0', 0]
+          ]
         },
         {
           kode: '3211',
@@ -251,7 +563,15 @@ export default {
           jumlah_odp: 0,
           jumlah_odp_persentase: 0,
           jumlah_pdp: 0,
-          jumlah_pdp_persentase: 0
+          jumlah_pdp_persentase: 0,
+          dataHarian: [
+            ['Tanggal', 'Kasus Positif'],
+            ['0', 0]
+          ],
+          dataAkumulatif: [
+            ['Tanggal', 'Kasus Positif'],
+            ['0', 0]
+          ]
         },
         {
           kode: '3206',
@@ -261,7 +581,15 @@ export default {
           jumlah_odp: 0,
           jumlah_odp_persentase: 0,
           jumlah_pdp: 0,
-          jumlah_pdp_persentase: 0
+          jumlah_pdp_persentase: 0,
+          dataHarian: [
+            ['Tanggal', 'Kasus Positif'],
+            ['0', 0]
+          ],
+          dataAkumulatif: [
+            ['Tanggal', 'Kasus Positif'],
+            ['0', 0]
+          ]
         },
         {
           kode: '3273',
@@ -271,7 +599,15 @@ export default {
           jumlah_odp: 0,
           jumlah_odp_persentase: 0,
           jumlah_pdp: 0,
-          jumlah_pdp_persentase: 0
+          jumlah_pdp_persentase: 0,
+          dataHarian: [
+            ['Tanggal', 'Kasus Positif'],
+            ['0', 0]
+          ],
+          dataAkumulatif: [
+            ['Tanggal', 'Kasus Positif'],
+            ['0', 0]
+          ]
         },
         {
           kode: '3279',
@@ -281,7 +617,15 @@ export default {
           jumlah_odp: 0,
           jumlah_odp_persentase: 0,
           jumlah_pdp: 0,
-          jumlah_pdp_persentase: 0
+          jumlah_pdp_persentase: 0,
+          dataHarian: [
+            ['Tanggal', 'Kasus Positif'],
+            ['0', 0]
+          ],
+          dataAkumulatif: [
+            ['Tanggal', 'Kasus Positif'],
+            ['0', 0]
+          ]
         },
         {
           kode: '3275',
@@ -291,7 +635,15 @@ export default {
           jumlah_odp: 0,
           jumlah_odp_persentase: 0,
           jumlah_pdp: 0,
-          jumlah_pdp_persentase: 0
+          jumlah_pdp_persentase: 0,
+          dataHarian: [
+            ['Tanggal', 'Kasus Positif'],
+            ['0', 0]
+          ],
+          dataAkumulatif: [
+            ['Tanggal', 'Kasus Positif'],
+            ['0', 0]
+          ]
         },
         {
           kode: '3271',
@@ -301,7 +653,15 @@ export default {
           jumlah_odp: 0,
           jumlah_odp_persentase: 0,
           jumlah_pdp: 0,
-          jumlah_pdp_persentase: 0
+          jumlah_pdp_persentase: 0,
+          dataHarian: [
+            ['Tanggal', 'Kasus Positif'],
+            ['0', 0]
+          ],
+          dataAkumulatif: [
+            ['Tanggal', 'Kasus Positif'],
+            ['0', 0]
+          ]
         },
         {
           kode: '3277',
@@ -311,7 +671,15 @@ export default {
           jumlah_odp: 0,
           jumlah_odp_persentase: 0,
           jumlah_pdp: 0,
-          jumlah_pdp_persentase: 0
+          jumlah_pdp_persentase: 0,
+          dataHarian: [
+            ['Tanggal', 'Kasus Positif'],
+            ['0', 0]
+          ],
+          dataAkumulatif: [
+            ['Tanggal', 'Kasus Positif'],
+            ['0', 0]
+          ]
         },
         {
           kode: '3274',
@@ -321,7 +689,15 @@ export default {
           jumlah_odp: 0,
           jumlah_odp_persentase: 0,
           jumlah_pdp: 0,
-          jumlah_pdp_persentase: 0
+          jumlah_pdp_persentase: 0,
+          dataHarian: [
+            ['Tanggal', 'Kasus Positif'],
+            ['0', 0]
+          ],
+          dataAkumulatif: [
+            ['Tanggal', 'Kasus Positif'],
+            ['0', 0]
+          ]
         },
         {
           kode: '3276',
@@ -331,7 +707,15 @@ export default {
           jumlah_odp: 0,
           jumlah_odp_persentase: 0,
           jumlah_pdp: 0,
-          jumlah_pdp_persentase: 0
+          jumlah_pdp_persentase: 0,
+          dataHarian: [
+            ['Tanggal', 'Kasus Positif'],
+            ['0', 0]
+          ],
+          dataAkumulatif: [
+            ['Tanggal', 'Kasus Positif'],
+            ['0', 0]
+          ]
         },
         {
           kode: '3272',
@@ -341,7 +725,15 @@ export default {
           jumlah_odp: 0,
           jumlah_odp_persentase: 0,
           jumlah_pdp: 0,
-          jumlah_pdp_persentase: 0
+          jumlah_pdp_persentase: 0,
+          dataHarian: [
+            ['Tanggal', 'Kasus Positif'],
+            ['0', 0]
+          ],
+          dataAkumulatif: [
+            ['Tanggal', 'Kasus Positif'],
+            ['0', 0]
+          ]
         },
         {
           kode: '3278',
@@ -351,17 +743,92 @@ export default {
           jumlah_odp: 0,
           jumlah_odp_persentase: 0,
           jumlah_pdp: 0,
-          jumlah_pdp_persentase: 0
+          jumlah_pdp_persentase: 0,
+          dataHarian: [
+            ['Tanggal', 'Kasus Positif'],
+            ['0', 0]
+          ],
+          dataAkumulatif: [
+            ['Tanggal', 'Kasus Positif'],
+            ['0', 0]
+          ]
         }
-      ]
+      ],
+      dataTotalPositifAll: [
+        0, 0
+      ],
+      ChartNasionalDataHarian: [
+        ['Tanggal', 'Kasus Positif'],
+        ['0', 0]
+      ],
+      ChartNasionalDataAkumulatif: [
+        ['Tanggal', 'Kasus Positif'],
+        ['0', 0]
+      ],
+      ChartJawaBaratDataHarian: [
+        ['Tanggal', 'Kasus Positif'],
+        ['0', 0]
+      ],
+      ChartJawaBaratDataAkumulatif: [
+        ['Tanggal', 'Kasus Positif'],
+        ['0', 0]
+      ],
+      barChartNasionalOptions: {
+        height: 200,
+        width: 250,
+        orientation: 'horizontal',
+        colors: ['#6DD274'],
+        legend: {
+          position: 'none'
+        },
+        isStacked: true,
+        seriesType: 'bars',
+        hAxis: {
+          slantedText: true,
+          slantedTextAngle: -45
+        },
+        chartArea: {
+          width: '80%',
+          bottom: 50
+        }
+      },
+      lineChartNasionalOptions: {
+        height: 200,
+        width: 250,
+        orientation: 'horizontal',
+        colors: ['#6DD274'],
+        legend: {
+          position: 'none',
+          alignment: 'center',
+          maxLines: 5
+        },
+        // curveType: 'function',
+        hAxis: {
+          slantedText: true,
+          slantedTextAngle: -45
+        },
+        vAxis: {
+          viewWindow: {
+            min: 0
+          }
+        },
+        chartArea: {
+          width: '80%',
+          bottom: 50
+        }
+      }
     }
   },
   created () {
     this.fetchDataSatuan()
+    this.fetchDataNasional()
+    this.fetchDataJawaBarat()
   },
   methods: {
     ifNullReturnZero (str) {
       if (str === null) {
+        return 0
+      } else if (str === '') {
         return 0
       } else {
         return str
@@ -402,6 +869,73 @@ export default {
           (order === 'desc') ? (comparison * -1) : comparison
         )
       }
+    },
+    enableHarian () {
+      this.stat.isActiveHarian = true
+      this.stat.isActiveAkumulatif = false
+    },
+    enableAkumulatif () {
+      this.stat.isActiveHarian = false
+      this.stat.isActiveAkumulatif = true
+    },
+    fetchDataNasional () {
+      const self = this
+      axios
+        .get('https://indonesia-covid-19.mathdro.id/api/harian')
+        .then(function (response) {
+          self.jsonDataNasional = response.data.data
+
+          for (let i = 0; i < self.jsonDataNasional.length; i++) {
+            const date = new Date(self.jsonDataNasional[i].tanggal)
+            // by Harian
+            self.ChartNasionalDataHarian.push([self.formatDate(date), self.jsonDataNasional[i].jumlahKasusBaruperHari])
+            // by Akumulatif
+            self.ChartNasionalDataAkumulatif.push([self.formatDate(date), self.jsonDataNasional[i].jumlahKasusKumulatif])
+          }
+          self.dataTotalPositifAll[0] = self.jsonDataNasional[self.jsonDataNasional.length - 1].jumlahKasusKumulatif
+        })
+        .catch(function (error) {
+          console.log(error)
+        })
+    },
+    fetchDataJawaBarat () {
+      const self = this
+      const today = new Date()
+      // const strToday = self.formatDate(today)
+      const yesterday = new Date()
+      yesterday.setDate(today.getDate() - 1)
+      const strYesteday = self.formatDate(yesterday)
+
+      axios
+        .get('https://covid19-public.digitalservice.id/analytics/aggregation/')
+        .then(function (response) {
+          self.jsonDataRekap = response.data
+
+          // series
+          let stop = false
+          for (let i = 0; i < self.jsonDataRekap.length; i++) {
+            if (stop === false) {
+              // by harian
+              self.ChartJawaBaratDataHarian.push([
+                self.jsonDataRekap[i].tanggal,
+                self.ifNullReturnZero(self.jsonDataRekap[i].positif)
+              ])
+              // by akumulatif
+              self.ChartJawaBaratDataAkumulatif.push([
+                self.jsonDataRekap[i].tanggal,
+                self.ifNullReturnZero(self.jsonDataRekap[i].total_positif_saat_ini)
+              ])
+            }
+            if (self.jsonDataRekap[i].tanggal === strYesteday) {
+              stop = true
+            }
+          }
+
+          self.dataTotalPositifAll[1] = self.jsonDataRekap[self.jsonDataRekap.length - 1].total_positif_saat_ini
+        })
+        .catch(function (error) {
+          console.log(error)
+        })
     },
     fetchDataSatuan () {
       const self = this
@@ -490,5 +1024,13 @@ export default {
       display: flex !important;
   }
 
+}
+.btnActive {
+  color: #ffffff;
+  background-color: #2DAC55;
+}
+.btnNonActive {
+  color: #2DAC55;
+  background-color: #FFFFFF;
 }
 </style>
