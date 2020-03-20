@@ -4,7 +4,7 @@
       <section class="w-full">
         <div class="flex flex-col items-start sm:justify-between sm:items-center sm:flex-row">
           <div>
-            <span class="inline-block px-3 leading-normal border border-solid border-green-300 bg-green-200 text-green-700 rounded">Nasional</span>
+            <span class="inline-block px-3 leading-normal border border-solid border-green-300 bg-green-200 text-green-700 rounded">{{ category }}</span>
           </div>
           <span class="mt-2 sm:mt-0 float-left opacity-50">
             {{ date }}
@@ -51,6 +51,10 @@ export default {
       default: () => []
     },
     image: {
+      type: String,
+      default: null
+    },
+    category: {
       type: String,
       default: null
     },

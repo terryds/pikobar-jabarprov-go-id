@@ -1,3 +1,6 @@
+import axios from 'axios'
+import { formatDateTimeShort } from '~/lib/date'
+
 export const state = () => ({
   items: [
     {
@@ -56,5 +59,42 @@ export const state = () => ({
       city: 'Bandung',
       location: [-6.902319, 107.624929]
     }
-  ]
+  ],
+  aggregation: null,
+  longlat: null
 })
+
+export const getters = {
+  lastUpdate (state) {
+    if (!state.longlat || !state.longlat.last_update) { return '' }
+    const [ymd, hms] = state.longlat.last_update.split(', ')
+    const datestring = `${ymd}T${hms}`
+    return formatDateTimeShort(new Date(datestring))
+  }
+}
+
+export const mutations = {
+  updateAggregation (state, data) {
+    state.aggregation = data
+  },
+  updateLongLat (state, data) {
+    state.longlat = data
+  }
+}
+
+export const actions = {
+  getAggregationJSON ({ state, commit }) {
+    return axios.get('https://coredata.jabarprov.go.id/analytics/covid19/aggregation.json')
+      .then((res) => {
+        commit('updateAggregation', res.data)
+        return state.aggregation
+      })
+  },
+  getLongLatJSON ({ state, commit }) {
+    return axios.get('https://coredata.jabarprov.go.id/analytics/covid19/longlat.json')
+      .then((res) => {
+        commit('updateLongLat', res.data)
+        return state.longlat
+      })
+  }
+}

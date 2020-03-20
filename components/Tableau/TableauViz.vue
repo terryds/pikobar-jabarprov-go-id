@@ -20,8 +20,8 @@
           <small class="opacity-75">{{ subtitle }}</small>
         </h4>
         <br>
-        <p class="font-bold text-base">
-          {{ disclaimer }}
+        <!-- eslint-disable-next-line -->
+        <p class="font-bold text-base md:text-lg lg:text-xl" v-html="disclaimer">
         </p>
         <br>
         <br>

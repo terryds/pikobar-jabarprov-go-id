@@ -23,7 +23,7 @@
     >
       <nuxt />
     </div>
-    <Navbar />
+    <Navbar class="md:hidden" />
   </div>
 </template>
 

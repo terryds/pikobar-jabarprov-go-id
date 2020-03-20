@@ -1,5 +1,11 @@
 require('dotenv').config()
 export default {
+  router: {
+    prefetchLinks: false
+  },
+  generate: {
+    fallback: true
+  },
   server: {
     host: process.env.HOST,
     port: process.env.PORT
@@ -35,6 +41,7 @@ export default {
   plugins: [
     { src: '~/plugins/service-worker.js', mode: 'client' },
     '~/plugins/vuex-router-sync.js',
+    { src: '~/plugins/vue-lazyload.js', mode: 'client' },
     { src: '~/plugins/vue-carousel.js', mode: 'client' }
   ],
   /*

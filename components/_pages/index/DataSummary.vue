@@ -1,300 +1,92 @@
 <template>
   <div class="container mx-auto">
-    <div class="container mx-4 p-5 max-w-3xl mx-auto">
-      <h3 class="text-3xl text-gray-900 font-bold text-left leading-none" style="margin-bottom: 10px; ">
-        Dashboard Kasus COVID-19 Provinsi Jawa Barat
-      </h3>
-      <span style="font-size: smaller;">*Terakhir diupdate {{ jsonDataResult.last_update }}</span>
-      <br>
-      <br>
-
-      <section class="row">
+    <div>
+      <section class="flex flex-col lg:flex-row lg:flex-no-wrap">
         <div
-          class="p-1 col-md m-2 "
+          class="p-1 lg:mr-8 mb-8 lg:w-1/3"
           style="border-radius: 0.8rem; box-shadow: 0 0 4px 0px rgba(0,0,0,0.05), 0 4px 24px 0 rgba(0,0,0,0.1); background-color: #FCDFE0 !important; border: solid 1px #FFB4B5;"
         >
           <h4 class="ml-3 mt-3" style="color: #4F4F4F;">
             <b>POSITIF COVID-19</b>
           </h4>
           <h3 class="ml-3" style="font-size: 30px;">
-            <b>{{ jsonDataResult.total_positif_saat_ini }}</b>
+            <b>{{ jsonDataResult.total_positif_saat_ini }}</b>&nbsp;&nbsp;<small class="opacity-50">orang</small>
           </h3>
-          <GChart
-            type="LineChart"
-            :data="lineChartPositifData"
-            :options="lineChartPositifOptions"
-          />
         </div>
         <div
-          class="p-1 col-md m-2 "
+          class="p-1 lg:mr-8 mb-8 lg:w-1/3"
           style="border-radius: 0.8rem; box-shadow: 0 0 4px 0px rgba(0,0,0,0.05), 0 4px 24px 0 rgba(0,0,0,0.1); background-color: #D3EEE3 !important; border: solid 1px #91DCBD; "
         >
           <h4 class="ml-3 mt-3" style="color: #4F4F4F;">
             <b>SEMBUH</b>
           </h4>
           <h3 class="ml-3" style="font-size: 30px;">
-            <b>{{ jsonDataResult.total_sembuh }}</b>
+            <b>{{ jsonDataResult.total_sembuh }}</b>&nbsp;&nbsp;<small class="opacity-50">orang</small>
           </h3>
-          <GChart
-            type="LineChart"
-            :data="lineChartSembuhData"
-            :options="lineChartSembuhOptions"
-          />
         </div>
         <div
-          class="p-1 col-md m-2 "
+          class="p-1 mb-8 lg:w-1/3"
           style="border-radius: 0.8rem; box-shadow: 0 0 4px 0px rgba(0,0,0,0.05), 0 4px 24px 0 rgba(0,0,0,0.1); background-color: #FBEADF !important; border: solid 1px #FED1B1; "
         >
           <h4 class="ml-3 mt-3" style="color: #4F4F4F;">
             <b>MENINGGAL</b>
           </h4>
           <h3 class="ml-3" style="font-size: 30px;">
-            <b>{{ jsonDataResult.total_meninggal }}</b>
+            <b>{{ jsonDataResult.total_meninggal }}</b>&nbsp;&nbsp;<small class="opacity-50">orang</small>
           </h3>
-          <GChart
-            type="LineChart"
-            :data="lineChartMeninggalData"
-            :options="lineChartMeninggalOptions"
-          />
         </div>
       </section>
 
-      <section class="row">
+      <section class="flex flex-col lg:flex-row">
         <div
-          class="bg-white p-1 col-md m-2"
+          class="bg-white mb-8 lg:mr-8 lg:mb-0 lg:w-1/2"
           style="border-radius: 0.8rem; box-shadow: 0 0 4px 0px rgba(0,0,0,0.05), 0 4px 24px 0 rgba(0,0,0,0.1);"
         >
-          <h3 class="m-3" style="font-size: 23px !important;">
+          <h3 class="p-5" style="font-size: 23px !important;">
             <b>ODP (Orang Dalam Pemantauan)</b>
           </h3>
           <hr>
-          <div class="row p-2">
-            <div style="margin-top: auto;">
-              <div class="col-md m-1">
-                <span style="color: #2DAC55; font-size: 34px; font-weight: bold;">{{ jsonDataResult.odp_proses }}</span>
-                <span style="color: #000000; font-size: 12px; font-weight: bold;">({{ jsonDataResult.pdp_proses_persen }}%)</span><br>
-                <span style="color: #8A8A8A; font-size: 14px; font-weight: normal;">Proses Pemantauan</span>
-              </div>
+          <div class="p-5 flex flex-col md:flex-row md:justify-start md:items-end">
+            <div class="mr-8 mb-2">
+              <span style="color: #2DAC55; font-size: 34px; font-weight: bold;">{{ jsonDataResult.odp_proses }}</span>
+              <span style="color: #000000; font-size: 12px; font-weight: bold;">({{ jsonDataResult.pdp_proses_persen }}%)</span><br>
+              <span style="color: #8A8A8A; font-size: 14px; font-weight: normal;">Proses Pemantauan</span>
             </div>
-            <div style="margin-top: auto;">
-              <div class="col-md m-1">
-                <span style="color: #2DAC55; font-size: 24px; font-weight: bold;">{{ jsonDataResult.odp_selesai }}</span>
-                <span style="color: #000000; font-size: 12px; font-weight: bold;">({{ jsonDataResult.pdp_selesai_persen }}%)</span><br>
-                <span style="color: #8A8A8A; font-size: 14px; font-weight: normal;">Selesai Pemantauan</span>
-              </div>
+            <div class="mr-8 mb-2">
+              <span style="color: #2DAC55; font-size: 24px; font-weight: bold;">{{ jsonDataResult.odp_selesai }}</span>
+              <span style="color: #000000; font-size: 12px; font-weight: bold;">({{ jsonDataResult.pdp_selesai_persen }}%)</span><br>
+              <span style="color: #8A8A8A; font-size: 14px; font-weight: normal;">Selesai Pemantauan</span>
             </div>
-            <div style="margin-top: auto;">
-              <div class="col-md m-1">
-                <span style="color: #2DAC55; font-size: 24px; font-weight: bold;">{{ jsonDataResult.odp }}</span><br>
-                <span style="color: #8A8A8A; font-size: 14px; font-weight: normal;">Total ODP</span>
-              </div>
+            <div class="mr-8 mb-2">
+              <span style="color: #2DAC55; font-size: 24px; font-weight: bold;">{{ jsonDataResult.odp }}</span><br>
+              <span style="color: #8A8A8A; font-size: 14px; font-weight: normal;">Total ODP</span>
             </div>
           </div>
         </div>
         <div
-          class="bg-white p-1 col-md m-2"
+          class="bg-white lg:w-1/2"
           style="border-radius: 0.8rem; box-shadow: 0 0 4px 0px rgba(0,0,0,0.05), 0 4px 24px 0 rgba(0,0,0,0.1);"
         >
-          <h4 class="m-3" style="font-size: 23px !important;">
+          <h4 class="p-5" style="font-size: 23px !important;">
             <b>PDP (Pasien Dalam Pengawasan)</b>
           </h4>
           <hr>
-          <div class="row p-2">
-            <div style="margin-top: auto;">
-              <div class="col-md m-1">
-                <span style="color: #2DAC55; font-size: 34px; font-weight: bold;">{{ jsonDataResult.pdp_proses }}</span>
-                <span style="color: #000000; font-size: 12px; font-weight: bold;">({{ jsonDataResult.pdp_proses_persen }}%)</span><br>
-                <span style="color: #8A8A8A; font-size: 14px; font-weight: normal;">Proses Pengawasan</span>
-              </div>
+          <div class="p-5 flex flex-col md:flex-row md:justify-start md:items-end">
+            <div class="mr-8 mb-2">
+              <span style="color: #2DAC55; font-size: 34px; font-weight: bold;">{{ jsonDataResult.pdp_proses }}</span>
+              <span style="color: #000000; font-size: 12px; font-weight: bold;">({{ jsonDataResult.pdp_proses_persen }}%)</span><br>
+              <span style="color: #8A8A8A; font-size: 14px; font-weight: normal;">Proses Pengawasan</span>
             </div>
-            <div style="margin-top: auto;">
-              <div class="col-md m-1">
-                <span style="color: #2DAC55; font-size: 24px; font-weight: bold;">{{ jsonDataResult.pdp_selesai }}</span>
-                <span style="color: #000000; font-size: 12px; font-weight: bold;">({{ jsonDataResult.pdp_selesai_persen }}%)</span><br>
-                <span style="color: #8A8A8A; font-size: 14px; font-weight: normal;">Selesai Pengawasan</span>
-              </div>
+            <div class="mr-8 mb-2">
+              <span style="color: #2DAC55; font-size: 24px; font-weight: bold;">{{ jsonDataResult.pdp_selesai }}</span>
+              <span style="color: #000000; font-size: 12px; font-weight: bold;">({{ jsonDataResult.pdp_selesai_persen }}%)</span><br>
+              <span style="color: #8A8A8A; font-size: 14px; font-weight: normal;">Selesai Pengawasan</span>
             </div>
-            <div style="margin-top: auto;">
-              <div class="col-md m-1">
-                <span style="color: #2DAC55; font-size: 24px; font-weight: bold;">{{ jsonDataResult.pdp }}</span><br>
-                <span style="color: #8A8A8A; font-size: 14px; font-weight: normal;">Total PDP</span>
-              </div>
+            <div class="mr-8 mb-2">
+              <span style="color: #2DAC55; font-size: 24px; font-weight: bold;">{{ jsonDataResult.pdp }}</span><br>
+              <span style="color: #8A8A8A; font-size: 14px; font-weight: normal;">Total PDP</span>
             </div>
           </div>
-        </div>
-      </section>
-
-      <section class="row">
-        <div
-          class="bg-white p-3 col-md m-2 row"
-          style="border-radius: 0.8rem; box-shadow: 0 0 4px 0px rgba(0,0,0,0.05), 0 4px 24px 0 rgba(0,0,0,0.1); height:500px;"
-        >
-          <MapView />
-        </div>
-      </section>
-
-      <section class="row">
-        <div
-          class="bg-white p-1 col-md m-2 row"
-          style="border-radius: 0.8rem; box-shadow: 0 0 4px 0px rgba(0,0,0,0.05), 0 4px 24px 0 rgba(0,0,0,0.1);"
-        >
-          <div class="bg-white p-1 col-md-3 col-sm-12">
-            <h4 class="m-3 mb-0" style="margin-bottom: 0px !important; font-size: 15px;">
-              <b>Area Terdampak Covid-19</b>
-            </h4>
-            <span class="m-3" style="color: #000000; font-weight: bold; font-size: 32px; margin-top: 0px !important; margin-right: 0px !important;">
-              {{ jsonDataResult.count_kota }}
-            </span>
-            <span class="m-1" style="color: #8A8A8A; font-weight: bold; margin-top: 0px !important;">Kota/Kab</span>
-          </div>
-          <div
-            class="bg-white p-1 col-md-9 col-sm-12 div-no-mobile"
-            style="overflow-x: auto; width: 210px; display: flex;"
-          >
-            <div
-              v-for="item in jsonDataKota"
-              :key="item.kode"
-              class="bg-white pl-3 pt-2 pb-2 col-md-3 m-1"
-              style="border-radius: 0.8rem; border: 1.5px solid #CDD0D3;"
-            >
-              <span style="color: #8A8A8A; font-size: 14px; font-weight: normal;">{{ item.nama }}</span><br>
-              <span style="color: #00B167; font-weight: bold;">{{ item.jumlah_positif_persentase }}%</span>
-              <span style="color: #000000; font-weight: bold;">({{ item.jumlah_positif }})</span>
-            </div>
-          </div>
-          <div
-            class="bg-white p-1 col-md-9 col-sm-12 div-only-mobile"
-            style="overflow-y: auto; display: flex;"
-          >
-            <div
-              v-for="item in jsonDataKota"
-              :key="item.kode"
-              class="bg-white pl-3 pt-2 pb-2 col-md-3 m-1"
-              style="border-radius: 0.8rem; border: 1.5px solid #CDD0D3;"
-            >
-              <span style="color: #8A8A8A; font-size: 14px; font-weight: normal;">{{ item.nama }}</span><br>
-              <span style="color: #00B167; font-weight: bold;">{{ item.jumlah_positif_persentase }}%</span>
-              <span style="color: #000000; font-weight: bold;">({{ item.jumlah_positif }})</span>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="row">
-        <div
-          class="bg-white p-1 col-lg-5 col-md col-sm col-xs m-2"
-          style="border-radius: 0.8rem; box-shadow: 0 0 4px 0px rgba(0,0,0,0.05), 0 4px 24px 0 rgba(0,0,0,0.1);"
-        >
-          <h4 class="m-3">
-            <b>Jenis Kelamin</b>
-          </h4>
-          <hr>
-          <GChart
-            type="PieChart"
-            :data="pieChartJenisKelaminData"
-            :options="pieChartJenisKelaminOptions"
-          />
-        </div>
-        <div
-          class="bg-white p-1 col-md m-2"
-          style="border-radius: 0.8rem; box-shadow: 0 0 4px 0px rgba(0,0,0,0.05), 0 4px 24px 0 rgba(0,0,0,0.1);"
-        >
-          <h4 class="m-3">
-            <b>Umur dan Jenis Kelamin</b>
-          </h4>
-          <hr>
-          <GChart
-            type="BarChart"
-            :data="barChartUmurJenisKelaminData"
-            :options="barChartUmurJenisKelaminOptions"
-          />
-        </div>
-      </section>
-
-      <nuxt-link
-        tag="a"
-        style="border: 1px solid #2DAC55;"
-        class="block md:inline-block md:w-auto p-3 m-1 rounded-md text-center btnActive font-bold"
-        :class="stat.isActiveHarian ? 'btnActive' : 'btnNonActive'"
-        to=""
-        @click.native="enableHarian"
-      >
-        <font-awesome-icon :icon="fontChartBar" /> Angka Harian
-      </nuxt-link>
-      <nuxt-link
-        tag="a"
-        style="border: 1px solid #2DAC55;"
-        class="block md:inline-block md:w-auto p-3 m-1 rounded-md text-center btnNonAktive font-bold"
-        :class="stat.isActiveAkumulatif ? 'btnActive' : 'btnNonActive'"
-        to=""
-        @click.native="enableAkumulatif"
-      >
-        <font-awesome-icon :icon="fontChartLine" /> Akumulatif
-      </nuxt-link>
-
-      <section v-if="stat.isActiveHarian" class="row">
-        <div
-          class="bg-white p-1 col-md m-2"
-          style="border-radius: 0.8rem; box-shadow: 0 0 4px 0px rgba(0,0,0,0.05), 0 4px 24px 0 rgba(0,0,0,0.1);"
-        >
-          <h4 class="m-3">
-            <b>Angka Harian ODP</b><br>
-            <b style="color: #828282;">(Orang Dalam Pemantauan)</b>
-          </h4>
-          <hr>
-          <GChart
-            type="BarChart"
-            :data="barChartHarianODPData"
-            :options="barChartHarianODPOptions"
-          />
-        </div>
-        <div
-          class="bg-white p-1 col-md m-2"
-          style="border-radius: 0.8rem; box-shadow: 0 0 4px 0px rgba(0,0,0,0.05), 0 4px 24px 0 rgba(0,0,0,0.1);"
-        >
-          <h4 class="m-3">
-            <b>Angka Harian PDP</b><br>
-            <b style="color: #828282;">(Pasien Dalam Pengawasan)</b>
-          </h4>
-          <hr>
-          <GChart
-            type="BarChart"
-            :data="barChartHarianPDPData"
-            :options="barChartHarianPDPOptions"
-          />
-        </div>
-      </section>
-
-      <section v-if="stat.isActiveAkumulatif" class="row">
-        <div
-          class="bg-white p-1 col-md m-2"
-          style="border-radius: 0.8rem; box-shadow: 0 0 4px 0px rgba(0,0,0,0.05), 0 4px 24px 0 rgba(0,0,0,0.1);"
-        >
-          <h4 class="m-3">
-            <b>Akumulatif ODP</b><br>
-            <b style="color: #828282;">(Orang Dalam Pemantauan)</b>
-          </h4>
-          <hr>
-          <GChart
-            type="LineChart"
-            :data="barChartAkumulatifODPData"
-            :options="barChartAkumulatifODPOptions"
-          />
-        </div>
-        <div
-          class="bg-white p-1 col-md m-2"
-          style="border-radius: 0.8rem; box-shadow: 0 0 4px 0px rgba(0,0,0,0.05), 0 4px 24px 0 rgba(0,0,0,0.1);"
-        >
-          <h4 class="m-3">
-            <b>Akumulatif PDP</b><br>
-            <b style="color: #828282;">(Pasien Dalam Pengawasan)</b>
-          </h4>
-          <hr>
-          <GChart
-            type="LineChart"
-            :data="barChartAkumulatifPDPData"
-            :options="barChartAkumulatifPDPOptions"
-          />
         </div>
       </section>
     </div>
@@ -303,16 +95,9 @@
 
 <script>
 import axios from 'axios'
-import { GChart } from 'vue-google-charts'
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { faChartBar, faChartLine } from '@fortawesome/free-solid-svg-icons'
 
 export default {
-  components: {
-    GChart,
-    MapView: () => import('~/components/MapView'),
-    FontAwesomeIcon
-  },
   data () {
     return {
       stat: {
@@ -885,7 +670,7 @@ export default {
       }
     }
   },
-  created () {
+  mounted () {
     this.fetchDataRekap()
     this.fetchDataSatuan()
   },
@@ -1191,13 +976,6 @@ export default {
         .catch(function (error) {
           console.log(error)
         })
-    }
-  },
-  head () {
-    return {
-      link: [
-        { rel: 'stylesheet', href: 'https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css' }
-      ]
     }
   }
 }
