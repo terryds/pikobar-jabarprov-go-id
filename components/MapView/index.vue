@@ -1,6 +1,6 @@
 <template>
-  <div style="width:100%; height:100%;">
-    <div id="map-wrap" style="height: 100%;z-index:0;" />
+  <div class="container-map">
+    <div id="map-wrap" style="height: 68%;z-index:0;" />
     <!-- <div id="corona-filter" class="esri-widget">
       <div data-corona="Positif" class="corona-item visible-corona" :class="[activeLayer === 'positif' ? 'legend-active' : 'legend-disabled']">
         <div class="legend-color" style="background:rgb(235, 87, 87, 0.7)" />
@@ -21,6 +21,82 @@
         </div>
       </div>
     </div> -->
+    <div class="info-legend p-2">
+      <b>Keterangan: </b>
+      <div class="row">
+        <div class="col-md">
+          <div class="legend-color" style="background:#2d9cdb" /> &nbsp;
+          ODP - Proses
+        </div>
+        <div class="col-md">
+          <div class="legend-color" style="background:#f2c94c; border: 1px solid #2d9cdb" /> &nbsp;
+          ODP - naik satus ke PDP
+        </div>
+        <div class="col-md">
+          <div class="legend-color" style="background:#bdbdbd; border: 1px solid #2d9cdb" /> &nbsp;
+          ODP (belum diupdate)
+        </div>
+        <div class="col-md">
+          <div class="legend-color" style="background:#27ae60; border: 1px solid #f2c94c" /> &nbsp;
+          PDP - Selesai
+        </div>
+        <div class="col-md">
+          <div class="legend-color" style="background:#bdbdbd; border: 1px solid #f2c94c" /> &nbsp;
+          PDP (belum diupdate)
+        </div>
+        <div class="col-md">
+          <div class="legend-color" style="background:#a51212; border: 1px solid #eb5757" /> &nbsp;
+          Positif - Meninggal
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md">
+          <div class="legend-color" style="background:#27ae60; border: 1px solid #3aa2dd" /> &nbsp;
+          ODP - Selesai
+        </div>
+        <div class="col-md">
+          <div class="legend-color" style="background:#eb5757; border: 1px solid #3aa2dd" /> &nbsp;
+          ODP - naik satus ke Positif
+        </div>
+        <div class="col-md">
+          <div class="legend-color" style="background:#f2c94c;" /> &nbsp;
+          PDP - Proses
+        </div>
+        <div class="col-md">
+          <div class="legend-color" style="background:#eb5757; border: 1px solid #f2c94c" /> &nbsp;
+          PDP - naik status ke Positif
+        </div>
+        <div class="col-md">
+          <div class="legend-color" style="background:#eb5757" /> &nbsp;
+          Positif - Proses
+        </div>
+        <div class="col-md">
+          <div class="legend-color" style="background:#27ae60; border: 1px solid #eb5757" /> &nbsp;
+          Positif - Sembuh
+        </div>
+      </div>
+      <hr>
+      <div class="row">
+        <div class="col-md mt-1">
+          <b>ODP (Orang Dalam Pemantauan)</b><br>
+          Data yang divisualisasikan sebanyak 635 dari 1412 kasus dan 20 dari 27 kabupaten/kota
+        </div>
+        <div class="col-md">
+          <b>PDP (Pasien Dalam Pengawasan)</b><br>
+          Data yang divisualisasikan sebanyak 94 dari 132 kasus dan 16 dari 23 kabupaten/kota
+        </div>
+        <div class="col-md">
+          <b>Positif (Pasien terkonfirmasi positif COVID-19)</b><br>
+          Data yang divisualisasikan sebanyak 22 dari 26 kasus dan 7 dari 7 kabupaten/kota
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md mt-1">
+          <b>Catatan:</b><br>
+          Titik lokasai merupakan titik acak (random by system) wilayah yang tertera pada identitas kasus dan tidak menunjuk pada alamat persis maasing-masing kasus, berapa titik yanng saling berdekatan terlihat menyatu pada pembesaran peta skala besar, data yang ditampilkan akan terus diperbarui sesuai dengan informasi yang diterima melalu Pemerintah Provinsi Jawa Barat.
+        </div>
+      </div>
+    </div>
     <div v-if="!isHidden" class="disclaimer">
       <div class="backdrop" />
       <div class="text-disclaimer">
@@ -313,6 +389,13 @@ export default {
 }
 </script>
 <style scoped>
+#map-wrap{
+  border-top-left-radius: 1em;
+  border-top-right-radius: 1em;
+}
+.container-map {
+  width:100%; height:100%;
+}
 .leaflet-popup-content {
     width: 130px;
     padding: 5px;
@@ -329,6 +412,12 @@ export default {
 .info h4 {
     margin: 0 0 5px;
     color: #777;
+}
+.info-legend {
+  height: 30%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  font-size: 13px;
 }
 .legend {
     line-height: 18px;
@@ -349,13 +438,20 @@ export default {
   bottom: 0;
   background: black;
   opacity: 0.5;
+  border-radius: 1em;
 }
 
 .title{
   font-size: large;
   font-weight: bold;
 }
-
+.legend-color {
+  width: 1em;
+  height: 1em;
+  float: left;
+  border-radius: 10px;
+  margin-top: 4px;
+}
 </style>
 <style>
 @import "leaflet.markercluster/dist/MarkerCluster.css";
