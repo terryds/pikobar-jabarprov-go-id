@@ -10,7 +10,7 @@
       v-show="!hasReadDisclaimer || !showMap"
       class="relative text-center text-white bg-black"
     >
-      <img class="absolute z-0 w-full h-full pointer-events-none object-cover object-center opacity-50" src="/img/jabar-map.png">
+      <img class="absolute z-0 w-full h-full pointer-events-none object-cover object-center opacity-50" src="https://firebasestorage.googleapis.com/v0/b/jabarprov-covid19.appspot.com/o/public%2Fjabar-map.jpg?alt=media&token=2f8c56e1-8fab-4192-8cf1-c1adb9e3afb9">
       <div
         class="relative block py-20 md:py-32 w-3/4 max-w-2xl mx-auto flex flex-col justify-center items-center"
         style="z-index: 1;"

@@ -194,7 +194,7 @@
       </h2>
       <div class="flex flex-col items-stretch">
         <article class="html-content text-gray-800 flex flex-col lg:flex-row">
-          <img v-lazy="'/img/covid-19.png'" class="hidden lg:block w-full h-full lg:w-1/2 lg:mr-8 object-cover object-center rounded-lg">
+          <img v-lazy="'https://firebasestorage.googleapis.com/v0/b/jabarprov-covid19.appspot.com/o/public%2Fcovid-19.jpg?alt=media&token=3dbbb851-546b-4154-be27-ed8692f194a5'" class="hidden lg:block w-full h-full lg:w-1/2 lg:mr-8 object-cover object-center rounded-lg">
           <div class="w-full lg:w-1/2">
             <h3 class="text-xl text-black">
               <b>Apa Itu COVID-19?</b>
@@ -339,7 +339,10 @@ export default {
       return null
     },
     lastUpdatedAt () {
-      return this.$store.getters['corona/lastUpdate']
+      if (!this.cases) {
+        return ''
+      }
+      return this.formatDateTimeShort(this.cases.updated_at)
     },
     countOf () {
       if (!this.cases) {
