@@ -12,13 +12,13 @@
         </div>
         <br>
         <header>
-          <nuxt-link
-            tag="a"
-            :to="to"
+          <a
+            :href="to"
+            target="_blank"
             class="text-lg font-bold hover:underline"
           >
             {{ title }}
-          </nuxt-link>
+          </a>
           <p class="text-base">
             {{ subtitle }}
           </p>
@@ -31,14 +31,15 @@
       > -->
     </div>
     <div class="clearfix my-2">
-      <nuxt-link
+      <a
         class="float-left md:float-left md:mt-4 text-brand-blue hover:text-brand-blue-lighter font-bold"
-        :to="to"
+        :href="to"
+        target="_blank"
       >
         <span class="mr-2 align-middle">
           Baca Selanjutnya: {{ to }}
         </span>
-      </nuxt-link>
+      </a>
     </div>
   </div>
 </template>
