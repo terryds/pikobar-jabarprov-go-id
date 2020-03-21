@@ -2,92 +2,55 @@
   <div class="container mx-auto">
     <div>
       <section class="flex flex-col lg:flex-row lg:flex-no-wrap">
-        <div
-          class="p-1 lg:mr-8 mb-8 lg:w-1/3"
-          style="border-radius: 0.8rem; box-shadow: 0 0 4px 0px rgba(0,0,0,0.05), 0 4px 24px 0 rgba(0,0,0,0.1); background-color: #FCDFE0 !important; border: solid 1px #FFB4B5;"
-        >
-          <h4 class="ml-3 mt-3" style="color: #4F4F4F;">
-            <b>POSITIF COVID-19</b>
-          </h4>
-          <h3 class="ml-3" style="font-size: 30px;">
-            <b>{{ jsonDataResult.total_positif_saat_ini }}</b>&nbsp;&nbsp;<small class="opacity-50">orang</small>
-          </h3>
-        </div>
-        <div
-          class="p-1 lg:mr-8 mb-8 lg:w-1/3"
-          style="border-radius: 0.8rem; box-shadow: 0 0 4px 0px rgba(0,0,0,0.05), 0 4px 24px 0 rgba(0,0,0,0.1); background-color: #D3EEE3 !important; border: solid 1px #91DCBD; "
-        >
-          <h4 class="ml-3 mt-3" style="color: #4F4F4F;">
-            <b>SEMBUH</b>
-          </h4>
-          <h3 class="ml-3" style="font-size: 30px;">
-            <b>{{ jsonDataResult.total_sembuh }}</b>&nbsp;&nbsp;<small class="opacity-50">orang</small>
-          </h3>
-        </div>
-        <div
-          class="p-1 mb-8 lg:w-1/3"
-          style="border-radius: 0.8rem; box-shadow: 0 0 4px 0px rgba(0,0,0,0.05), 0 4px 24px 0 rgba(0,0,0,0.1); background-color: #FBEADF !important; border: solid 1px #FED1B1; "
-        >
-          <h4 class="ml-3 mt-3" style="color: #4F4F4F;">
-            <b>MENINGGAL</b>
-          </h4>
-          <h3 class="ml-3" style="font-size: 30px;">
-            <b>{{ jsonDataResult.total_meninggal }}</b>&nbsp;&nbsp;<small class="opacity-50">orang</small>
-          </h3>
-        </div>
+        <CounterCardLoader
+          :is-pending="isPending"
+          class="lg:mr-8 mb-8 lg:w-1/3 border border-solid"
+          style="background-color: #FCDFE0; border-color: #FFB4B5;"
+          label="Positif COVID-19"
+          :value="jsonDataResult.total_positif_saat_ini"
+        />
+        <CounterCardLoader
+          :is-pending="isPending"
+          class="lg:mr-8 mb-8 lg:w-1/3 border border-solid"
+          style="background-color: #D3EEE3; border-color: #91DCBD;"
+          label="Sembuh"
+          :value="jsonDataResult.total_sembuh"
+        />
+        <CounterCardLoader
+          :is-pending="isPending"
+          class="mb-8 lg:w-1/3 border border-solid"
+          style="background-color: #FBEADF; border-color: #FED1B1;"
+          label="Meninggal"
+          :value="jsonDataResult.total_meninggal"
+        />
       </section>
 
       <section class="flex flex-col lg:flex-row">
-        <div
-          class="bg-white mb-8 lg:mr-8 lg:mb-0 lg:w-1/2"
-          style="border-radius: 0.8rem; box-shadow: 0 0 4px 0px rgba(0,0,0,0.05), 0 4px 24px 0 rgba(0,0,0,0.1);"
-        >
-          <h3 class="p-5" style="font-size: 23px !important;">
-            <b>ODP (Orang Dalam Pemantauan)</b>
-          </h3>
-          <hr>
-          <div class="p-5 flex flex-col md:flex-row md:justify-start md:items-end">
-            <div class="mr-8 mb-2">
-              <span style="color: #2DAC55; font-size: 34px; font-weight: bold;">{{ jsonDataResult.odp_proses }}</span>
-              <span style="color: #000000; font-size: 12px; font-weight: bold;">({{ jsonDataResult.pdp_proses_persen }}%)</span><br>
-              <span style="color: #8A8A8A; font-size: 14px; font-weight: normal;">Proses Pemantauan</span>
-            </div>
-            <div class="mr-8 mb-2">
-              <span style="color: #2DAC55; font-size: 24px; font-weight: bold;">{{ jsonDataResult.odp_selesai }}</span>
-              <span style="color: #000000; font-size: 12px; font-weight: bold;">({{ jsonDataResult.pdp_selesai_persen }}%)</span><br>
-              <span style="color: #8A8A8A; font-size: 14px; font-weight: normal;">Selesai Pemantauan</span>
-            </div>
-            <div class="mr-8 mb-2">
-              <span style="color: #2DAC55; font-size: 24px; font-weight: bold;">{{ jsonDataResult.odp }}</span><br>
-              <span style="color: #8A8A8A; font-size: 14px; font-weight: normal;">Total ODP</span>
-            </div>
-          </div>
-        </div>
-        <div
-          class="bg-white lg:w-1/2"
-          style="border-radius: 0.8rem; box-shadow: 0 0 4px 0px rgba(0,0,0,0.05), 0 4px 24px 0 rgba(0,0,0,0.1);"
-        >
-          <h4 class="p-5" style="font-size: 23px !important;">
-            <b>PDP (Pasien Dalam Pengawasan)</b>
-          </h4>
-          <hr>
-          <div class="p-5 flex flex-col md:flex-row md:justify-start md:items-end">
-            <div class="mr-8 mb-2">
-              <span style="color: #2DAC55; font-size: 34px; font-weight: bold;">{{ jsonDataResult.pdp_proses }}</span>
-              <span style="color: #000000; font-size: 12px; font-weight: bold;">({{ jsonDataResult.pdp_proses_persen }}%)</span><br>
-              <span style="color: #8A8A8A; font-size: 14px; font-weight: normal;">Proses Pengawasan</span>
-            </div>
-            <div class="mr-8 mb-2">
-              <span style="color: #2DAC55; font-size: 24px; font-weight: bold;">{{ jsonDataResult.pdp_selesai }}</span>
-              <span style="color: #000000; font-size: 12px; font-weight: bold;">({{ jsonDataResult.pdp_selesai_persen }}%)</span><br>
-              <span style="color: #8A8A8A; font-size: 14px; font-weight: normal;">Selesai Pengawasan</span>
-            </div>
-            <div class="mr-8 mb-2">
-              <span style="color: #2DAC55; font-size: 24px; font-weight: bold;">{{ jsonDataResult.pdp }}</span><br>
-              <span style="color: #8A8A8A; font-size: 14px; font-weight: normal;">Total PDP</span>
-            </div>
-          </div>
-        </div>
+        <StatisticLoader
+          class="lg:mr-8"
+          :is-pending="isPending"
+          label="ODP (Orang Dalam Pemantauan)"
+          processed-label="Proses Pemantauan"
+          finished-label="Selesai Pemantauan"
+          total-label="Total ODP"
+          :processed="jsonDataResult.odp_proses"
+          :processed-percentage="jsonDataResult.odp_proses_persen"
+          :finished="jsonDataResult.odp_selesai"
+          :finished-percentage="jsonDataResult.odp_selesai_persen"
+          :total="jsonDataResult.odp "
+        />
+        <StatisticLoader
+          :is-pending="isPending"
+          label="PDP (Pasien Dalam Pengawasan)"
+          processed-label="Proses Pengawasan"
+          finished-label="Selesai Pengawasan"
+          total-label="Total PDP"
+          :processed="jsonDataResult.pdp_proses"
+          :processed-percentage="jsonDataResult.pdp_proses_persen"
+          :finished="jsonDataResult.pdp_selesai"
+          :finished-percentage="jsonDataResult.pdp_selesai_persen"
+          :total="jsonDataResult.pdp "
+        />
       </section>
     </div>
   </div>
@@ -96,10 +59,17 @@
 <script>
 import axios from 'axios'
 import { faChartBar, faChartLine } from '@fortawesome/free-solid-svg-icons'
+import CounterCardLoader from './CounterCardLoader'
+import StatisticLoader from './StatisticLoader'
 
 export default {
+  components: {
+    CounterCardLoader,
+    StatisticLoader
+  },
   data () {
     return {
+      isPending: true,
       stat: {
         isActiveHarian: true,
         isActiveAkumulatif: false
@@ -671,8 +641,13 @@ export default {
     }
   },
   mounted () {
-    this.fetchDataRekap()
-    this.fetchDataSatuan()
+    this.isPending = true
+    Promise.all([
+      this.fetchDataRekap(),
+      this.fetchDataSatuan()
+    ]).finally(() => {
+      this.isPending = false
+    })
   },
   methods: {
     enableHarian () {
@@ -734,7 +709,7 @@ export default {
       yesterday.setDate(today.getDate() - 1)
       const strYesteday = self.formatDate(yesterday)
 
-      axios
+      return axios
         .get('https://covid19-public.digitalservice.id/analytics/aggregation/')
         .then(function (response) {
           self.jsonDataRekap = response.data
@@ -829,7 +804,7 @@ export default {
     },
     fetchDataSatuan () {
       const self = this
-      axios
+      return axios
         .get('https://covid19-public.digitalservice.id/analytics/longlat/')
         .then(function (response) {
           self.jsonDataResult.last_update = new Date(response.data.last_update).toLocaleString('id-ID', { dateStyle: 'long', timeStyle: 'medium' })

@@ -8,6 +8,7 @@
       <CallCard class="top-grid__call-card" title="Call Center" subtitle="Nomor Darurat" number="119" />
       <CallCard class="top-grid__call-card" title="Dinkes Jabar" subtitle="Pertanyaan Umum" number="0811 2093 306" />
       <div
+        v-show="cases"
         class="top-grid__call-status rounded-lg"
       >
         <h6>
@@ -19,6 +20,44 @@
         <summary class="text-5xl text-yellow-400 font-bold">
           {{ cases ? cases.pertanyaan_terlayani : '' }}
         </summary>
+      </div>
+      <div
+        v-show="!cases"
+        class="top-grid__call-status rounded-lg"
+      >
+        <ContentLoader
+          :speed="2"
+          :height="100"
+          primary-color="rgba(255,255,255,0.3)"
+          secondary-color="rgba(255,255,255,0.1)"
+          class="w-full h-full max-w-xs"
+          style="grid-column-end: span 2;"
+        >
+          <rect
+            x="0"
+            y="0"
+            rx="8"
+            ry="6"
+            width="50%"
+            height="16"
+          />
+          <rect
+            x="0"
+            y="30"
+            rx="8"
+            ry="6"
+            width="66%"
+            height="16"
+          />
+          <rect
+            x="0"
+            y="64"
+            rx="8"
+            ry="6"
+            width="20%"
+            height="16"
+          />
+        </ContentLoader>
       </div>
     </section>
     <section class="mt-8 m-4 md:m-8 flex flex-col">
@@ -294,6 +333,7 @@
   </div>
 </template>
 <script>
+import { ContentLoader } from 'vue-content-loader'
 import { mapState } from 'vuex'
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons'
 import { formatDateTimeShort } from '~/lib/date'
@@ -307,6 +347,7 @@ import PetaPersebaranAllCases from '~/components/Tableau/PetaPersebaranAllCases'
 
 export default {
   components: {
+    ContentLoader,
     ImageSwiper,
     CallCard,
     BlogPostPreview,
