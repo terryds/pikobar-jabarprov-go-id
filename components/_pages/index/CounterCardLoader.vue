@@ -1,3 +1,4 @@
+<script>
 import { ContentLoader } from 'vue-content-loader'
 export default {
   functional: true,
@@ -41,3 +42,4 @@ export default {
     )
   }
 }
+</script>
