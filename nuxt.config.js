@@ -50,7 +50,7 @@ export default {
   ** Plugins to load before mounting the App
   */
   plugins: [
-    { src: '~/plugins/initial-data.js' },
+    { src: '~/plugins/initial-data.js', mode: 'client' },
     { src: '~/plugins/service-worker.js', mode: 'client' },
     '~/plugins/vuex-router-sync.js',
     { src: '~/plugins/vue-lazyload.js', mode: 'client' },
