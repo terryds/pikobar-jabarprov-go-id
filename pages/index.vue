@@ -356,16 +356,6 @@ export default {
       }
     }
   },
-  created () {
-    Promise.all([
-      this.$store.dispatch('banners/getItems'),
-      this.$store.dispatch('news/getItems'),
-      this.$store.dispatch('statistics/getCases'),
-      this.$store.dispatch('infographics/getItems'),
-      this.$store.dispatch('corona/getAggregationJSON'),
-      this.$store.dispatch('corona/getLongLatJSON')
-    ])
-  },
   methods: {
     formatDateTimeShort
   }
