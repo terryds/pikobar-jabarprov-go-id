@@ -269,12 +269,19 @@ export default {
         })
     },
     createBasemap () {
-      this.map = this.$L.map('map-wrap').setView([-7.004126726629371, 107.17987060546874], 8)
+      this.map = this.$L.map('map-wrap', {
+        zoomControl: false
+      }).setView([-7.004126726629371, 107.17987060546874], 8)
       this.$L.tileLayer('https://cartodb-basemaps-d.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png', {
         attribution: '© OpenStreetMap contributors',
         maxZoom: 18,
         tileSize: 512,
         zoomOffset: -1
+      }).addTo(this.map)
+
+      // add zoom control with your options
+      this.$L.control.zoom({
+        position: 'bottomright'
       }).addTo(this.map)
     },
     configCluster (className) {
