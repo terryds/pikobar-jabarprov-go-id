@@ -24,6 +24,7 @@
 import {
   faHome,
   faBell,
+  faChartLine,
   faNewspaper,
   faQuestionCircle
 } from '@fortawesome/free-solid-svg-icons'
@@ -49,6 +50,11 @@ export default {
           icon: faBell
         },
         {
+          title: 'Data',
+          to: '/data',
+          icon: faChartLine
+        },
+        {
           title: 'Berita',
           to: '/articles?tab=jabar',
           icon: faNewspaper
@@ -68,7 +74,7 @@ export default {
 /* purgecss start ignore */
 .navbar-items {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
 }
 /* purgecss end ignore */
 </style>

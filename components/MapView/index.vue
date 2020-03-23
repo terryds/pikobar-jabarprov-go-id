@@ -261,7 +261,6 @@ export default {
           name: 'kecamatan.json',
           onLoad: (module) => {
             this.kecamatanGeojson = module
-            console.log(this.kecamatanGeojson)
           }
         }
       ]
