@@ -23,7 +23,7 @@
       </nuxt-link>
     </div>
 
-    <div v-if="stat.isActiveHarian" class="row mt-2 mb-2 p3">
+    <div v-if="stat.isActiveHarian" class="row mt-2 mb-2">
       <div style="overflow-x: auto; width: 100%; height: 100%; display: flex;">
         <div
           class="bg-white m-2 p-2"
