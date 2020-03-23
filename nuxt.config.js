@@ -53,6 +53,7 @@ export default {
     { src: '~/plugins/initial-data.js', mode: 'client' },
     { src: '~/plugins/service-worker.js', mode: 'client' },
     '~/plugins/vuex-router-sync.js',
+    { src: '~/plugins/vue-leaflet.js', ssr: false },
     { src: '~/plugins/vue-lazyload.js', mode: 'client' },
     { src: '~/plugins/vue-carousel.js', mode: 'client' }
   ],
@@ -72,7 +73,8 @@ export default {
   ** Nuxt.js modules
   */
   modules: [
-    '@nuxtjs/pwa'
+    '@nuxtjs/pwa',
+    'nuxt-leaflet'
   ],
   pwa: {
     workbox: {
@@ -89,7 +91,10 @@ export default {
     }
   },
   purgeCSS: {
-    whitelistPatterns: [/(^|\.)fa-/, /-fa($|\.)/]
+    whitelistPatterns: [
+      /(^|\.)fa-/, /-fa($|\.)/,
+      /(^|\.)leaflet-/
+    ]
   },
   /*
   ** Build configuration
