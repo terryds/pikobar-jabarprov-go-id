@@ -301,14 +301,12 @@ export default {
       // on move
       this.map.on('moveend', () => {
         if (this.map.getZoom() > 12 && this.zoom < 12) {
-          console.log('camat')
           this.removeLayer()
           this.removeBatasWilayah()
           this.zoom = this.map.getZoom()
           this.createBatasWilayah(this.kecamatanGeojson)
           this.setLayerPasienByKecamatan()
         } else if (this.map.getZoom() < 12 && this.zoom > 12) {
-          console.log('kota')
           this.removeLayer()
           this.removeBatasWilayah()
           this.zoom = this.map.getZoom()
@@ -321,14 +319,12 @@ export default {
       // Here the events for zooming and dragging
       this.map.on('zoomend', () => {
         if (this.map.getZoom() > 12 && this.zoom < 12) {
-          console.log('camat')
           this.removeLayer()
           this.removeBatasWilayah()
           this.zoom = this.map.getZoom()
           this.createBatasWilayah(this.kecamatanGeojson)
           this.setLayerPasienByKecamatan()
         } else if (this.map.getZoom() < 12 && this.zoom > 12) {
-          console.log('kota')
           this.removeLayer()
           this.removeBatasWilayah()
           this.zoom = this.map.getZoom()
