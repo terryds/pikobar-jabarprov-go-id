@@ -893,6 +893,8 @@ export default {
             self.ChartNasionalDataAkumulatif.push([self.formatDate(date), self.jsonDataNasional[i].jumlahKasusKumulatif])
           }
           self.dataTotalPositifAll[0] = self.jsonDataNasional[self.jsonDataNasional.length - 1].jumlahKasusKumulatif
+          self.ChartNasionalDataHarian.splice(1, 1)
+          self.ChartNasionalDataAkumulatif.splice(1, 1)
         })
         .catch(function (error) {
           console.log(error)
@@ -930,8 +932,9 @@ export default {
               stop = true
             }
           }
-
           self.dataTotalPositifAll[1] = self.jsonDataRekap[self.jsonDataRekap.length - 1].total_positif_saat_ini
+          self.ChartJawaBaratDataHarian.splice(1, 1)
+          self.ChartJawaBaratDataAkumulatif.splice(1, 1)
         })
         .catch(function (error) {
           console.log(error)
