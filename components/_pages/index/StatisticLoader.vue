@@ -91,7 +91,7 @@ export default {
               </p>
             </div>
           </div>
-          { context.slots().footnote }
+          { /* context.slots().footnote */ }
         </div>
       </div>
     )
