@@ -31,16 +31,6 @@ export default {
           <h4 class="text-black opacity-50">
             <b class="uppercase">{ context.props.label }</b>
           </h4>
-          {
-            /*
-            <h3 class="text-4xl">
-              <b class="inline-block" style="min-width: 2ch;">
-                { context.props.value }
-              </b>
-              <small class="opacity-50 ml-2">orang</small>
-            </h3>
-            */
-          }
           { context.children }
         </div>
       </div>
