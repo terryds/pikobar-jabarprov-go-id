@@ -122,15 +122,18 @@
 import axios from 'axios'
 // import reverse from 'turf-reverse'
 import kotaGeojson from '~/static/kota.json'
+import kecamatanGeojson from '~/static/kecamatan.json'
 
 export default {
   name: 'MapView',
   data () {
     return {
       map: '',
+      zoom: 8,
       isHidden: false,
       activeLayer: 'ODP',
       kotaGeojson,
+      kecamatanGeojson,
       jsonData: [],
       jsonDataKota: [
         {
@@ -242,7 +245,17 @@ export default {
           nama: 'Kota Tasikmalaya'
         }
       ],
-      kotaCluster: []
+      kotaCluster: [],
+      kecamatanCluster: [],
+      listLayer: [],
+      wilayahLayer: [],
+      styleBatasWilayah: {
+        fillColor: 'blue',
+        weight: 1,
+        opacity: 1,
+        color: '#D7B6AE',
+        fillOpacity: 0
+      }
     }
   },
   mounted () {
@@ -271,7 +284,7 @@ export default {
     createBasemap () {
       this.map = this.$L.map('map-wrap', {
         zoomControl: false
-      }).setView([-7.004126726629371, 107.17987060546874], 8)
+      }).setView([-6.932694, 107.627449], 8)
       this.$L.tileLayer('https://cartodb-basemaps-d.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png', {
         attribution: '© OpenStreetMap contributors',
         maxZoom: 18,
@@ -283,6 +296,68 @@ export default {
       this.$L.control.zoom({
         position: 'bottomright'
       }).addTo(this.map)
+
+      // event map
+      // on move
+      this.map.on('moveend', () => {
+        if (this.map.getZoom() > 12 && this.zoom < 12) {
+          console.log('camat')
+          this.removeLayer()
+          this.removeBatasWilayah()
+          this.zoom = this.map.getZoom()
+          this.createBatasWilayah(this.kecamatanGeojson)
+          this.setLayerPasienByKecamatan()
+        } else if (this.map.getZoom() < 12 && this.zoom > 12) {
+          console.log('kota')
+          this.removeLayer()
+          this.removeBatasWilayah()
+          this.zoom = this.map.getZoom()
+          this.createBatasWilayah(this.kotaGeojson)
+          this.setLayerPasienByKota()
+        }
+      })
+
+      // on zoom
+      // Here the events for zooming and dragging
+      this.map.on('zoomend', () => {
+        if (this.map.getZoom() > 12 && this.zoom < 12) {
+          console.log('camat')
+          this.removeLayer()
+          this.removeBatasWilayah()
+          this.zoom = this.map.getZoom()
+          this.createBatasWilayah(this.kecamatanGeojson)
+          this.setLayerPasienByKecamatan()
+        } else if (this.map.getZoom() < 12 && this.zoom > 12) {
+          console.log('kota')
+          this.removeLayer()
+          this.removeBatasWilayah()
+          this.zoom = this.map.getZoom()
+          this.createBatasWilayah(this.kotaGeojson)
+          this.setLayerPasienByKota()
+        }
+      })
+      this.map.on('dragend', () => {
+        if (this.zoom > 12) {
+          this.removeLayer()
+          this.setLayerPasienByKecamatan()
+        }
+      })
+      // end
+
+      // create layer group
+      this.layerGroup = this.$L.layerGroup().addTo(this.map)
+    },
+    removeBatasWilayah () {
+      this.wilayahLayer.forEach((element) => {
+        this.map.removeLayer(element)
+      })
+    },
+    removeLayer () {
+      this.listLayer.forEach((element) => {
+        this.map.removeLayer(element)
+      })
+      this.wilayahLayer = []
+      this.listLayer = []
     },
     configCluster (className) {
       return {
@@ -309,8 +384,6 @@ export default {
       }
     },
     statusStageCorona (status, stage) {
-      console.log(status)
-      console.log(stage)
       let statusStage = ''
       if (status === 'positif' && stage === 'aktif') {
         statusStage = 'Positif - Proses'
@@ -341,6 +414,10 @@ export default {
       return statusStage
     },
     createMap () {
+      this.setLayerPasienByKota()
+      this.createBatasWilayah(this.kotaGeojson)
+    },
+    setLayerPasienByKota () {
       this.createClusterByKota()
       this.createLayerPasienByKota()
     },
@@ -391,8 +468,9 @@ export default {
         markerClusters.odp.belumupdate = this.$L.markerClusterGroup(this.configCluster('cluster-odp-belumupdate'))
         this.kotaCluster[element.kode] = markerClusters
       })
+      this.settingLayerPasienByKota()
     },
-    createLayerPasienByKota () {
+    settingLayerPasienByKota () {
       this.jsonData.forEach((element) => {
         if (element.alamat_latitude !== null) {
           const m = this.$L.marker([element.alamat_latitude, element.alamat_longitude])
@@ -435,10 +513,13 @@ export default {
           }
         }
       })
+    },
+    createLayerPasienByKota () {
       this.jsonDataKota.forEach((element) => {
         for (const key in this.kotaCluster[element.kode]) {
           for (const keySub in this.kotaCluster[element.kode][key]) {
-            this.map.addLayer(this.kotaCluster[element.kode][key][keySub])
+            const newLayer = this.kotaCluster[element.kode][key][keySub].addTo(this.map)
+            this.listLayer.push(newLayer)
             this.kotaCluster[element.kode][key][keySub].on('clusterclick', (c) => {
               this.$L.popup().setLatLng(c.layer.getLatLng()).setContent(c.layer._childCount + ' kasus ' + this.statusStageCorona(key, keySub) + ' di ' + element.nama).openOn(this.map)
             }).on('clustermouseout', (c) => {
@@ -447,6 +528,142 @@ export default {
           }
         }
       })
+    },
+    setLayerPasienByKecamatan () {
+      this.createClusterByKecamatan()
+      this.createLayerPasienByKecamatan()
+    },
+    createClusterByKecamatan () {
+      // if(map.getBounds().intersects(layer._bounds)) { ... }
+      this.$L.geoJSON(this.kecamatanGeojson).eachLayer((element) => {
+        if (this.map.getBounds().intersects(element._bounds)) {
+          // console.log(element.properties.bps_kode)
+          const markerClusters = {
+            odp: {
+              proses: '',
+              selesai: '',
+              pdp: '',
+              positif: '',
+              belumupdate: ''
+            },
+            pdp: {
+              proses: '',
+              selesai: '',
+              positif: '',
+              belumupdate: ''
+            },
+            positif: {
+              proses: '',
+              meninggal: '',
+              sembuh: ''
+            }
+          }
+          markerClusters.positif.proses = this.$L.markerClusterGroup(this.configCluster('cluster-positif-proses'))
+
+          markerClusters.positif.meninggal = this.$L.markerClusterGroup(this.configCluster('cluster-positif-meninggal'))
+
+          markerClusters.positif.sembuh = this.$L.markerClusterGroup(this.configCluster('cluster-positif-sembuh'))
+
+          markerClusters.pdp.proses = this.$L.markerClusterGroup(this.configCluster('cluster-pdp-proses'))
+
+          markerClusters.pdp.selesai = this.$L.markerClusterGroup(this.configCluster('cluster-pdp-selesai'))
+
+          markerClusters.pdp.positif = this.$L.markerClusterGroup(this.configCluster('cluster-pdp-positif'))
+
+          markerClusters.pdp.belumupdate = this.$L.markerClusterGroup(this.configCluster('cluster-pdp-belumupdate'))
+
+          markerClusters.odp.proses = this.$L.markerClusterGroup(this.configCluster('cluster-odp-proses'))
+
+          markerClusters.odp.selesai = this.$L.markerClusterGroup(this.configCluster('cluster-odp-selesai'))
+
+          markerClusters.odp.pdp = this.$L.markerClusterGroup(this.configCluster('cluster-odp-pdp'))
+
+          markerClusters.odp.positif = this.$L.markerClusterGroup(this.configCluster('cluster-odp-positif'))
+
+          markerClusters.odp.belumupdate = this.$L.markerClusterGroup(this.configCluster('cluster-odp-belumupdate'))
+          this.kecamatanCluster[element.feature.properties.bps_kode] = markerClusters
+        }
+      })
+      this.settingLayerPasienByKecamatan()
+    },
+    settingLayerPasienByKecamatan () {
+      this.jsonData.forEach((element) => {
+        if (element.alamat_latitude !== null) {
+          const m = this.$L.marker([element.alamat_latitude, element.alamat_longitude])
+          m.bindPopup(`
+            <b> Kab/Kota </b> : ${element.kabkot_str} <br>
+            <b> Status </b> : ${element.status} <br>
+            <b> Jenis Kelamin </b> : ${element.jenis_kelamin_str} <br>
+            <b> Usia </b> : ${element.umur}
+          `)
+          m.on('mouseover', function (e) {
+            this.openPopup()
+          })
+          m.on('mouseout', function (e) {
+            this.closePopup()
+          })
+
+          if (this.kecamatanCluster[element.kode_kecamatan] !== undefined) {
+            if (element.kode_kecamatan !== null && element.kode_kecamatan !== '') {
+              if (element.status === 'Positif' && element.stage === 'Aktif') {
+                this.kecamatanCluster[element.kode_kecamatan].positif.proses.addLayer(m)
+              } else if (element.status === 'Positif' && element.stage === 'Meninggal') {
+                this.kecamatanCluster[element.kode_kecamatan].positif.meninggal.addLayer(m)
+              } else if (element.status === 'Positif' && element.stage === 'Sembuh') {
+                this.kecamatanCluster[element.kode_kecamatan].positif.sembuh.addLayer(m)
+              } else if (element.status === 'PDP' && element.stage === 'Proses') {
+                this.kecamatanCluster[element.kode_kecamatan].pdp.proses.addLayer(m)
+              } else if (element.status === 'PDP' && element.stage === 'Selesai') {
+                this.kecamatanCluster[element.kode_kecamatan].pdp.selesai.addLayer(m)
+              } else if (element.status === 'PDP' && element.stage === 'Positif') {
+                this.kecamatanCluster[element.kode_kecamatan].pdp.positif.addLayer(m)
+              } else if (element.status === 'PDP' && element.stage === null) {
+                this.kecamatanCluster[element.kode_kecamatan].pdp.belumupdate.addLayer(m)
+              } else if (element.status === 'ODP' && element.stage === 'Proses') {
+                this.kecamatanCluster[element.kode_kecamatan].odp.proses.addLayer(m)
+              } else if (element.status === 'ODP' && element.stage === 'Selesai') {
+                this.kecamatanCluster[element.kode_kecamatan].odp.selesai.addLayer(m)
+              } else if (element.status === 'ODP' && element.stage === 'PDP') {
+                this.kecamatanCluster[element.kode_kecamatan].odp.pdp.addLayer(m)
+              } else if (element.status === 'ODP' && element.stage === 'Positif') {
+                this.kecamatanCluster[element.kode_kecamatan].odp.positif.addLayer(m)
+              } else {
+                this.kecamatanCluster[element.kode_kecamatan].odp.belumupdate.addLayer(m)
+              }
+            }
+          }
+        }
+      })
+    },
+    createLayerPasienByKecamatan () {
+      this.$L.geoJSON(this.kecamatanGeojson).eachLayer((element) => {
+        if (this.map.getBounds().intersects(element._bounds)) {
+          for (const key in this.kecamatanCluster[element.feature.properties.bps_kode]) {
+            for (const keySub in this.kecamatanCluster[element.feature.properties.bps_kode][key]) {
+              const newLayer = this.kecamatanCluster[element.feature.properties.bps_kode][key][keySub].addTo(this.map)
+              this.listLayer.push(newLayer)
+              this.kecamatanCluster[element.feature.properties.bps_kode][key][keySub].on('clusterclick', (c) => {
+                this.$L.popup().setLatLng(c.layer.getLatLng()).setContent(c.layer._childCount + ' kasus ' + this.statusStageCorona(key, keySub) + ' di Kecamatan ' + element.feature.properties.bps_nama).openOn(this.map)
+              }).on('clustermouseout', (c) => {
+                this.map.closePopup()
+              })
+            }
+          }
+        }
+      })
+    },
+    createBatasWilayah (wilayah = this.kotaGeojson) {
+      this.$L.geoJSON(wilayah, {
+        style: this.styleBatasWilayah
+      }).eachLayer((layer) => {
+        if (this.map.getBounds().intersects(layer._bounds)) {
+          const layerWilayah = layer.addTo(this.map)
+          this.wilayahLayer.push(layerWilayah)
+        }
+        layer.bindPopup(layer.feature.properties.bps_nama)
+      })
+    },
+    tesMap () {
     }
   }
 }
