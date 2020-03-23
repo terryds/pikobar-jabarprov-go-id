@@ -91,7 +91,10 @@ export default {
     }
   },
   purgeCSS: {
-    whitelistPatterns: [/(^|\.)fa-/, /-fa($|\.)/]
+    whitelistPatterns: [
+      /(^|\.)fa-/, /-fa($|\.)/,
+      /(^|\.)leaflet-/
+    ]
   },
   /*
   ** Build configuration
