@@ -121,8 +121,6 @@
 <script>
 import axios from 'axios'
 // import reverse from 'turf-reverse'
-import kotaGeojson from '~/static/kota.json'
-import kecamatanGeojson from '~/static/kecamatan.json'
 
 export default {
   name: 'MapView',
@@ -132,8 +130,8 @@ export default {
       zoom: 8,
       isHidden: false,
       activeLayer: 'ODP',
-      kotaGeojson,
-      kecamatanGeojson,
+      kotaGeojson: {},
+      kecamatanGeojson: {},
       jsonData: [],
       jsonDataKota: [
         {
@@ -259,8 +257,11 @@ export default {
     }
   },
   mounted () {
-    this.createBasemap()
-    this.fetchData()
+    this.importJSON()
+      .then(() => {
+        this.createBasemap()
+        this.fetchData()
+      })
   },
   beforeDestroy () {
     if (this.view) {
@@ -269,6 +270,36 @@ export default {
     }
   },
   methods: {
+    importJSON () {
+      const files = [
+        {
+          name: 'kota.json',
+          onLoad: (module) => {
+            this.kotaGeojson = module
+          }
+        },
+        {
+          name: 'kecamatan.json',
+          onLoad: (module) => {
+            this.kecamatanGeojson = module
+            console.log(this.kecamatanGeojson)
+          }
+        }
+      ]
+      const promises = files.map((file) => {
+        return new Promise((resolve) => {
+          import(`~/assets/${file.name}`)
+            .then(m => {
+              return m ? m.default || m : {}
+            }).then(module => {
+              file.onLoad(module)
+            }).finally(() => {
+              resolve()
+            })
+        })
+      })
+      return Promise.all(promises)
+    },
     fetchData () {
       const self = this
       axios
