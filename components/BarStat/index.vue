@@ -1,7 +1,7 @@
 <template>
   <div class="row">
     <div
-      class="p-2 col-md m-2 "
+      class="p-2 col-md m-1"
       style="border-radius: 0.8rem; box-shadow: 0 0 4px 0px rgba(0,0,0,0.05), 0 4px 24px 0 rgba(0,0,0,0.1); background-color: #FCDFE0 !important; border: solid 1px #FFB4B5;"
     >
       <h4 class="ml-3 mt-2" style="color: #4F4F4F;">
@@ -31,7 +31,7 @@
       /> -->
     </div>
     <div
-      class="p-1 col-md m-2 "
+      class="p-1 col-md m-1 "
       style="border-radius: 0.8rem; box-shadow: 0 0 4px 0px rgba(0,0,0,0.05), 0 4px 24px 0 rgba(0,0,0,0.1); background-color: #D3EEE3 !important; border: solid 1px #91DCBD; "
     >
       <h4 class="ml-3 mt-2" style="color: #4F4F4F;">
@@ -61,7 +61,7 @@
       /> -->
     </div>
     <div
-      class="p-1 col-md m-2 "
+      class="p-1 col-md m-1 "
       style="border-radius: 0.8rem; box-shadow: 0 0 4px 0px rgba(0,0,0,0.05), 0 4px 24px 0 rgba(0,0,0,0.1); background-color: #FBEADF !important; border: solid 1px #FED1B1; "
     >
       <h4 class="ml-3 mt-2" style="color: #4F4F4F;">

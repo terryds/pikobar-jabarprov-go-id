@@ -1,7 +1,7 @@
 <template>
   <div class="row">
     <div
-      class="bg-white p-1 col-md m-2"
+      class="bg-white p-1 col-md m-1 mt-2"
       style="border-radius: 0.8rem; box-shadow: 0 0 4px 0px rgba(0,0,0,0.05), 0 4px 24px 0 rgba(0,0,0,0.1);"
     >
       <h3 class="m-3" style="font-size: 23px !important;">
@@ -24,7 +24,7 @@
           </div>
         </div>
         <div style="margin-top: auto;">
-          <div class="col-md m-2 ml-4">
+          <div class="col-md m-2 mr-4">
             <span style="color: #2DAC55; font-size: 27px; font-weight: bold;">{{ jsonDataResult.odp }}</span><br>
             <span style="color: #8A8A8A; font-size: 14px; font-weight: normal;">Total ODP</span>
           </div>
@@ -34,13 +34,13 @@
         <span><b>Keterangan : </b></span>
         <span style="margin-top: 5px; text-align: justify;">
           <b>ODP</b> adalah singkatan dari <b>Orang Dalam Pemantauan.</b> Seseorang dikatakan masuk dalam kategori ODP apabila ia sempat berpergian ke negara lain yang merupakan
-          pusat penyebaran virus corona. Anda juga akan masuk sebagai ODP apabila pernah berkontak langsung dengan pasien yang postifi corona. Orang yang masuk dalam kelompon ini
+          pusat penyebaran virus Covid-19. Anda juga akan masuk sebagai ODP apabila pernah berkontak langsung dengan pasien yang positif corona. Orang yang masuk dalam kelompok ini
           adalah mereka yang belum menunjukkan gejala sakit.
         </span>
       </div>
     </div>
     <div
-      class="bg-white p-1 col-md m-2"
+      class="bg-white p-1 col-md m-1 mt-2"
       style="border-radius: 0.8rem; box-shadow: 0 0 4px 0px rgba(0,0,0,0.05), 0 4px 24px 0 rgba(0,0,0,0.1);"
     >
       <h4 class="m-3" style="font-size: 23px !important;">
@@ -63,7 +63,7 @@
           </div>
         </div>
         <div style="margin-top: auto;">
-          <div class="col-md m-2 ml-4">
+          <div class="col-md m-2 mr-4">
             <span style="color: #2DAC55; font-size: 27px; font-weight: bold;">{{ jsonDataResult.pdp }}</span><br>
             <span style="color: #8A8A8A; font-size: 14px; font-weight: normal;">Total PDP</span>
           </div>

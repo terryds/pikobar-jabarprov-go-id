@@ -1,35 +1,34 @@
 <template>
   <div class="container mx-auto">
-    <div class="container mx-4 p-5 max-w-3xl mx-auto">
+    <div class="container">
       <h3 class="text-3xl text-gray-900 font-bold text-left leading-none" style="margin-bottom: 10px; ">
         Dashboard Kasus COVID-19 Provinsi Jawa Barat
       </h3>
       <span style="font-size: smaller;">*Terakhir diupdate {{ jsonDataResult.last_update }}</span>
       <br>
       <br>
-
       <section>
         <BarStat />
       </section>
 
-      <section>
+      <section class="mt-2">
         <BarStatDetail />
       </section>
 
-      <section class="row">
+      <section class="row mt-2">
         <div
-          class="bg-white col-md-12 p-0 m-2 "
+          class="bg-white col-md-12 p-0 m-1 mt-2 "
           style="border-radius: 0.8rem; box-shadow: 0 0 4px 0px rgba(0,0,0,0.05), 0 4px 24px 0 rgba(0,0,0,0.1); height:50em;"
         >
           <MapView />
         </div>
       </section>
 
-      <section>
+      <section class="mt-2">
         <BarStatArea />
       </section>
 
-      <section class="row">
+      <section class="row mt-2">
         <div class="p-1 col-lg-5 col-md col-sm col-xs">
           <BarStatJenisKelamin />
         </div>
@@ -38,7 +37,7 @@
         </div>
       </section>
 
-      <section>
+      <section class="mt-2">
         <BarStatHarianAkumulatif />
       </section>
     </div>
@@ -61,6 +60,8 @@ export default {
   data () {
     return {
       jsonDataSatuan: [
+      ],
+      jsonDataRekap: [
       ],
       jsonDataResult: {
         odp: 0,

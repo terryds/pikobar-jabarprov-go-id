@@ -388,6 +388,10 @@ export default {
               stop = true
             }
           }
+          self.barChartHarianODPData.splice(1, 1)
+          self.barChartHarianPDPData.splice(1, 1)
+          self.barChartAkumulatifODPData.splice(1, 1)
+          self.barChartAkumulatifPDPData.splice(1, 1)
         })
         .catch(function (error) {
           console.log(error)
