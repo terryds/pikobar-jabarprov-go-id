@@ -107,7 +107,7 @@
           </a>
         </div>
       </div>
-      <div class="flex flex-row flex-wrap items-stretch my-4 md:my-8">
+      <div class="flex flex-row flex-wrap items-stretch my-8">
         <div
           class="w-full mb-8 lg:mb-0 lg:w-1/4 rounded-lg bg-white shadow-md lg:mr-8 p-5 md:p-8"
           style="min-width:320px"
