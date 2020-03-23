@@ -61,7 +61,8 @@ export const state = () => ({
     }
   ],
   aggregation: null,
-  longlat: null
+  longlat: null,
+  selfDiagnoseURL: ''
 })
 
 export const getters = {
@@ -79,6 +80,9 @@ export const mutations = {
   },
   updateLongLat (state, data) {
     state.longlat = data
+  },
+  setSelfDiagnoreURL (state, url) {
+    state.selfDiagnoseURL = url
   }
 }
 

@@ -100,7 +100,7 @@
           <i style="flex: 0 0 2rem;" />
           <a
             class="px-10 py-4 rounded-lg text-white border-2 border-solid border-white hover:bg-brand-green-light"
-            href="https://www.prixa.ai/prixasekarang?lang=en"
+            :href="selfDiagnoseURL"
             target="_blank"
           >
             <b>Nilai Diri Saya</b>
@@ -402,7 +402,8 @@ export default {
       remainingHospitalCount: state => state.hospitals.items.length - 3,
       infographics: state => state.infographics.items,
       news: state => state.news.items,
-      cases: state => state.statistics.cases
+      cases: state => state.statistics.cases,
+      selfDiagnoseURL: state => state.corona.selfDiagnoseURL
     }),
     bannerImage () {
       if (this.banners && this.banners.length) {
