@@ -1,6 +1,6 @@
 <template>
   <div class="container-map">
-    <div id="map-wrap" style="height: 68%;z-index:0;" />
+    <div id="map-wrap" style="height: 75%;z-index:0;" />
     <div class="info-legend p-2">
       <b>Keterangan: </b>
       <div class="row">
@@ -56,7 +56,7 @@
         </div>
       </div>
       <hr>
-      <div class="row">
+      <!-- <div class="row">
         <div class="col-md mt-1">
           <b>ODP (Orang Dalam Pemantauan)</b><br>
           Data yang divisualisasikan sebanyak 635 dari 1412 kasus dan 20 dari 27 kabupaten/kota
@@ -69,11 +69,11 @@
           <b>Positif (Pasien terkonfirmasi positif COVID-19)</b><br>
           Data yang divisualisasikan sebanyak 22 dari 26 kasus dan 7 dari 7 kabupaten/kota
         </div>
-      </div>
+      </div> -->
       <div class="row">
         <div class="col-md mt-1">
           <b>Catatan:</b><br>
-          Titik lokasai merupakan titik acak (random by system) wilayah yang tertera pada identitas kasus dan tidak menunjuk pada alamat persis maasing-masing kasus, berapa titik yanng saling berdekatan terlihat menyatu pada pembesaran peta skala besar, data yang ditampilkan akan terus diperbarui sesuai dengan informasi yang diterima melalu Pemerintah Provinsi Jawa Barat.
+          Titik lokasi merupakan titik acak (random by system) wilayah yang tertera pada identitas kasus dan tidak menunjuk pada alamat persis masing-masing kasus, beberapa titik yang saling berdekatan terlihat menyatu pada pembesaran peta skala besar. Data yang ditampilkan saat ini bukan data seluruhnya,  data akan terus diperbaharui sesuai dengan informasi yang diterima melalui Pemerintah Provinsi Jawa Barat
         </div>
       </div>
     </div>
@@ -100,8 +100,6 @@
 
 <script>
 import axios from 'axios'
-import kotaGeojson from '~/static/kota.json'
-import kecamatanGeojson from '~/static/kecamatan.json'
 
 export default {
   name: 'MapView',
@@ -111,8 +109,8 @@ export default {
       zoom: 8,
       isHidden: false,
       activeLayer: 'ODP',
-      kotaGeojson,
-      kecamatanGeojson,
+      kotaGeojson: {},
+      kecamatanGeojson: {},
       jsonData: [],
       jsonDataKota: [
         {
@@ -238,8 +236,11 @@ export default {
     }
   },
   mounted () {
-    this.createBasemap()
-    this.fetchData()
+    this.importJSON()
+      .then(() => {
+        this.createBasemap()
+        this.fetchData()
+      })
   },
   beforeDestroy () {
     if (this.view) {
@@ -248,6 +249,36 @@ export default {
     }
   },
   methods: {
+    importJSON () {
+      const files = [
+        {
+          name: 'kota.json',
+          onLoad: (module) => {
+            this.kotaGeojson = module
+          }
+        },
+        {
+          name: 'kecamatan.json',
+          onLoad: (module) => {
+            this.kecamatanGeojson = module
+            console.log(this.kecamatanGeojson)
+          }
+        }
+      ]
+      const promises = files.map((file) => {
+        return new Promise((resolve) => {
+          import(`~/assets/${file.name}`)
+            .then(m => {
+              return m ? m.default || m : {}
+            }).then(module => {
+              file.onLoad(module)
+            }).finally(() => {
+              resolve()
+            })
+        })
+      })
+      return Promise.all(promises)
+    },
     fetchData () {
       const self = this
       axios
@@ -560,33 +591,13 @@ export default {
             this.closePopup()
           })
 
-          if (this.kecamatanCluster[element.kode_kecamatan] !== undefined) {
-            if (element.kode_kecamatan !== null && element.kode_kecamatan !== '') {
-              if (element.status === 'Positif' && element.stage === 'Aktif') {
-                this.kecamatanCluster[element.kode_kecamatan].positif.proses.addLayer(m)
-              } else if (element.status === 'Positif' && element.stage === 'Meninggal') {
-                this.kecamatanCluster[element.kode_kecamatan].positif.meninggal.addLayer(m)
-              } else if (element.status === 'Positif' && element.stage === 'Sembuh') {
-                this.kecamatanCluster[element.kode_kecamatan].positif.sembuh.addLayer(m)
-              } else if (element.status === 'PDP' && element.stage === 'Proses') {
-                this.kecamatanCluster[element.kode_kecamatan].pdp.proses.addLayer(m)
-              } else if (element.status === 'PDP' && element.stage === 'Selesai') {
-                this.kecamatanCluster[element.kode_kecamatan].pdp.selesai.addLayer(m)
-              } else if (element.status === 'PDP' && element.stage === 'Positif') {
-                this.kecamatanCluster[element.kode_kecamatan].pdp.positif.addLayer(m)
-              } else if (element.status === 'PDP' && element.stage === null) {
-                this.kecamatanCluster[element.kode_kecamatan].pdp.belumupdate.addLayer(m)
-              } else if (element.status === 'ODP' && element.stage === 'Proses') {
-                this.kecamatanCluster[element.kode_kecamatan].odp.proses.addLayer(m)
-              } else if (element.status === 'ODP' && element.stage === 'Selesai') {
-                this.kecamatanCluster[element.kode_kecamatan].odp.selesai.addLayer(m)
-              } else if (element.status === 'ODP' && element.stage === 'PDP') {
-                this.kecamatanCluster[element.kode_kecamatan].odp.pdp.addLayer(m)
-              } else if (element.status === 'ODP' && element.stage === 'Positif') {
-                this.kecamatanCluster[element.kode_kecamatan].odp.positif.addLayer(m)
-              } else {
-                this.kecamatanCluster[element.kode_kecamatan].odp.belumupdate.addLayer(m)
-              }
+          if (this.kecamatanCluster[element.kode_kecamatan] !== undefined && element.kode_kecamatan !== null && element.kode_kecamatan !== '') {
+            if (element.stage === 'Aktif') {
+              this.kecamatanCluster[element.kode_kecamatan][element.status.toLowerCase()].proses.addLayer(m)
+            } else if (element.stage === '' || element.stage === null) {
+              this.kecamatanCluster[element.kode_kecamatan][element.status.toLowerCase()].belumupdate.addLayer(m)
+            } else {
+              this.kecamatanCluster[element.kode_kecamatan][element.status.toLowerCase()][element.stage.toLowerCase()].addLayer(m)
             }
           }
         }
@@ -651,7 +662,7 @@ export default {
     color: #777;
 }
 .info-legend {
-  height: 30%;
+  height: 25%;
   overflow-y: auto;
   overflow-x: hidden;
   font-size: 13px;
