@@ -402,9 +402,12 @@ export default {
       remainingHospitalCount: state => state.hospitals.items.length - 3,
       infographics: state => state.infographics.items,
       news: state => state.news.items,
-      cases: state => state.statistics.cases,
-      selfDiagnoseURL: state => state['remote-config'].config.selfDiagnoseURL || '#'
+      cases: state => state.statistics.cases
     }),
+    selfDiagnoseURL () {
+      const config = this.$store.state['remote-config'].config
+      return config ? config.selfDiagnoseURL : '#'
+    },
     bannerImage () {
       if (this.banners && this.banners.length) {
         return this.banners[0].url
