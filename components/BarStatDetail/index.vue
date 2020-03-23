@@ -1,7 +1,7 @@
 <template>
-  <div class="row">
+  <div class="row -mx-4">
     <div
-      class="bg-white p-1 col-md m-1 mt-2"
+      class="bg-white p-1 col-md mx-2 mb-4"
       style="border-radius: 0.8rem; box-shadow: 0 0 4px 0px rgba(0,0,0,0.05), 0 4px 24px 0 rgba(0,0,0,0.1);"
     >
       <h3 class="m-3" style="font-size: 23px !important;">
@@ -40,7 +40,7 @@
       </div>
     </div>
     <div
-      class="bg-white p-1 col-md m-1 mt-2"
+      class="bg-white p-1 col-md mx-2 mb-4"
       style="border-radius: 0.8rem; box-shadow: 0 0 4px 0px rgba(0,0,0,0.05), 0 4px 24px 0 rgba(0,0,0,0.1);"
     >
       <h4 class="m-3" style="font-size: 23px !important;">
@@ -197,10 +197,17 @@ export default {
   head () {
     return {
       link: [
-        { rel: 'stylesheet', href: 'https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css' }
+        /* { rel: 'stylesheet', href: 'https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css' } */
       ]
     }
   }
 }
 
 </script>
+
+<style scoped>
+* {
+  font-family: 'Product Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+</style>

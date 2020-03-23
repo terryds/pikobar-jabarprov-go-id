@@ -10,7 +10,7 @@
       @click="$slotProps.navigate"
     >
       <slot name="icon" v-bind="$slotProps" />
-      <label :class="['pointer-events-none block text-sm', $slotProps.isActive && 'font-bold']">
+      <label :class="['hidden block:320 pointer-events-none text-sm', $slotProps.isActive && 'font-bold']">
         {{ title }}
       </label>
     </a>
@@ -37,5 +37,10 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
+.block\:320 {
+  @media screen and (min-width: 320px) {
+    display: block;
+  }
+}
 </style>

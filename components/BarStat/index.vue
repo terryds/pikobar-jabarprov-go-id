@@ -1,17 +1,17 @@
 <template>
-  <div class="row">
+  <div class="row -mx-4">
     <div
-      class="p-2 col-md m-1"
+      class="p-1 col-md m-2"
       style="border-radius: 0.8rem; box-shadow: 0 0 4px 0px rgba(0,0,0,0.05), 0 4px 24px 0 rgba(0,0,0,0.1); background-color: #FCDFE0 !important; border: solid 1px #FFB4B5;"
     >
       <h4 class="ml-3 mt-2" style="color: #4F4F4F;">
         <b>POSITIF COVID-19</b>
       </h4>
       <div class="mt-1" style="display: flow-root;">
-        <h3 class="ml-3 mr-3" style="font-size: 27px; float: left;">
+        <h3 class="ml-3 mr-3" style="font-size: 24px; float: left;">
           <b>Jawa Barat</b>
         </h3>
-        <h3 class="ml-3 mr-3" style="font-size: 27px; float: right;">
+        <h3 class="ml-3 mr-3" style="font-size: 24px; float: right;">
           <b>{{ jsonDataResult.total_positif_saat_ini }}</b>
         </h3>
       </div>
@@ -31,7 +31,7 @@
       /> -->
     </div>
     <div
-      class="p-1 col-md m-1 "
+      class="p-1 col-md m-2"
       style="border-radius: 0.8rem; box-shadow: 0 0 4px 0px rgba(0,0,0,0.05), 0 4px 24px 0 rgba(0,0,0,0.1); background-color: #D3EEE3 !important; border: solid 1px #91DCBD; "
     >
       <h4 class="ml-3 mt-2" style="color: #4F4F4F;">
@@ -61,7 +61,7 @@
       /> -->
     </div>
     <div
-      class="p-1 col-md m-1 "
+      class="p-1 col-md m-2 "
       style="border-radius: 0.8rem; box-shadow: 0 0 4px 0px rgba(0,0,0,0.05), 0 4px 24px 0 rgba(0,0,0,0.1); background-color: #FBEADF !important; border: solid 1px #FED1B1; "
     >
       <h4 class="ml-3 mt-2" style="color: #4F4F4F;">
@@ -332,10 +332,17 @@ export default {
   head () {
     return {
       link: [
-        { rel: 'stylesheet', href: 'https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css' }
+        /* { rel: 'stylesheet', href: 'https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css' } */
       ]
     }
   }
 }
 
 </script>
+
+<style scoped>
+* {
+  font-family: 'Product Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+</style>
