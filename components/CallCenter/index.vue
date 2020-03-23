@@ -35,13 +35,13 @@
           <th class="hidden md:table-cell p-3 w-1/12 text-center">
             No
           </th>
-          <th class="p-3 w-2/12">
+          <th class="p-3">
             Kota/Kab
           </th>
-          <th class="p-3 w-3/12">
+          <th class="whitespace-no-wrap p-3">
             CALL CENTER
           </th>
-          <th class="p-3 w-6/12">
+          <th class="p-3">
             HOTLINE
           </th>
         </tr>
@@ -74,7 +74,7 @@
             <td class="hidden md:table-cell text-center">
               {{ index + 1 }}
             </td>
-            <td class="title-cell text-lg font-bold md:font-normal md:text-base md:p-4 text-left">
+            <td class="title-cell text-lg font-bold md:font-normal md:text-base md:p-2 text-left">
               {{ item.nama_kotkab }}
             </td>
             <td :class="['text-left md:table-cell', item.call_center && item.call_center.length ? '' : 'hidden']">
@@ -85,7 +85,7 @@
                 <a
                   v-for="(cc, cc_index) in item.call_center"
                   :key="cc_index"
-                  class="text-sm inline-block px-4 py-1 bg-blue-100 rounded mr-4 mb-4 md:m-4 text-gray-800 hover:opacity-50"
+                  class="text-sm inline-block px-4 py-1 bg-blue-100 rounded mr-4 mb-4 md:m-1 text-gray-800 hover:opacity-50"
                   :href="`tel:${cc}`"
                 >
                   {{ cc }}
@@ -101,7 +101,7 @@
                 <a
                   v-for="(h, h_index) in item.hotline"
                   :key="h_index"
-                  class="text-sm inline-block px-4 py-1 bg-green-100 rounded mr-4 mb-4 md:m-4 text-gray-800 hover:opacity-50"
+                  class="text-sm inline-block px-4 py-1 bg-green-100 rounded mr-4 mb-4 md:m-1 text-gray-800 hover:opacity-50"
                   :href="`tel:${h}`"
                 >
                   {{ h }}
