@@ -19,21 +19,21 @@
         <BarStatDetail />
       </section>
 
-      <section class="row mt-2">
+      <section class="row">
         <div
-          class="bg-white col-md-12 p-0 m-1 mt-2 "
+          class="bg-white col-md-12 p-0 m-2 "
           style="border-radius: 0.8rem; box-shadow: 0 0 4px 0px rgba(0,0,0,0.05), 0 4px 24px 0 rgba(0,0,0,0.1); height:50em;"
         >
           <MapView />
         </div>
       </section>
 
-      <section class="mt-2">
+      <section class="mt-4">
         <BarStatArea />
       </section>
 
-      <section class="row mt-2">
-        <div class="p-1 col-lg-5 col-md col-sm col-xs">
+      <section class="row mt-4">
+        <div class="p-1 col-lg-5 col-md col-sm col-xs mb-4">
           <BarStatJenisKelamin />
         </div>
         <div class="p-1 col-lg-7 col-md">
@@ -41,7 +41,7 @@
         </div>
       </section>
 
-      <section class="mt-2">
+      <section class="mt-4">
         <BarStatHarianAkumulatif />
       </section>
     </div>
