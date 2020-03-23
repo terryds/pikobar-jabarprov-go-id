@@ -23,7 +23,6 @@ export default async function ({ app }) {
     })
   await Promise.all([
     app.store.dispatch('statistics/getCases'),
-    app.store.dispatch('statistics/getCases'),
     app.store.dispatch('corona/getAggregationJSON'),
     app.store.dispatch('corona/getLongLatJSON'),
     app.store.dispatch('hospitals/getItems')
