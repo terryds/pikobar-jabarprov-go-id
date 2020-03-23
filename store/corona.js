@@ -81,7 +81,7 @@ export const mutations = {
   updateLongLat (state, data) {
     state.longlat = data
   },
-  setSelfDiagnoreURL (state, url) {
+  setSelfDiagnoseURL (state, url) {
     state.selfDiagnoseURL = url
   }
 }
