@@ -1,26 +1,6 @@
 <template>
   <div class="container-map">
     <div id="map-wrap" style="height: 68%;z-index:0;" />
-    <!-- <div id="corona-filter" class="esri-widget">
-      <div data-corona="Positif" class="corona-item visible-corona" :class="[activeLayer === 'positif' ? 'legend-active' : 'legend-disabled']">
-        <div class="legend-color" style="background:rgb(235, 87, 87, 0.7)" />
-        <div class="legend-text">
-          Positif
-        </div>
-      </div>
-      <div data-corona="PDP" class="corona-item visible-corona" :class="[activeLayer === 'pdp' ? 'legend-active' : 'legend-disabled']">
-        <div class="legend-color" style="background:rgb(242, 201, 76, 0.7)" />
-        <div class="legend-text">
-          PDP
-        </div>
-      </div>
-      <div data-corona="ODP" class="corona-item visible-corona" :class="[activeLayer === 'odp' ? 'legend-active' : 'legend-disabled']">
-        <div class="legend-color" style="background:rgb(45, 156, 219, 0.7)" />
-        <div class="legend-text">
-          ODP
-        </div>
-      </div>
-    </div> -->
     <div class="info-legend p-2">
       <b>Keterangan: </b>
       <div class="row">
@@ -120,7 +100,6 @@
 
 <script>
 import axios from 'axios'
-// import reverse from 'turf-reverse'
 import kotaGeojson from '~/static/kota.json'
 import kecamatanGeojson from '~/static/kecamatan.json'
 
@@ -297,24 +276,6 @@ export default {
         position: 'bottomright'
       }).addTo(this.map)
 
-      // event map
-      // on move
-      this.map.on('moveend', () => {
-        if (this.map.getZoom() > 12 && this.zoom < 12) {
-          this.removeLayer()
-          this.removeBatasWilayah()
-          this.zoom = this.map.getZoom()
-          this.createBatasWilayah(this.kecamatanGeojson)
-          this.setLayerPasienByKecamatan()
-        } else if (this.map.getZoom() < 12 && this.zoom > 12) {
-          this.removeLayer()
-          this.removeBatasWilayah()
-          this.zoom = this.map.getZoom()
-          this.createBatasWilayah(this.kotaGeojson)
-          this.setLayerPasienByKota()
-        }
-      })
-
       // on zoom
       // Here the events for zooming and dragging
       this.map.on('zoomend', () => {
@@ -347,12 +308,12 @@ export default {
       this.wilayahLayer.forEach((element) => {
         this.map.removeLayer(element)
       })
+      this.wilayahLayer = []
     },
     removeLayer () {
       this.listLayer.forEach((element) => {
         this.map.removeLayer(element)
       })
-      this.wilayahLayer = []
       this.listLayer = []
     },
     configCluster (className) {
