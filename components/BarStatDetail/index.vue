@@ -34,7 +34,7 @@
         <span><b>Keterangan : </b></span>
         <span style="margin-top: 5px; text-align: justify;">
           <b>ODP</b> adalah singkatan dari <b>Orang Dalam Pemantauan.</b> Seseorang dikatakan masuk dalam kategori ODP apabila ia sempat berpergian ke negara lain yang merupakan
-          pusat penyebaran virus corona. Anda juga akan masuk sebagai ODP apabila pernah berkontak langsung dengan pasien yang postifi corona. Orang yang masuk dalam kelompon ini
+          pusat penyebaran virus Covid-19. Anda juga akan masuk sebagai ODP apabila pernah berkontak langsung dengan pasien yang positif corona. Orang yang masuk dalam kelompok ini
           adalah mereka yang belum menunjukkan gejala sakit.
         </span>
       </div>
