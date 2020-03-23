@@ -142,7 +142,7 @@ export default {
           self.jsonDataSatuan = response.data.data
 
           // by jenis_kelamin
-          self.changeGroupJenisKelamin('PDP')
+          self.changeGroupJenisKelamin('ODP')
         })
         .catch(function (error) {
           console.log(error)

@@ -185,13 +185,15 @@ export default {
           },
           ticks: [
             { v: -10, f: '10' },
+            { v: -25, f: '25' },
             { v: -50, f: '50' },
             { v: -100, f: '100' },
             { v: -200, f: '200' },
             { v: -500, f: '500' },
-            0, 10, 50, 100, 200, 500
+            0, 10, 25, 50, 100, 200, 500
           ]
-        }
+        },
+        chartArea: { width: '80%' }
       }
     }
   },
@@ -250,7 +252,7 @@ export default {
           ]
 
           // by umur
-          self.changeGroupUsia('PDP')
+          self.changeGroupUsia('ODP')
         })
         .catch(function (error) {
           console.log(error)
