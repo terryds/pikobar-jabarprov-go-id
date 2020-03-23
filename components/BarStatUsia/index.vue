@@ -177,14 +177,21 @@ export default {
           format: '##;##'
         },
         hAxis: {
+          format: ';',
           title: 'Umur',
           viewWindowMode: 'explicit',
           viewWindow: {
-            min: 0,
-            max: 0
-          }
-        },
-        viewWindowMode: 'explicit'
+            min: 0
+          },
+          ticks: [
+            { v: -10, f: '10' },
+            { v: -50, f: '50' },
+            { v: -100, f: '100' },
+            { v: -200, f: '200' },
+            { v: -500, f: '500' },
+            0, 10, 50, 100, 200, 500
+          ]
+        }
       }
     }
   },
