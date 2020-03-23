@@ -1,26 +1,6 @@
 <template>
   <div class="container-map">
-    <div id="map-wrap" style="height: 68%;z-index:0;" />
-    <!-- <div id="corona-filter" class="esri-widget">
-      <div data-corona="Positif" class="corona-item visible-corona" :class="[activeLayer === 'positif' ? 'legend-active' : 'legend-disabled']">
-        <div class="legend-color" style="background:rgb(235, 87, 87, 0.7)" />
-        <div class="legend-text">
-          Positif
-        </div>
-      </div>
-      <div data-corona="PDP" class="corona-item visible-corona" :class="[activeLayer === 'pdp' ? 'legend-active' : 'legend-disabled']">
-        <div class="legend-color" style="background:rgb(242, 201, 76, 0.7)" />
-        <div class="legend-text">
-          PDP
-        </div>
-      </div>
-      <div data-corona="ODP" class="corona-item visible-corona" :class="[activeLayer === 'odp' ? 'legend-active' : 'legend-disabled']">
-        <div class="legend-color" style="background:rgb(45, 156, 219, 0.7)" />
-        <div class="legend-text">
-          ODP
-        </div>
-      </div>
-    </div> -->
+    <div id="map-wrap" style="height: 75%;z-index:0;" />
     <div class="info-legend p-2">
       <b>Keterangan: </b>
       <div class="row">
@@ -76,7 +56,7 @@
         </div>
       </div>
       <hr>
-      <div class="row">
+      <!-- <div class="row">
         <div class="col-md mt-1">
           <b>ODP (Orang Dalam Pemantauan)</b><br>
           Data yang divisualisasikan sebanyak 635 dari 1412 kasus dan 20 dari 27 kabupaten/kota
@@ -89,11 +69,11 @@
           <b>Positif (Pasien terkonfirmasi positif COVID-19)</b><br>
           Data yang divisualisasikan sebanyak 22 dari 26 kasus dan 7 dari 7 kabupaten/kota
         </div>
-      </div>
+      </div> -->
       <div class="row">
         <div class="col-md mt-1">
           <b>Catatan:</b><br>
-          Titik lokasai merupakan titik acak (random by system) wilayah yang tertera pada identitas kasus dan tidak menunjuk pada alamat persis maasing-masing kasus, berapa titik yanng saling berdekatan terlihat menyatu pada pembesaran peta skala besar, data yang ditampilkan akan terus diperbarui sesuai dengan informasi yang diterima melalu Pemerintah Provinsi Jawa Barat.
+          Titik lokasi merupakan titik acak (random by system) wilayah yang tertera pada identitas kasus dan tidak menunjuk pada alamat persis masing-masing kasus, beberapa titik yang saling berdekatan terlihat menyatu pada pembesaran peta skala besar. Data yang ditampilkan saat ini bukan data seluruhnya,  data akan terus diperbaharui sesuai dengan informasi yang diterima melalui Pemerintah Provinsi Jawa Barat
         </div>
       </div>
     </div>
@@ -120,7 +100,6 @@
 
 <script>
 import axios from 'axios'
-// import reverse from 'turf-reverse'
 
 export default {
   name: 'MapView',
@@ -328,24 +307,6 @@ export default {
         position: 'bottomright'
       }).addTo(this.map)
 
-      // event map
-      // on move
-      this.map.on('moveend', () => {
-        if (this.map.getZoom() > 12 && this.zoom < 12) {
-          this.removeLayer()
-          this.removeBatasWilayah()
-          this.zoom = this.map.getZoom()
-          this.createBatasWilayah(this.kecamatanGeojson)
-          this.setLayerPasienByKecamatan()
-        } else if (this.map.getZoom() < 12 && this.zoom > 12) {
-          this.removeLayer()
-          this.removeBatasWilayah()
-          this.zoom = this.map.getZoom()
-          this.createBatasWilayah(this.kotaGeojson)
-          this.setLayerPasienByKota()
-        }
-      })
-
       // on zoom
       // Here the events for zooming and dragging
       this.map.on('zoomend', () => {
@@ -378,12 +339,12 @@ export default {
       this.wilayahLayer.forEach((element) => {
         this.map.removeLayer(element)
       })
+      this.wilayahLayer = []
     },
     removeLayer () {
       this.listLayer.forEach((element) => {
         this.map.removeLayer(element)
       })
-      this.wilayahLayer = []
       this.listLayer = []
     },
     configCluster (className) {
@@ -630,33 +591,13 @@ export default {
             this.closePopup()
           })
 
-          if (this.kecamatanCluster[element.kode_kecamatan] !== undefined) {
-            if (element.kode_kecamatan !== null && element.kode_kecamatan !== '') {
-              if (element.status === 'Positif' && element.stage === 'Aktif') {
-                this.kecamatanCluster[element.kode_kecamatan].positif.proses.addLayer(m)
-              } else if (element.status === 'Positif' && element.stage === 'Meninggal') {
-                this.kecamatanCluster[element.kode_kecamatan].positif.meninggal.addLayer(m)
-              } else if (element.status === 'Positif' && element.stage === 'Sembuh') {
-                this.kecamatanCluster[element.kode_kecamatan].positif.sembuh.addLayer(m)
-              } else if (element.status === 'PDP' && element.stage === 'Proses') {
-                this.kecamatanCluster[element.kode_kecamatan].pdp.proses.addLayer(m)
-              } else if (element.status === 'PDP' && element.stage === 'Selesai') {
-                this.kecamatanCluster[element.kode_kecamatan].pdp.selesai.addLayer(m)
-              } else if (element.status === 'PDP' && element.stage === 'Positif') {
-                this.kecamatanCluster[element.kode_kecamatan].pdp.positif.addLayer(m)
-              } else if (element.status === 'PDP' && element.stage === null) {
-                this.kecamatanCluster[element.kode_kecamatan].pdp.belumupdate.addLayer(m)
-              } else if (element.status === 'ODP' && element.stage === 'Proses') {
-                this.kecamatanCluster[element.kode_kecamatan].odp.proses.addLayer(m)
-              } else if (element.status === 'ODP' && element.stage === 'Selesai') {
-                this.kecamatanCluster[element.kode_kecamatan].odp.selesai.addLayer(m)
-              } else if (element.status === 'ODP' && element.stage === 'PDP') {
-                this.kecamatanCluster[element.kode_kecamatan].odp.pdp.addLayer(m)
-              } else if (element.status === 'ODP' && element.stage === 'Positif') {
-                this.kecamatanCluster[element.kode_kecamatan].odp.positif.addLayer(m)
-              } else {
-                this.kecamatanCluster[element.kode_kecamatan].odp.belumupdate.addLayer(m)
-              }
+          if (this.kecamatanCluster[element.kode_kecamatan] !== undefined && element.kode_kecamatan !== null && element.kode_kecamatan !== '') {
+            if (element.stage === 'Aktif') {
+              this.kecamatanCluster[element.kode_kecamatan][element.status.toLowerCase()].proses.addLayer(m)
+            } else if (element.stage === '' || element.stage === null) {
+              this.kecamatanCluster[element.kode_kecamatan][element.status.toLowerCase()].belumupdate.addLayer(m)
+            } else {
+              this.kecamatanCluster[element.kode_kecamatan][element.status.toLowerCase()][element.stage.toLowerCase()].addLayer(m)
             }
           }
         }
@@ -721,7 +662,7 @@ export default {
     color: #777;
 }
 .info-legend {
-  height: 30%;
+  height: 25%;
   overflow-y: auto;
   overflow-x: hidden;
   font-size: 13px;
