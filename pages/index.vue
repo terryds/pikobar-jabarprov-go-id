@@ -83,13 +83,13 @@
       <h2 class="mb-0 md:mb-4 text-left text-2xl md:text-center md:text-3xl">
         <b>Apa yang Harus Dilakukan</b>
       </h2>
-      <div v-show="false" class="p-8 md:p-12 rounded-lg bg-brand-green-dark">
-        <h3 class="text-lg lg:text-2xl text-white">
+      <div class="p-5 mt-4 md:mt-12 md:p-8 rounded-lg bg-brand-green-dark">
+        <h3 class="text-xl lg:text-2xl text-white">
           <strong>Ketahui Resiko dari COVID-19</strong>
         </h3>
         <br>
         <div class="flex flex-col lg:flex-row justify-between items-start">
-          <p class="text-white w-full lg:w-2/3">
+          <p class="text-white text-lg w-full lg:w-2/3">
             COVID-19 merupakan penyakit yang disebabkan Novel Coronavirus 2019.
             Meski bergejala mirip dengan flu biasa, COVID-19 sampai saat ini memiliki fatalitas lebih tinggi.
             Virus ini juga menyebar dengan sangat cepat karena bisa pindah dari orang ke orang bahkan sebelum orang tersebut tidak menunjukkan gejala.
@@ -98,9 +98,56 @@
             Penting bagi Anda untuk menilai kondisi secara mandiri. Anda bergejala?
           </p>
           <i style="flex: 0 0 2rem;" />
-          <button class="px-10 py-4 rounded-lg text-white border-2 border-solid border-white hover:bg-brand-green-light">
-            Lihat Disini
-          </button>
+          <a
+            class="px-10 py-4 rounded-lg text-white border-2 border-solid border-white hover:bg-brand-green-light"
+            href="https://www.prixa.ai/prixasekarang?lang=en"
+            target="_blank"
+          >
+            <b>Nilai Diri Saya</b>
+          </a>
+        </div>
+      </div>
+      <div class="flex flex-row flex-wrap items-stretch my-4 md:my-8">
+        <div
+          class="w-full mb-8 lg:mb-0 lg:w-1/4 rounded-lg bg-white shadow-md lg:mr-8 p-5 md:p-8"
+          style="min-width:320px"
+        >
+          <div class="flex flex-col justify-between items-start h-full">
+            <header>
+              <h3 class="text-lg lg:text-2xl">
+                <strong>Punya Pertanyaan Terkait COVID-19?</strong>
+              </h3>
+              <br>
+              <br>
+              <p>
+                Penting bagi Anda untuk menilai kondisi secara mandiri.
+                Anda bergejala?
+              </p>
+            </header>
+            <nuxt-link
+              tag="a"
+              class="mt-8 px-6 py-4 inline-block rounded-lg bg-brand-green text-white border-2 border-solid border-brand-green"
+              to="/faq"
+            >
+              <b>Tanyakan Sekarang</b>
+            </nuxt-link>
+          </div>
+        </div>
+        <div class="flex-1 rounded-lg bg-white shadow-md p-5 md:p-8">
+          <div class="flex flex-col items-stretch">
+            <h3 class="text-lg lg:text-2xl leading-loose">
+              <strong>Hubungi Call Center</strong>
+            </h3>
+            <CallCenter :count="4" />
+            <br>
+            <nuxt-link
+              tag="a"
+              to="/contact"
+              class="text-center md:self-center w-64 py-4 rounded-lg text-brand-green-darker hover:bg-green-200 border-2 border-solid border-brand-green"
+            >
+              Lihat Selengkapnya
+            </nuxt-link>
+          </div>
         </div>
       </div>
       <div class="flex flex-col items-stretch my-4 p-5 md:p-8 md:p-12 bg-white rounded-lg shadow-md">
@@ -129,22 +176,6 @@
           class="text-center md:self-center w-64 py-4 rounded-lg text-brand-green-darker hover:bg-green-200 border-2 border-solid border-brand-green"
         >
           Lihat Rumah Sakit Lainnya
-        </nuxt-link>
-      </div>
-    </section>
-    <section class="mt-8 m-4 md:m-8 rounded-lg bg-white shadow-md p-5 md:p-8">
-      <div class="flex flex-col items-stretch">
-        <h3 class="text-lg lg:text-2xl">
-          <strong>Hubungi Call Center</strong>
-        </h3>
-        <CallCenter :count="6" />
-        <br>
-        <nuxt-link
-          tag="a"
-          to="/contact"
-          class="text-center md:self-center w-64 py-4 rounded-lg text-brand-green-darker hover:bg-green-200 border-2 border-solid border-brand-green"
-        >
-          Lihat Selengkapnya
         </nuxt-link>
       </div>
     </section>
