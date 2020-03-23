@@ -314,7 +314,6 @@ export default {
           this.removeLayer()
           this.removeBatasWilayah()
           this.zoom = this.map.getZoom()
-          this.createBatasWilayah(this.kecamatanGeojson)
           this.setLayerPasienByKecamatan()
         } else if (this.map.getZoom() < 12 && this.zoom > 12) {
           this.removeLayer()
@@ -519,12 +518,17 @@ export default {
     },
     setLayerPasienByKecamatan () {
       this.createClusterByKecamatan()
-      this.createLayerPasienByKecamatan()
     },
     createClusterByKecamatan () {
       // if(map.getBounds().intersects(layer._bounds)) { ... }
-      this.$L.geoJSON(this.kecamatanGeojson).eachLayer((element) => {
+      this.$L.geoJSON(this.kecamatanGeojson, {
+        style: this.styleBatasWilayah
+      }).eachLayer((element) => {
         if (this.map.getBounds().intersects(element._bounds)) {
+          const layerWilayah = element.addTo(this.map)
+          this.wilayahLayer.push(layerWilayah)
+          element.bindPopup(element.feature.properties.bps_nama)
+
           // console.log(element.properties.bps_kode)
           const markerClusters = {
             odp: {
@@ -547,65 +551,64 @@ export default {
             }
           }
           markerClusters.positif.proses = this.$L.markerClusterGroup(this.configCluster('cluster-positif-proses'))
-
           markerClusters.positif.meninggal = this.$L.markerClusterGroup(this.configCluster('cluster-positif-meninggal'))
-
           markerClusters.positif.sembuh = this.$L.markerClusterGroup(this.configCluster('cluster-positif-sembuh'))
-
           markerClusters.pdp.proses = this.$L.markerClusterGroup(this.configCluster('cluster-pdp-proses'))
-
           markerClusters.pdp.selesai = this.$L.markerClusterGroup(this.configCluster('cluster-pdp-selesai'))
-
           markerClusters.pdp.positif = this.$L.markerClusterGroup(this.configCluster('cluster-pdp-positif'))
-
           markerClusters.pdp.belumupdate = this.$L.markerClusterGroup(this.configCluster('cluster-pdp-belumupdate'))
-
           markerClusters.odp.proses = this.$L.markerClusterGroup(this.configCluster('cluster-odp-proses'))
-
           markerClusters.odp.selesai = this.$L.markerClusterGroup(this.configCluster('cluster-odp-selesai'))
-
           markerClusters.odp.pdp = this.$L.markerClusterGroup(this.configCluster('cluster-odp-pdp'))
-
           markerClusters.odp.positif = this.$L.markerClusterGroup(this.configCluster('cluster-odp-positif'))
-
           markerClusters.odp.belumupdate = this.$L.markerClusterGroup(this.configCluster('cluster-odp-belumupdate'))
           this.kecamatanCluster[element.feature.properties.bps_kode] = markerClusters
-        }
-      })
-      this.settingLayerPasienByKecamatan()
-    },
-    settingLayerPasienByKecamatan () {
-      this.jsonData.forEach((element) => {
-        if (element.alamat_latitude !== null) {
-          const m = this.$L.marker([element.alamat_latitude, element.alamat_longitude])
-          m.bindPopup(`
-            <b> Kab/Kota </b> : ${element.kabkot_str} <br>
-            <b> Status </b> : ${element.status} <br>
-            <b> Jenis Kelamin </b> : ${element.jenis_kelamin_str} <br>
-            <b> Usia </b> : ${element.umur}
-          `)
-          m.on('mouseover', function (e) {
-            this.openPopup()
-          })
-          m.on('mouseout', function (e) {
-            this.closePopup()
+          this.jsonData.forEach((elPasien) => {
+            if (elPasien.alamat_latitude !== null) {
+              if (element._bounds.contains([elPasien.alamat_latitude, elPasien.alamat_longitude])) {
+
+                const m = this.$L.marker([elPasien.alamat_latitude, elPasien.alamat_longitude])
+                m.bindPopup(`
+                  <b> Kab/Kota </b> : ${elPasien.kabkot_str} <br>
+                  <b> Status </b> : ${elPasien.status} <br>
+                  <b> Jenis Kelamin </b> : ${elPasien.jenis_kelamin_str} <br>
+                  <b> Usia </b> : ${elPasien.umur} 
+                `)
+                m.on('mouseover', function (e) {
+                  this.openPopup()
+                })
+                m.on('mouseout', function (e) {
+                  this.closePopup()
+                })
+                if (elPasien.status === 'Positif' && elPasien.stage === 'Aktif') {
+                  this.kecamatanCluster[element.feature.properties.bps_kode].positif.proses.addLayer(m)
+                } else if (elPasien.status === 'Positif' && elPasien.stage === 'Meninggal') {
+                  this.kecamatanCluster[element.feature.properties.bps_kode].positif.meninggal.addLayer(m)
+                } else if (elPasien.status === 'Positif' && elPasien.stage === 'Sembuh') {
+                  this.kecamatanCluster[element.feature.properties.bps_kode].positif.sembuh.addLayer(m)
+                } else if (elPasien.status === 'PDP' && elPasien.stage === 'Proses') {
+                  this.kecamatanCluster[element.feature.properties.bps_kode].pdp.proses.addLayer(m)
+                } else if (elPasien.status === 'PDP' && elPasien.stage === 'Selesai') {
+                  this.kecamatanCluster[element.feature.properties.bps_kode].pdp.selesai.addLayer(m)
+                } else if (elPasien.status === 'PDP' && elPasien.stage === 'Positif') {
+                  this.kecamatanCluster[element.feature.properties.bps_kode].pdp.positif.addLayer(m)
+                } else if (elPasien.status === 'PDP' && elPasien.stage === null) {
+                  this.kecamatanCluster[element.feature.properties.bps_kode].pdp.belumupdate.addLayer(m)
+                } else if (elPasien.status === 'ODP' && elPasien.stage === 'Proses') {
+                  this.kecamatanCluster[element.feature.properties.bps_kode].odp.proses.addLayer(m)
+                } else if (elPasien.status === 'ODP' && elPasien.stage === 'Selesai') {
+                  this.kecamatanCluster[element.feature.properties.bps_kode].odp.selesai.addLayer(m)
+                } else if (elPasien.status === 'ODP' && elPasien.stage === 'PDP') {
+                  this.kecamatanCluster[element.feature.properties.bps_kode].odp.pdp.addLayer(m)
+                } else if (elPasien.status === 'ODP' && elPasien.stage === 'Positif') {
+                  this.kecamatanCluster[element.feature.properties.bps_kode].odp.positif.addLayer(m)
+                } else {
+                  this.kecamatanCluster[element.feature.properties.bps_kode].odp.belumupdate.addLayer(m)
+                }
+              }
+            }
           })
 
-          if (this.kecamatanCluster[element.kode_kecamatan] !== undefined && element.kode_kecamatan !== null && element.kode_kecamatan !== '') {
-            if (element.stage === 'Aktif') {
-              this.kecamatanCluster[element.kode_kecamatan][element.status.toLowerCase()].proses.addLayer(m)
-            } else if (element.stage === '' || element.stage === null) {
-              this.kecamatanCluster[element.kode_kecamatan][element.status.toLowerCase()].belumupdate.addLayer(m)
-            } else {
-              this.kecamatanCluster[element.kode_kecamatan][element.status.toLowerCase()][element.stage.toLowerCase()].addLayer(m)
-            }
-          }
-        }
-      })
-    },
-    createLayerPasienByKecamatan () {
-      this.$L.geoJSON(this.kecamatanGeojson).eachLayer((element) => {
-        if (this.map.getBounds().intersects(element._bounds)) {
           for (const key in this.kecamatanCluster[element.feature.properties.bps_kode]) {
             for (const keySub in this.kecamatanCluster[element.feature.properties.bps_kode][key]) {
               const newLayer = this.kecamatanCluster[element.feature.properties.bps_kode][key][keySub].addTo(this.map)
