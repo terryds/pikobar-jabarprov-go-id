@@ -1,6 +1,10 @@
 <template>
   <div class="container mx-auto">
     <div class="container">
+      <!-- <link rel="stylesheet" href=""> -->
+      <br>
+      <br>
+      <br>
       <h3 class="text-3xl text-gray-900 font-bold text-left leading-none" style="margin-bottom: 10px; ">
         Dashboard Kasus COVID-19 Provinsi Jawa Barat
       </h3>
