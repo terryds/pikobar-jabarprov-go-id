@@ -144,7 +144,7 @@ export default {
     },
     downloadAppURL () {
       const { config } = this.$store.state['remote-config']
-      return !!config && !!config.enableDownload ? config.enableDownload : '#'
+      return !!config && !!config.downloadAppURL ? config.downloadAppURL : '#'
     }
   },
   mounted () {

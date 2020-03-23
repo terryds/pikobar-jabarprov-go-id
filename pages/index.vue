@@ -403,7 +403,7 @@ export default {
       infographics: state => state.infographics.items,
       news: state => state.news.items,
       cases: state => state.statistics.cases,
-      selfDiagnoseURL: state => state.corona.selfDiagnoseURL
+      selfDiagnoseURL: state => state['remote-config'].config.selfDiagnoseURL || '#'
     }),
     bannerImage () {
       if (this.banners && this.banners.length) {
