@@ -95,14 +95,13 @@
                 />
               </a>
             </nuxt-link>
-            <nuxt-link
+            <a
               v-if="enableDownload"
-              tag="li"
-              :to="downloadAppURL"
+              :href="downloadAppURL"
               class="cursor-pointer px-4 py-2 text-white text-center ml-2 rounded-md bg-brand-green hover:bg-brand-green-light"
             >
               Download App
-            </nuxt-link>
+            </a>
           </ul>
         </div>
       </div>
@@ -157,10 +156,27 @@ export default {
               return
             }
             const { remoteConfig } = module
-            remoteConfig.fetchAndActivate()
-              .then(() => {
-                this.enableDownload = remoteConfig.getValue('download_app_via_web_enabled') === 'true'
-                this.downloadAppURL = remoteConfig.getValue('download_app_url')._value
+            // eslint-disable-next-line
+            let retry = 0
+            // eslint-disable-next-line
+            const fetch = () => {
+              if (retry >= 5) {
+                return
+              }
+              remoteConfig.fetchAndActivate()
+                .then(() => {
+                  this.enableDownload = remoteConfig.getValue('download_app_via_web_enabled')._value === 'true'
+                  this.downloadAppURL = remoteConfig.getValue('download_app_url')._value
+                }).catch((e) => {
+                  retry += 1
+                  fetch()
+                })
+            }
+            remoteConfig.activate()
+              .then((isActivated) => {
+                if (!isActivated) {
+                  fetch()
+                }
               })
           })
       }

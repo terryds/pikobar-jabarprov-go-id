@@ -8,6 +8,7 @@
       <CallCard class="top-grid__call-card" title="Call Center" subtitle="Nomor Darurat" number="119" />
       <CallCard class="top-grid__call-card" title="Dinkes Jabar" subtitle="Pertanyaan Umum" number="0811 2093 306" />
       <div
+        v-show="cases"
         class="top-grid__call-status rounded-lg"
       >
         <h6>
@@ -19,6 +20,44 @@
         <summary class="text-5xl text-yellow-400 font-bold">
           {{ cases ? cases.pertanyaan_terlayani : '' }}
         </summary>
+      </div>
+      <div
+        v-show="!cases"
+        class="top-grid__call-status rounded-lg"
+      >
+        <ContentLoader
+          :speed="2"
+          :height="100"
+          primary-color="rgba(255,255,255,0.3)"
+          secondary-color="rgba(255,255,255,0.1)"
+          class="w-full h-full max-w-xs"
+          style="grid-column-end: span 2;"
+        >
+          <rect
+            x="0"
+            y="0"
+            rx="8"
+            ry="6"
+            width="50%"
+            height="16"
+          />
+          <rect
+            x="0"
+            y="30"
+            rx="8"
+            ry="6"
+            width="66%"
+            height="16"
+          />
+          <rect
+            x="0"
+            y="64"
+            rx="8"
+            ry="6"
+            width="20%"
+            height="16"
+          />
+        </ContentLoader>
       </div>
     </section>
     <section class="mt-8 m-4 md:m-8 flex flex-col">
@@ -173,7 +212,7 @@
       <article class="flex flex-col lg:flex-row">
         <img
           v-lazy="'https://firebasestorage.googleapis.com/v0/b/jabarprov-covid19.appspot.com/o/public%2Fflatten.png?alt=media&token=afe8bb16-6cd5-4056-8d14-5c102f34a7c9'"
-          class="order-2 lg:order-1 w-full h-full mb-8 lg:w-1/2 lg:mr-8 object-cover object-center rounded-lg"
+          class="order-2 lg:order-1 w-full h-full mb-8 lg:w-1/2 lg:mr-8 object-contain md:object-cover object-center rounded-lg"
         >
         <div class="order-1 lg:order-2 lg:w-1/2">
           <p class="mb-4">
@@ -194,7 +233,7 @@
       </h2>
       <div class="flex flex-col items-stretch">
         <article class="html-content text-gray-800 flex flex-col lg:flex-row">
-          <img v-lazy="'/img/covid-19.png'" class="hidden lg:block w-full h-full lg:w-1/2 lg:mr-8 object-cover object-center rounded-lg">
+          <img v-lazy="'https://firebasestorage.googleapis.com/v0/b/jabarprov-covid19.appspot.com/o/public%2Fcovid-19.jpg?alt=media&token=3dbbb851-546b-4154-be27-ed8692f194a5'" class="hidden lg:block w-full h-full lg:w-1/2 lg:mr-8 object-cover object-center rounded-lg">
           <div class="w-full lg:w-1/2">
             <h3 class="text-xl text-black">
               <b>Apa Itu COVID-19?</b>
@@ -294,6 +333,7 @@
   </div>
 </template>
 <script>
+import { ContentLoader } from 'vue-content-loader'
 import { mapState } from 'vuex'
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons'
 import { formatDateTimeShort } from '~/lib/date'
@@ -307,6 +347,7 @@ import PetaPersebaranAllCases from '~/components/Tableau/PetaPersebaranAllCases'
 
 export default {
   components: {
+    ContentLoader,
     ImageSwiper,
     CallCard,
     BlogPostPreview,
@@ -339,7 +380,10 @@ export default {
       return null
     },
     lastUpdatedAt () {
-      return this.$store.getters['corona/lastUpdate']
+      if (!this.cases) {
+        return ''
+      }
+      return this.formatDateTimeShort(this.cases.updated_at)
     },
     countOf () {
       if (!this.cases) {
@@ -352,16 +396,6 @@ export default {
         aktif: aktif.jabar
       }
     }
-  },
-  created () {
-    Promise.all([
-      this.$store.dispatch('banners/getItems'),
-      this.$store.dispatch('news/getItems'),
-      this.$store.dispatch('statistics/getCases'),
-      this.$store.dispatch('infographics/getItems'),
-      this.$store.dispatch('corona/getAggregationJSON'),
-      this.$store.dispatch('corona/getLongLatJSON')
-    ])
   },
   methods: {
     formatDateTimeShort

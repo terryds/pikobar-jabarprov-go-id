@@ -1,0 +1,12 @@
+[[headers]]
+  for = "*.jpg"
+  [headers.values]
+    Cache-Control = "public, s-max-age=86400"
+[[headers]]
+  for = "/_nuxt/*.css"
+  [headers.values]
+    Cache-Control = "public, s-max-age=86400"
+[[headers]]
+  for = "/_nuxt/*.js"
+  [headers.values]
+    Cache-Control = "public, s-max-age=86400"

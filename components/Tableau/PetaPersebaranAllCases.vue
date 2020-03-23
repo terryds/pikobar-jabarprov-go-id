@@ -28,7 +28,7 @@ export default {
     return {
       url: 'https://public.tableau.com/views/PetaSebaranODPPDP-BlueVersion/DashboardMapAllCases?:embed=y&:origin=viz_share_link&:toolbar=n&:embed_code_version=3&:loadOrderID=0&showTabs=false&:display_count=y',
       title: 'Silakan Baca Dahulu',
-      disclaimer: `Perbesar peta untuk melihat jumlah titik akurat. Beberapa titik yang saling berdekatan terlihat manyatu pada pembesaran peta skala besar.
+      disclaimer: `Perbesar peta untuk melihat jumlah titik akurat. Beberapa titik yang saling berdekatan terlihat menyatu pada pembesaran peta skala besar.
       <br><br>Titik lokasi merupakan titik acak (random by system) wilayah yang tertera pada identitas kasus dan tidak menunjuk pada alamat persis masing-masing kasus, data yang ditampilkan akan terus diperbarui sesuai dengan informasi yang diterima melalui Pemerintah Provinsi Jawa Barat.`
     }
   },
