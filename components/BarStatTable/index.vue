@@ -8,7 +8,6 @@
         <b>Tabel Covid-19 Jawa Barat</b>
       </h4>
       <hr>
-      <br>
       <div class="p-2">
         <mdb-datatable
           :data="data"
