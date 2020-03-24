@@ -32,6 +32,10 @@
         <BarStatArea />
       </section>
 
+      <section class="mt-4">
+        <BarStatTable />
+      </section>
+
       <section class="row mt-4">
         <div class="p-1 col-lg-5 col-md col-sm col-xs mb-4">
           <BarStatJenisKelamin />
@@ -60,7 +64,8 @@ export default {
     BarStatArea: () => import('~/components/BarStatArea'),
     BarStatJenisKelamin: () => import('~/components/BarStatJenisKelamin'),
     BarStatUsia: () => import('~/components/BarStatUsia'),
-    BarStatHarianAkumulatif: () => import('~/components/BarStatHarianAkumulatif')
+    BarStatHarianAkumulatif: () => import('~/components/BarStatHarianAkumulatif'),
+    BarStatTable: () => import('~/components/BarStatTable')
   },
   computed: {
     ...mapState({

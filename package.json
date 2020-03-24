@@ -20,6 +20,7 @@
     "firebase": "^7.11.0",
     "firebase-admin": "^8.10.0",
     "lodash": "^4.17.15",
+    "mdbvue": "^6.5.1",
     "node-sass": "^4.13.1",
     "nuxt": "^2.0.0",
     "nuxt-leaflet": "0.0.21",
