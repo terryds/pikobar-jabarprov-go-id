@@ -63,32 +63,8 @@ export default {
         isODP: false,
         isPDP: true
       },
-      jsonDataRekap: [
+      jsonDataSebaranJabar: [
       ],
-      jsonDataSatuan: [
-      ],
-      jsonDataResult: {
-        odp: 0,
-        odp_proses: 0,
-        odp_proses_persen: 0,
-        odp_selesai: 0,
-        odp_selesai_persen: 0,
-        pdp: 0,
-        pdp_proses: 0,
-        pdp_proses_persen: 0,
-        pdp_selesai: 0,
-        pdp_selesai_persen: 0,
-        positif: 0,
-        perawatan: 0,
-        sembuh: 0,
-        meninggal: 0,
-        total_positif_saat_ini: 0,
-        total_sembuh: 0,
-        total_meninggal: 0,
-        last_update: '',
-        umur_max: 0,
-        count_kota: 0
-      },
       barChartUmurJenisKelaminData: {
         cols: [
           { id: 'Umur', label: 'Umur', type: 'string' },
@@ -98,49 +74,7 @@ export default {
         rows: [
           {
             c: [
-              { v: 10, f: '0-10' },
-              { v: 0, f: '0' },
-              { v: 0, f: '0' }
-            ]
-          },
-          {
-            c: [
-              { v: 20, f: '11-20' },
-              { v: 0, f: '0' },
-              { v: 0, f: '0' }
-            ]
-          },
-          {
-            c: [
-              { v: 30, f: '21-30' },
-              { v: 0, f: '0' },
-              { v: 0, f: '0' }
-            ]
-          },
-          {
-            c: [
-              { v: 40, f: '31-40' },
-              { v: 0, f: '0' },
-              { v: 0, f: '0' }
-            ]
-          },
-          {
-            c: [
-              { v: 50, f: '41-50' },
-              { v: 0, f: '0' },
-              { v: 0, f: '0' }
-            ]
-          },
-          {
-            c: [
-              { v: 60, f: '51-60' },
-              { v: 0, f: '0' },
-              { v: 0, f: '0' }
-            ]
-          },
-          {
-            c: [
-              { v: 70, f: '61-70' },
+              { v: 100, f: '81-100' },
               { v: 0, f: '0' },
               { v: 0, f: '0' }
             ]
@@ -154,7 +88,49 @@ export default {
           },
           {
             c: [
-              { v: 100, f: '81-100' },
+              { v: 70, f: '61-70' },
+              { v: 0, f: '0' },
+              { v: 0, f: '0' }
+            ]
+          },
+          {
+            c: [
+              { v: 60, f: '51-60' },
+              { v: 0, f: '0' },
+              { v: 0, f: '0' }
+            ]
+          },
+          {
+            c: [
+              { v: 50, f: '41-50' },
+              { v: 0, f: '0' },
+              { v: 0, f: '0' }
+            ]
+          },
+          {
+            c: [
+              { v: 40, f: '31-40' },
+              { v: 0, f: '0' },
+              { v: 0, f: '0' }
+            ]
+          },
+          {
+            c: [
+              { v: 30, f: '21-30' },
+              { v: 0, f: '0' },
+              { v: 0, f: '0' }
+            ]
+          },
+          {
+            c: [
+              { v: 20, f: '11-20' },
+              { v: 0, f: '0' },
+              { v: 0, f: '0' }
+            ]
+          },
+          {
+            c: [
+              { v: 10, f: '0-10' },
               { v: 0, f: '0' },
               { v: 0, f: '0' }
             ]
@@ -198,7 +174,7 @@ export default {
     }
   },
   created () {
-    this.fetchDataSatuan()
+    this.fetchDataSebaranJabar()
   },
   methods: {
     ifNullReturnZero (str) {
@@ -221,23 +197,22 @@ export default {
       }
       return [day, month, year].join('-')
     },
-    fetchDataSatuan () {
+    fetchDataSebaranJabar () {
       const self = this
       axios
-        .get('https://covid19-public.digitalservice.id/analytics/longlat/')
+        .get('https://covid19-public.digitalservice.id/api/v1/sebaran/jabar')
         .then(function (response) {
-          self.jsonDataResult.last_update = new Date(response.data.last_update).toLocaleString('id-ID', { dateStyle: 'long', timeStyle: 'medium' })
-          self.jsonDataSatuan = response.data.data
+          self.jsonDataSebaranJabar = response.data.data.content
 
           // by jenis_kelamin
           let tempJenisKelaminPria = 0
           let tempJenisKelaminWanita = 0
           let tempJenisKelaminNull = 0
-          for (let i = 0; i < self.jsonDataSatuan.length; i++) {
-            if (self.jsonDataSatuan[i].status === 'ODP') {
-              if (self.jsonDataSatuan[i].jenis_kelamin_str === 'Laki-laki') {
+          for (let i = 0; i < self.jsonDataSebaranJabar.length; i++) {
+            if (self.jsonDataSebaranJabar[i].status === 'ODP') {
+              if (self.jsonDataSebaranJabar[i].gender === 'Laki-laki') {
                 tempJenisKelaminPria += 1
-              } else if (self.jsonDataSatuan[i].jenis_kelamin_str === 'Perempuan') {
+              } else if (self.jsonDataSebaranJabar[i].gender === 'Perempuan') {
                 tempJenisKelaminWanita += 1
               } else {
                 tempJenisKelaminNull += 1
@@ -268,49 +243,7 @@ export default {
         rows: [
           {
             c: [
-              { v: 10, f: '0-10' },
-              { v: 0, f: '0' },
-              { v: 0, f: '0' }
-            ]
-          },
-          {
-            c: [
-              { v: 20, f: '11-20' },
-              { v: 0, f: '0' },
-              { v: 0, f: '0' }
-            ]
-          },
-          {
-            c: [
-              { v: 30, f: '21-30' },
-              { v: 0, f: '0' },
-              { v: 0, f: '0' }
-            ]
-          },
-          {
-            c: [
-              { v: 40, f: '31-40' },
-              { v: 0, f: '0' },
-              { v: 0, f: '0' }
-            ]
-          },
-          {
-            c: [
-              { v: 50, f: '41-50' },
-              { v: 0, f: '0' },
-              { v: 0, f: '0' }
-            ]
-          },
-          {
-            c: [
-              { v: 60, f: '51-60' },
-              { v: 0, f: '0' },
-              { v: 0, f: '0' }
-            ]
-          },
-          {
-            c: [
-              { v: 70, f: '61-70' },
+              { v: 100, f: '81-100' },
               { v: 0, f: '0' },
               { v: 0, f: '0' }
             ]
@@ -324,7 +257,49 @@ export default {
           },
           {
             c: [
-              { v: 100, f: '81-100' },
+              { v: 70, f: '61-70' },
+              { v: 0, f: '0' },
+              { v: 0, f: '0' }
+            ]
+          },
+          {
+            c: [
+              { v: 60, f: '51-60' },
+              { v: 0, f: '0' },
+              { v: 0, f: '0' }
+            ]
+          },
+          {
+            c: [
+              { v: 50, f: '41-50' },
+              { v: 0, f: '0' },
+              { v: 0, f: '0' }
+            ]
+          },
+          {
+            c: [
+              { v: 40, f: '31-40' },
+              { v: 0, f: '0' },
+              { v: 0, f: '0' }
+            ]
+          },
+          {
+            c: [
+              { v: 30, f: '21-30' },
+              { v: 0, f: '0' },
+              { v: 0, f: '0' }
+            ]
+          },
+          {
+            c: [
+              { v: 20, f: '11-20' },
+              { v: 0, f: '0' },
+              { v: 0, f: '0' }
+            ]
+          },
+          {
+            c: [
+              { v: 10, f: '0-10' },
               { v: 0, f: '0' },
               { v: 0, f: '0' }
             ]
@@ -351,70 +326,70 @@ export default {
         this.stat.isPDP = true
       }
       let max = 0
-      for (let i = 0; i < self.jsonDataSatuan.length; i++) {
-        if (self.jsonDataSatuan[i].status === stat) {
-          if (self.jsonDataSatuan[i].umur > max) {
-            max = self.jsonDataSatuan[i].umur
+      for (let i = 0; i < self.jsonDataSebaranJabar.length; i++) {
+        if (self.jsonDataSebaranJabar[i].status === stat) {
+          if (self.jsonDataSebaranJabar[i].umur > max) {
+            max = self.jsonDataSebaranJabar[i].umur
             self.barChartUmurJenisKelaminOptions.hAxis.viewWindow.min = (max + 10) * -1
             self.barChartUmurJenisKelaminOptions.hAxis.viewWindow.max = max + 10
           }
-          if (self.jsonDataSatuan[i].jenis_kelamin_str === 'Laki-laki') {
-            if ((self.jsonDataSatuan[i].umur >= 0) && (self.jsonDataSatuan[i].umur <= 10)) {
-              self.barChartUmurJenisKelaminData.rows[0].c[1].v -= 1
-              self.barChartUmurJenisKelaminData.rows[0].c[1].f = (self.barChartUmurJenisKelaminData.rows[0].c[1].v * -1).toString()
-            } else if ((self.jsonDataSatuan[i].umur >= 11) && (self.jsonDataSatuan[i].umur <= 20)) {
-              self.barChartUmurJenisKelaminData.rows[1].c[1].v -= 1
-              self.barChartUmurJenisKelaminData.rows[1].c[1].f = (self.barChartUmurJenisKelaminData.rows[1].c[1].v * -1).toString()
-            } else if ((self.jsonDataSatuan[i].umur >= 21) && (self.jsonDataSatuan[i].umur <= 30)) {
-              self.barChartUmurJenisKelaminData.rows[2].c[1].v -= 1
-              self.barChartUmurJenisKelaminData.rows[2].c[1].f = (self.barChartUmurJenisKelaminData.rows[2].c[1].v * -1).toString()
-            } else if ((self.jsonDataSatuan[i].umur >= 31) && (self.jsonDataSatuan[i].umur <= 40)) {
-              self.barChartUmurJenisKelaminData.rows[3].c[1].v -= 1
-              self.barChartUmurJenisKelaminData.rows[3].c[1].f = (self.barChartUmurJenisKelaminData.rows[3].c[1].v * -1).toString()
-            } else if ((self.jsonDataSatuan[i].umur >= 41) && (self.jsonDataSatuan[i].umur <= 50)) {
-              self.barChartUmurJenisKelaminData.rows[4].c[1].v -= 1
-              self.barChartUmurJenisKelaminData.rows[4].c[1].f = (self.barChartUmurJenisKelaminData.rows[4].c[1].v * -1).toString()
-            } else if ((self.jsonDataSatuan[i].umur >= 51) && (self.jsonDataSatuan[i].umur <= 60)) {
-              self.barChartUmurJenisKelaminData.rows[5].c[1].v -= 1
-              self.barChartUmurJenisKelaminData.rows[5].c[1].f = (self.barChartUmurJenisKelaminData.rows[5].c[1].v * -1).toString()
-            } else if ((self.jsonDataSatuan[i].umur >= 61) && (self.jsonDataSatuan[i].umur <= 70)) {
-              self.barChartUmurJenisKelaminData.rows[6].c[1].v -= 1
-              self.barChartUmurJenisKelaminData.rows[6].c[1].f = (self.barChartUmurJenisKelaminData.rows[6].c[1].v * -1).toString()
-            } else if ((self.jsonDataSatuan[i].umur >= 71) && (self.jsonDataSatuan[i].umur <= 80)) {
-              self.barChartUmurJenisKelaminData.rows[7].c[1].v -= 1
-              self.barChartUmurJenisKelaminData.rows[7].c[1].f = (self.barChartUmurJenisKelaminData.rows[7].c[1].v * -1).toString()
-            } else if ((self.jsonDataSatuan[i].umur >= 81) && (self.jsonDataSatuan[i].umur <= 100)) {
+          if (self.jsonDataSebaranJabar[i].gender === 'Laki-laki') {
+            if ((self.jsonDataSebaranJabar[i].umur >= 0) && (self.jsonDataSebaranJabar[i].umur <= 10)) {
               self.barChartUmurJenisKelaminData.rows[8].c[1].v -= 1
               self.barChartUmurJenisKelaminData.rows[8].c[1].f = (self.barChartUmurJenisKelaminData.rows[8].c[1].v * -1).toString()
+            } else if ((self.jsonDataSebaranJabar[i].umur >= 11) && (self.jsonDataSebaranJabar[i].umur <= 20)) {
+              self.barChartUmurJenisKelaminData.rows[7].c[1].v -= 1
+              self.barChartUmurJenisKelaminData.rows[7].c[1].f = (self.barChartUmurJenisKelaminData.rows[7].c[1].v * -1).toString()
+            } else if ((self.jsonDataSebaranJabar[i].umur >= 21) && (self.jsonDataSebaranJabar[i].umur <= 30)) {
+              self.barChartUmurJenisKelaminData.rows[6].c[1].v -= 1
+              self.barChartUmurJenisKelaminData.rows[6].c[1].f = (self.barChartUmurJenisKelaminData.rows[6].c[1].v * -1).toString()
+            } else if ((self.jsonDataSebaranJabar[i].umur >= 31) && (self.jsonDataSebaranJabar[i].umur <= 40)) {
+              self.barChartUmurJenisKelaminData.rows[5].c[1].v -= 1
+              self.barChartUmurJenisKelaminData.rows[5].c[1].f = (self.barChartUmurJenisKelaminData.rows[5].c[1].v * -1).toString()
+            } else if ((self.jsonDataSebaranJabar[i].umur >= 41) && (self.jsonDataSebaranJabar[i].umur <= 50)) {
+              self.barChartUmurJenisKelaminData.rows[4].c[1].v -= 1
+              self.barChartUmurJenisKelaminData.rows[4].c[1].f = (self.barChartUmurJenisKelaminData.rows[4].c[1].v * -1).toString()
+            } else if ((self.jsonDataSebaranJabar[i].umur >= 51) && (self.jsonDataSebaranJabar[i].umur <= 60)) {
+              self.barChartUmurJenisKelaminData.rows[3].c[1].v -= 1
+              self.barChartUmurJenisKelaminData.rows[3].c[1].f = (self.barChartUmurJenisKelaminData.rows[3].c[1].v * -1).toString()
+            } else if ((self.jsonDataSebaranJabar[i].umur >= 61) && (self.jsonDataSebaranJabar[i].umur <= 70)) {
+              self.barChartUmurJenisKelaminData.rows[2].c[1].v -= 1
+              self.barChartUmurJenisKelaminData.rows[2].c[1].f = (self.barChartUmurJenisKelaminData.rows[2].c[1].v * -1).toString()
+            } else if ((self.jsonDataSebaranJabar[i].umur >= 71) && (self.jsonDataSebaranJabar[i].umur <= 80)) {
+              self.barChartUmurJenisKelaminData.rows[1].c[1].v -= 1
+              self.barChartUmurJenisKelaminData.rows[1].c[1].f = (self.barChartUmurJenisKelaminData.rows[1].c[1].v * -1).toString()
+            } else if ((self.jsonDataSebaranJabar[i].umur >= 81) && (self.jsonDataSebaranJabar[i].umur <= 100)) {
+              self.barChartUmurJenisKelaminData.rows[0].c[1].v -= 1
+              self.barChartUmurJenisKelaminData.rows[0].c[1].f = (self.barChartUmurJenisKelaminData.rows[0].c[1].v * -1).toString()
             }
-          } else if (self.jsonDataSatuan[i].jenis_kelamin_str === 'Perempuan') {
-            if ((self.jsonDataSatuan[i].umur >= 0) && (self.jsonDataSatuan[i].umur <= 10)) {
-              self.barChartUmurJenisKelaminData.rows[0].c[2].v += 1
-              self.barChartUmurJenisKelaminData.rows[0].c[2].f = (self.barChartUmurJenisKelaminData.rows[0].c[2].v).toString()
-            } else if ((self.jsonDataSatuan[i].umur >= 11) && (self.jsonDataSatuan[i].umur <= 20)) {
-              self.barChartUmurJenisKelaminData.rows[1].c[2].v += 1
-              self.barChartUmurJenisKelaminData.rows[1].c[2].f = (self.barChartUmurJenisKelaminData.rows[1].c[2].v).toString()
-            } else if ((self.jsonDataSatuan[i].umur >= 21) && (self.jsonDataSatuan[i].umur <= 30)) {
-              self.barChartUmurJenisKelaminData.rows[2].c[2].v += 1
-              self.barChartUmurJenisKelaminData.rows[2].c[2].f = (self.barChartUmurJenisKelaminData.rows[2].c[2].v).toString()
-            } else if ((self.jsonDataSatuan[i].umur >= 31) && (self.jsonDataSatuan[i].umur <= 40)) {
-              self.barChartUmurJenisKelaminData.rows[3].c[2].v += 1
-              self.barChartUmurJenisKelaminData.rows[3].c[2].f = (self.barChartUmurJenisKelaminData.rows[3].c[2].v).toString()
-            } else if ((self.jsonDataSatuan[i].umur >= 41) && (self.jsonDataSatuan[i].umur <= 50)) {
-              self.barChartUmurJenisKelaminData.rows[4].c[2].v += 1
-              self.barChartUmurJenisKelaminData.rows[4].c[2].f = (self.barChartUmurJenisKelaminData.rows[4].c[2].v).toString()
-            } else if ((self.jsonDataSatuan[i].umur >= 51) && (self.jsonDataSatuan[i].umur <= 60)) {
-              self.barChartUmurJenisKelaminData.rows[5].c[2].v += 1
-              self.barChartUmurJenisKelaminData.rows[5].c[2].f = (self.barChartUmurJenisKelaminData.rows[5].c[2].v).toString()
-            } else if ((self.jsonDataSatuan[i].umur >= 61) && (self.jsonDataSatuan[i].umur <= 70)) {
-              self.barChartUmurJenisKelaminData.rows[6].c[2].v += 1
-              self.barChartUmurJenisKelaminData.rows[6].c[2].f = (self.barChartUmurJenisKelaminData.rows[6].c[2].v).toString()
-            } else if ((self.jsonDataSatuan[i].umur >= 71) && (self.jsonDataSatuan[i].umur <= 80)) {
-              self.barChartUmurJenisKelaminData.rows[7].c[2].v += 1
-              self.barChartUmurJenisKelaminData.rows[7].c[2].f = (self.barChartUmurJenisKelaminData.rows[7].c[2].v).toString()
-            } else if ((self.jsonDataSatuan[i].umur >= 81) && (self.jsonDataSatuan[i].umur <= 100)) {
+          } else if (self.jsonDataSebaranJabar[i].gender === 'Perempuan') {
+            if ((self.jsonDataSebaranJabar[i].umur >= 0) && (self.jsonDataSebaranJabar[i].umur <= 10)) {
               self.barChartUmurJenisKelaminData.rows[8].c[2].v += 1
               self.barChartUmurJenisKelaminData.rows[8].c[2].f = (self.barChartUmurJenisKelaminData.rows[8].c[2].v).toString()
+            } else if ((self.jsonDataSebaranJabar[i].umur >= 11) && (self.jsonDataSebaranJabar[i].umur <= 20)) {
+              self.barChartUmurJenisKelaminData.rows[7].c[2].v += 1
+              self.barChartUmurJenisKelaminData.rows[7].c[2].f = (self.barChartUmurJenisKelaminData.rows[7].c[2].v).toString()
+            } else if ((self.jsonDataSebaranJabar[i].umur >= 21) && (self.jsonDataSebaranJabar[i].umur <= 30)) {
+              self.barChartUmurJenisKelaminData.rows[6].c[2].v += 1
+              self.barChartUmurJenisKelaminData.rows[6].c[2].f = (self.barChartUmurJenisKelaminData.rows[6].c[2].v).toString()
+            } else if ((self.jsonDataSebaranJabar[i].umur >= 31) && (self.jsonDataSebaranJabar[i].umur <= 40)) {
+              self.barChartUmurJenisKelaminData.rows[5].c[2].v += 1
+              self.barChartUmurJenisKelaminData.rows[5].c[2].f = (self.barChartUmurJenisKelaminData.rows[5].c[2].v).toString()
+            } else if ((self.jsonDataSebaranJabar[i].umur >= 41) && (self.jsonDataSebaranJabar[i].umur <= 50)) {
+              self.barChartUmurJenisKelaminData.rows[4].c[2].v += 1
+              self.barChartUmurJenisKelaminData.rows[4].c[2].f = (self.barChartUmurJenisKelaminData.rows[4].c[2].v).toString()
+            } else if ((self.jsonDataSebaranJabar[i].umur >= 51) && (self.jsonDataSebaranJabar[i].umur <= 60)) {
+              self.barChartUmurJenisKelaminData.rows[3].c[2].v += 1
+              self.barChartUmurJenisKelaminData.rows[3].c[2].f = (self.barChartUmurJenisKelaminData.rows[3].c[2].v).toString()
+            } else if ((self.jsonDataSebaranJabar[i].umur >= 61) && (self.jsonDataSebaranJabar[i].umur <= 70)) {
+              self.barChartUmurJenisKelaminData.rows[2].c[2].v += 1
+              self.barChartUmurJenisKelaminData.rows[2].c[2].f = (self.barChartUmurJenisKelaminData.rows[2].c[2].v).toString()
+            } else if ((self.jsonDataSebaranJabar[i].umur >= 71) && (self.jsonDataSebaranJabar[i].umur <= 80)) {
+              self.barChartUmurJenisKelaminData.rows[1].c[2].v += 1
+              self.barChartUmurJenisKelaminData.rows[1].c[2].f = (self.barChartUmurJenisKelaminData.rows[1].c[2].v).toString()
+            } else if ((self.jsonDataSebaranJabar[i].umur >= 81) && (self.jsonDataSebaranJabar[i].umur <= 100)) {
+              self.barChartUmurJenisKelaminData.rows[0].c[2].v += 1
+              self.barChartUmurJenisKelaminData.rows[0].c[2].f = (self.barChartUmurJenisKelaminData.rows[0].c[2].v).toString()
             }
           }
         }
