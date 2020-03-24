@@ -17,10 +17,10 @@
             <img
               :src="item.images[0] || null"
               class="cursor-pointer infographic-list__item-image w-full object-cover object-left-top rounded-lg shadow-lg hover:opacity-75"
-              @click.prevent="$router.push(getItemURL(item))"
+              @click.prevent="$router.push(item.route)"
             >
             <caption class="mt-4 text-left block w-full font-bold opacity-75 hover:underline">
-              <nuxt-link :to="getItemURL(item)">
+              <nuxt-link :to="item.route">
                 {{ item.title }}
               </nuxt-link>
             </caption>
@@ -56,12 +56,6 @@ export default {
       })
   },
   methods: {
-    encodeURI (string) {
-      return encodeURI(string)
-    },
-    getItemURL (item) {
-      return `/infographics/${this.encodeURI(item.title)}-inf.${item.id}`
-    },
     ...mapActions('infographics', {
       getItems: 'getItems'
     })
