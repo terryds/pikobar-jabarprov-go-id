@@ -119,6 +119,8 @@ export default {
       },
       fontChartBar: faChartBar,
       fontChartLine: faChartLine,
+      jsonDataProvinsiHarian: [],
+      jsonDataProvinsiKumulatif: [],
       jsonDataRekap: [
       ],
       jsonDataSatuan: [
@@ -146,8 +148,8 @@ export default {
         count_kota: 0
       },
       barChartHarianODPData: [
-        ['Tanggal', 'Selesai Pemantauan', 'Proses Pemantauan'],
-        ['0', 0, 0]
+        ['Tanggal', 'Proses Pemantauan'],
+        ['0', 0]
       ],
       barChartHarianODPOptions: {
         height: 450,
@@ -168,8 +170,8 @@ export default {
         }
       },
       barChartHarianPDPData: [
-        ['Tanggal', 'Selesai Pengawasan', 'Proses Pengawasan'],
-        ['0', 0, 0]
+        ['Tanggal', 'Proses Pengawasan'],
+        ['0', 0]
       ],
       barChartHarianPDPOptions: {
         height: 450,
@@ -195,8 +197,8 @@ export default {
         }
       },
       barChartAkumulatifODPData: [
-        ['Tanggal', 'Selesai Pemantauan', 'Proses Pemantauan', 'Total ODP'],
-        ['0', 0, 0, 0]
+        ['Tanggal', 'Total ODP'],
+        ['0', 0]
       ],
       barChartAkumulatifODPOptions: {
         height: 450,
@@ -218,8 +220,8 @@ export default {
         }
       },
       barChartAkumulatifPDPData: [
-        ['Tanggal', 'Selesai Pengawasan', 'Proses Pengawasan', 'Total PDP'],
-        ['0', 0, 0, 0]
+        ['Tanggal', 'Total PDP'],
+        ['0', 0]
       ],
       barChartAkumulatifPDPOptions: {
         height: 450,
@@ -248,7 +250,8 @@ export default {
     }
   },
   created () {
-    this.fetchDataRekap()
+    this.fetchDataProvinsiHarian()
+    this.fetchDataProvinsiKumulatif()
   },
   methods: {
     ifNullReturnZero (str) {
@@ -279,117 +282,55 @@ export default {
       this.stat.isActiveHarian = false
       this.stat.isActiveAkumulatif = true
     },
-    fetchDataRekap () {
+    fetchDataProvinsiHarian () {
       const self = this
       const today = new Date()
       const strToday = self.formatDate(today)
-      const yesterday = new Date()
-      yesterday.setDate(today.getDate() - 1)
-      const strYesteday = self.formatDate(yesterday)
 
       axios
-        .get('https://covid19-public.digitalservice.id/analytics/aggregation/')
+        .get('https://covid19-public.digitalservice.id/api/v1/rekapitulasi/jabar/harian?level=prov')
         .then(function (response) {
-          self.jsonDataRekap = response.data
-          // by status
-          for (let i = 0; i < self.jsonDataRekap.length; i++) {
-            if (self.jsonDataRekap[i].tanggal === strToday) {
-              if (self.jsonDataRekap[i].whatsapp !== null) {
-                self.jsonDataResult.positif = self.ifNullReturnZero(self.jsonDataRekap[i].positif)
-                self.jsonDataResult.sembuh = self.ifNullReturnZero(self.jsonDataRekap[i].sembuh)
-                self.jsonDataResult.meninggal = self.ifNullReturnZero(self.jsonDataRekap[i].meninggal)
-                self.jsonDataResult.total_positif_saat_ini = self.ifNullReturnZero(self.jsonDataRekap[i].total_positif_saat_ini)
-                self.jsonDataResult.total_sembuh = self.ifNullReturnZero(self.jsonDataRekap[i].total_sembuh)
-                self.jsonDataResult.total_meninggal = self.ifNullReturnZero(self.jsonDataRekap[i].total_meninggal)
-                self.jsonDataResult.odp = self.ifNullReturnZero(self.jsonDataRekap[i].total_odp)
-                self.jsonDataResult.odp_proses = self.ifNullReturnZero(self.jsonDataRekap[i].proses_pemantauan)
-                self.jsonDataResult.odp_proses_persen = ((self.jsonDataResult.odp_proses / self.jsonDataResult.odp) * 100).toFixed(2)
-                self.jsonDataResult.odp_selesai = self.ifNullReturnZero(self.jsonDataRekap[i].selesai_pemantauan)
-                self.jsonDataResult.odp_selesai_persen = ((self.jsonDataResult.odp_selesai / self.jsonDataResult.odp) * 100).toFixed(2)
-                self.jsonDataResult.pdp = self.ifNullReturnZero(self.jsonDataRekap[i].total_pdp)
-                self.jsonDataResult.pdp_proses = self.ifNullReturnZero(self.jsonDataRekap[i].proses_pengawasan)
-                self.jsonDataResult.pdp_proses_persen = ((self.jsonDataResult.pdp_proses / self.jsonDataResult.pdp) * 100).toFixed(2)
-                self.jsonDataResult.pdp_selesai = self.ifNullReturnZero(self.jsonDataRekap[i].selesai_pengawasan)
-                self.jsonDataResult.pdp_selesai_persen = ((self.jsonDataResult.pdp_selesai / self.jsonDataResult.pdp) * 100).toFixed(2)
-              } else {
-                self.jsonDataResult.positif = self.ifNullReturnZero(self.jsonDataRekap[i - 1].positif)
-                self.jsonDataResult.sembuh = self.ifNullReturnZero(self.jsonDataRekap[i - 1].sembuh)
-                self.jsonDataResult.meninggal = self.ifNullReturnZero(self.jsonDataRekap[i - 1].meninggal)
-                self.jsonDataResult.total_positif_saat_ini = self.ifNullReturnZero(self.jsonDataRekap[i - 1].total_positif_saat_ini)
-                self.jsonDataResult.total_sembuh = self.ifNullReturnZero(self.jsonDataRekap[i - 1].total_sembuh)
-                self.jsonDataResult.total_meninggal = self.ifNullReturnZero(self.jsonDataRekap[i - 1].total_meninggal)
-                self.jsonDataResult.odp = self.ifNullReturnZero(self.jsonDataRekap[i - 1].total_odp)
-                self.jsonDataResult.odp_proses = self.ifNullReturnZero(self.jsonDataRekap[i - 1].proses_pemantauan)
-                self.jsonDataResult.odp_proses_persen = ((self.jsonDataResult.odp_proses / self.jsonDataResult.odp) * 100).toFixed(2)
-                self.jsonDataResult.odp_selesai = self.ifNullReturnZero(self.jsonDataRekap[i - 1].selesai_pemantauan)
-                self.jsonDataResult.odp_selesai_persen = ((self.jsonDataResult.odp_selesai / self.jsonDataResult.odp) * 100).toFixed(2)
-                self.jsonDataResult.pdp = self.ifNullReturnZero(self.jsonDataRekap[i - 1].total_pdp)
-                self.jsonDataResult.pdp_proses = self.ifNullReturnZero(self.jsonDataRekap[i - 1].proses_pengawasan)
-                self.jsonDataResult.pdp_proses_persen = ((self.jsonDataResult.pdp_proses / self.jsonDataResult.pdp) * 100).toFixed(2)
-                self.jsonDataResult.pdp_selesai = self.ifNullReturnZero(self.jsonDataRekap[i - 1].selesai_pengawasan)
-                self.jsonDataResult.pdp_selesai_persen = ((self.jsonDataResult.pdp_selesai / self.jsonDataResult.pdp) * 100).toFixed(2)
-              }
-            }
-          }
+          self.jsonDataProvinsiHarian = response.data.data.content
 
-          // series
           let stop = false
-          for (let i = 0; i < self.jsonDataRekap.length; i++) {
+          for (let i = 0; i < self.jsonDataProvinsiHarian.length; i++) {
+            const date = new Date(self.jsonDataProvinsiHarian[i].tanggal)
             if (stop === false) {
-              if (i > 0 && self.ifNullReturnZero(self.jsonDataRekap[i].total_odp) === 0) {
-                self.barChartHarianODPData.push([
-                  self.jsonDataRekap[i].tanggal,
-                  self.ifNullReturnZero(self.jsonDataRekap[i - 1].selesai_pemantauan),
-                  self.ifNullReturnZero(self.jsonDataRekap[i - 1].proses_pemantauan)
-                ])
-                self.barChartHarianPDPData.push([
-                  self.jsonDataRekap[i].tanggal,
-                  self.ifNullReturnZero(self.jsonDataRekap[i - 1].selesai_pengawasan),
-                  self.ifNullReturnZero(self.jsonDataRekap[i - 1].proses_pengawasan)
-                ])
-                self.barChartAkumulatifODPData.push([
-                  self.jsonDataRekap[i].tanggal,
-                  self.ifNullReturnZero(self.jsonDataRekap[i - 1].selesai_pemantauan),
-                  self.ifNullReturnZero(self.jsonDataRekap[i - 1].proses_pemantauan),
-                  self.ifNullReturnZero(self.jsonDataRekap[i - 1].total_odp)
-                ])
-                self.barChartAkumulatifPDPData.push([
-                  self.jsonDataRekap[i].tanggal,
-                  self.ifNullReturnZero(self.jsonDataRekap[i - 1].selesai_pengawasan),
-                  self.ifNullReturnZero(self.jsonDataRekap[i - 1].proses_pengawasan),
-                  self.ifNullReturnZero(self.jsonDataRekap[i - 1].total_pdp)
-                ])
-              } else {
-                self.barChartHarianODPData.push([
-                  self.jsonDataRekap[i].tanggal,
-                  self.ifNullReturnZero(self.jsonDataRekap[i].selesai_pemantauan),
-                  self.ifNullReturnZero(self.jsonDataRekap[i].proses_pemantauan)
-                ])
-                self.barChartHarianPDPData.push([
-                  self.jsonDataRekap[i].tanggal,
-                  self.ifNullReturnZero(self.jsonDataRekap[i].selesai_pengawasan),
-                  self.ifNullReturnZero(self.jsonDataRekap[i].proses_pengawasan)
-                ])
-                self.barChartAkumulatifODPData.push([
-                  self.jsonDataRekap[i].tanggal,
-                  self.ifNullReturnZero(self.jsonDataRekap[i].selesai_pemantauan),
-                  self.ifNullReturnZero(self.jsonDataRekap[i].proses_pemantauan),
-                  self.ifNullReturnZero(self.jsonDataRekap[i].total_odp)
-                ])
-                self.barChartAkumulatifPDPData.push([
-                  self.jsonDataRekap[i].tanggal,
-                  self.ifNullReturnZero(self.jsonDataRekap[i].selesai_pengawasan),
-                  self.ifNullReturnZero(self.jsonDataRekap[i].proses_pengawasan),
-                  self.ifNullReturnZero(self.jsonDataRekap[i].total_pdp)
-                ])
-              }
+              self.barChartHarianODPData.push([self.formatDate(date), self.jsonDataProvinsiHarian[i].odp])
+              self.barChartHarianPDPData.push([self.formatDate(date), self.jsonDataProvinsiHarian[i].pdp])
             }
-            if (self.jsonDataRekap[i].tanggal === strYesteday) {
+            if (self.formatDate(date) === strToday) {
               stop = true
             }
           }
           self.barChartHarianODPData.splice(1, 1)
           self.barChartHarianPDPData.splice(1, 1)
+        })
+        .catch(function (error) {
+          console.log(error)
+        })
+    },
+    fetchDataProvinsiKumulatif () {
+      const self = this
+      const today = new Date()
+      const strToday = self.formatDate(today)
+
+      axios
+        .get('https://covid19-public.digitalservice.id/api/v1/rekapitulasi/jabar/kumulatif?level=prov')
+        .then(function (response) {
+          self.jsonDataProvinsiKumulatif = response.data.data.content
+
+          let stop = false
+          for (let i = 0; i < self.jsonDataProvinsiKumulatif.length; i++) {
+            const date = new Date(self.jsonDataProvinsiKumulatif[i].tanggal)
+            if (stop === false) {
+              self.barChartAkumulatifODPData.push([self.formatDate(date), self.jsonDataProvinsiKumulatif[i].odp])
+              self.barChartAkumulatifPDPData.push([self.formatDate(date), self.jsonDataProvinsiKumulatif[i].pdp])
+            }
+            if (self.formatDate(date) === strToday) {
+              stop = true
+            }
+          }
           self.barChartAkumulatifODPData.splice(1, 1)
           self.barChartAkumulatifPDPData.splice(1, 1)
         })
