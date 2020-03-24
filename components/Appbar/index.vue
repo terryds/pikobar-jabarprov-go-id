@@ -116,7 +116,8 @@
             <a
               v-show="enableDownload"
               :href="downloadAppURL"
-              class="cursor-pointer px-4 py-2 text-white text-center ml-2 rounded-md bg-brand-green hover:bg-brand-green-light"
+              class="cursor-pointer px-4 py-2 text-center ml-2 rounded-md bg-brand-green hover:bg-brand-green-light"
+              style="color: white;"
             >
               Download App
             </a>
