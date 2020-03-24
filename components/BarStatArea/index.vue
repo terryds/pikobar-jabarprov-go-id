@@ -83,8 +83,8 @@
             </div>
             <div style="width: 50%">
               <h4 style="text-align: right; margin-right: 20px;">
-                <span style="color: #4FB769; font-weight: bolder;">{{ item.jumlah_positif_persentase }} %</span>
-                <span style="color: #000000; font-weight: bolder;">({{ item.jumlah_positif }})</span>
+                <span style="color: #4FB769; font-weight: bolder;">{{ item.positif_persentase }} %</span>
+                <span style="color: #000000; font-weight: bolder;">({{ item.positif }})</span>
               </h4>
             </div>
           </div>
@@ -157,8 +157,8 @@
             </div>
             <div style="width: 50%">
               <h4 style="text-align: right; margin-right: 20px;">
-                <span style="color: #4FB769; font-weight: bolder;">{{ item.jumlah_positif_persentase }} %</span>
-                <span style="color: #000000; font-weight: bolder;">({{ item.jumlah_positif }})</span>
+                <span style="color: #4FB769; font-weight: bolder;">{{ item.positif_persentase }} %</span>
+                <span style="color: #000000; font-weight: bolder;">({{ item.positif }})</span>
               </h4>
             </div>
           </div>
@@ -170,51 +170,6 @@
         </div>
       </div>
     </div>
-
-    <!-- <div
-      class="bg-white p-1 col-md m-2 row"
-      style="border-radius: 0.8rem; box-shadow: 0 0 4px 0px rgba(0,0,0,0.05)"
-    >
-      <div class="bg-white p-1 col-md-3 col-sm-12">
-        <h4 class="m-3 mb-0" style="margin-bottom: 0px !important; font-size: 15px;">
-          <b>Area Terdampak Covid-19</b>
-        </h4>
-        <span class="m-3" style="color: #000000; font-weight: bold; font-size: 32px; margin-top: 0px !important; margin-right: 0px !important;">
-          {{ jsonDataResult.count_kota }}
-        </span>
-        <span class="m-1" style="color: #8A8A8A; font-weight: bold; margin-top: 0px !important;">Kota/Kab</span>
-      </div>
-      <div
-        class="bg-white p-1 col-md-9 col-sm-12 div-no-mobile"
-        style="overflow-x: auto; width: 210px; display: flex;"
-      >
-        <div
-          v-for="item in jsonDataKota"
-          :key="item.kode"
-          class="bg-white pl-3 pt-2 pb-2 col-md-3 m-1"
-          style="border-radius: 0.8rem; border: 1.5px solid #CDD0D3;"
-        >
-          <span style="color: #8A8A8A; font-size: 14px; font-weight: normal;">{{ item.nama }}</span><br>
-          <span style="color: #00B167; font-weight: bold;">{{ item.jumlah_positif_persentase }}%</span>
-          <span style="color: #000000; font-weight: bold;">({{ item.jumlah_positif }})</span>
-        </div>
-      </div>
-      <div
-        class="bg-white p-1 col-md-9 col-sm-12 div-only-mobile"
-        style="overflow-y: auto; display: flex;"
-      >
-        <div
-          v-for="item in jsonDataKota"
-          :key="item.kode"
-          class="bg-white pl-3 pt-2 pb-2 col-md-3 m-1"
-          style="border-radius: 0.8rem; border: 1.5px solid #CDD0D3;"
-        >
-          <span style="color: #8A8A8A; font-size: 14px; font-weight: normal;">{{ item.nama }}</span><br>
-          <span style="color: #00B167; font-weight: bold;">{{ item.jumlah_positif_persentase }}%</span>
-          <span style="color: #000000; font-weight: bold;">({{ item.jumlah_positif }})</span>
-        </div>
-      </div>
-    </div> -->
   </div>
 </template>
 
@@ -238,30 +193,34 @@ export default {
       },
       fontChartBar: faChartBar,
       fontChartLine: faChartLine,
-      jsonDataRekap: [
+      jsonDataNasionalHarianKumulatif: [
       ],
-      jsonDataSatuan: [
+      jsonDataProvinsi: [
       ],
-      jsonDataNasional: [
+      jsonDataProvinsiHarian: [
+      ],
+      jsonDataProvinsiKumulatif: [
+      ],
+      jsonDataKabupaten: [
+      ],
+      jsonDataKabupatenHarian: [
+      ],
+      jsonDataKabupatenKumulatif: [
       ],
       jsonDataResult: {
-        odp: 0,
+        odp_total: 0,
         odp_proses: 0,
         odp_proses_persen: 0,
         odp_selesai: 0,
         odp_selesai_persen: 0,
-        pdp: 0,
+        pdp_total: 0,
         pdp_proses: 0,
         pdp_proses_persen: 0,
         pdp_selesai: 0,
         pdp_selesai_persen: 0,
         positif: 0,
-        perawatan: 0,
         sembuh: 0,
         meninggal: 0,
-        total_positif_saat_ini: 0,
-        total_sembuh: 0,
-        total_meninggal: 0,
         last_update: '',
         umur_max: 0,
         count_kota: 0
@@ -270,12 +229,16 @@ export default {
         {
           kode: '3204',
           nama: 'Kab. Bandung',
-          jumlah_positif: 0,
-          jumlah_positif_persentase: 0,
-          jumlah_odp: 0,
-          jumlah_odp_persentase: 0,
-          jumlah_pdp: 0,
-          jumlah_pdp_persentase: 0,
+          odp_proses: 0,
+          odp_selesai: 0,
+          odp_total: 0,
+          pdp_proses: 0,
+          pdp_selesai: 0,
+          pdp_total: 0,
+          positif: 0,
+          positif_persentase: 0,
+          sembuh: 0,
+          meninggal: 0,
           dataHarian: [
             ['Tanggal', 'Kasus Positif'],
             ['0', 0]
@@ -288,12 +251,16 @@ export default {
         {
           kode: '3217',
           nama: 'Kab. Bandung Barat',
-          jumlah_positif: 0,
-          jumlah_positif_persentase: 0,
-          jumlah_odp: 0,
-          jumlah_odp_persentase: 0,
-          jumlah_pdp: 0,
-          jumlah_pdp_persentase: 0,
+          odp_proses: 0,
+          odp_selesai: 0,
+          odp_total: 0,
+          pdp_proses: 0,
+          pdp_selesai: 0,
+          pdp_total: 0,
+          positif: 0,
+          positif_persentase: 0,
+          sembuh: 0,
+          meninggal: 0,
           dataHarian: [
             ['Tanggal', 'Kasus Positif'],
             ['0', 0]
@@ -306,12 +273,16 @@ export default {
         {
           kode: '3216',
           nama: 'Kab. Bekasi',
-          jumlah_positif: 0,
-          jumlah_positif_persentase: 0,
-          jumlah_odp: 0,
-          jumlah_odp_persentase: 0,
-          jumlah_pdp: 0,
-          jumlah_pdp_persentase: 0,
+          odp_proses: 0,
+          odp_selesai: 0,
+          odp_total: 0,
+          pdp_proses: 0,
+          pdp_selesai: 0,
+          pdp_total: 0,
+          positif: 0,
+          positif_persentase: 0,
+          sembuh: 0,
+          meninggal: 0,
           dataHarian: [
             ['Tanggal', 'Kasus Positif'],
             ['0', 0]
@@ -324,12 +295,16 @@ export default {
         {
           kode: '3201',
           nama: 'Kab. Bogor',
-          jumlah_positif: 0,
-          jumlah_positif_persentase: 0,
-          jumlah_odp: 0,
-          jumlah_odp_persentase: 0,
-          jumlah_pdp: 0,
-          jumlah_pdp_persentase: 0,
+          odp_proses: 0,
+          odp_selesai: 0,
+          odp_total: 0,
+          pdp_proses: 0,
+          pdp_selesai: 0,
+          pdp_total: 0,
+          positif: 0,
+          positif_persentase: 0,
+          sembuh: 0,
+          meninggal: 0,
           dataHarian: [
             ['Tanggal', 'Kasus Positif'],
             ['0', 0]
@@ -342,12 +317,16 @@ export default {
         {
           kode: '3207',
           nama: 'Kab. Ciamis',
-          jumlah_positif: 0,
-          jumlah_positif_persentase: 0,
-          jumlah_odp: 0,
-          jumlah_odp_persentase: 0,
-          jumlah_pdp: 0,
-          jumlah_pdp_persentase: 0,
+          odp_proses: 0,
+          odp_selesai: 0,
+          odp_total: 0,
+          pdp_proses: 0,
+          pdp_selesai: 0,
+          pdp_total: 0,
+          positif: 0,
+          positif_persentase: 0,
+          sembuh: 0,
+          meninggal: 0,
           dataHarian: [
             ['Tanggal', 'Kasus Positif'],
             ['0', 0]
@@ -360,12 +339,16 @@ export default {
         {
           kode: '3203',
           nama: 'Kab. Cianjur',
-          jumlah_positif: 0,
-          jumlah_positif_persentase: 0,
-          jumlah_odp: 0,
-          jumlah_odp_persentase: 0,
-          jumlah_pdp: 0,
-          jumlah_pdp_persentase: 0,
+          odp_proses: 0,
+          odp_selesai: 0,
+          odp_total: 0,
+          pdp_proses: 0,
+          pdp_selesai: 0,
+          pdp_total: 0,
+          positif: 0,
+          positif_persentase: 0,
+          sembuh: 0,
+          meninggal: 0,
           dataHarian: [
             ['Tanggal', 'Kasus Positif'],
             ['0', 0]
@@ -378,12 +361,16 @@ export default {
         {
           kode: '3209',
           nama: 'Kab. Cirebon',
-          jumlah_positif: 0,
-          jumlah_positif_persentase: 0,
-          jumlah_odp: 0,
-          jumlah_odp_persentase: 0,
-          jumlah_pdp: 0,
-          jumlah_pdp_persentase: 0,
+          odp_proses: 0,
+          odp_selesai: 0,
+          odp_total: 0,
+          pdp_proses: 0,
+          pdp_selesai: 0,
+          pdp_total: 0,
+          positif: 0,
+          positif_persentase: 0,
+          sembuh: 0,
+          meninggal: 0,
           dataHarian: [
             ['Tanggal', 'Kasus Positif'],
             ['0', 0]
@@ -396,12 +383,16 @@ export default {
         {
           kode: '3205',
           nama: 'Kab. Garut',
-          jumlah_positif: 0,
-          jumlah_positif_persentase: 0,
-          jumlah_odp: 0,
-          jumlah_odp_persentase: 0,
-          jumlah_pdp: 0,
-          jumlah_pdp_persentase: 0,
+          odp_proses: 0,
+          odp_selesai: 0,
+          odp_total: 0,
+          pdp_proses: 0,
+          pdp_selesai: 0,
+          pdp_total: 0,
+          positif: 0,
+          positif_persentase: 0,
+          sembuh: 0,
+          meninggal: 0,
           dataHarian: [
             ['Tanggal', 'Kasus Positif'],
             ['0', 0]
@@ -414,12 +405,16 @@ export default {
         {
           kode: '3212',
           nama: 'Kab. Indramayu',
-          jumlah_positif: 0,
-          jumlah_positif_persentase: 0,
-          jumlah_odp: 0,
-          jumlah_odp_persentase: 0,
-          jumlah_pdp: 0,
-          jumlah_pdp_persentase: 0,
+          odp_proses: 0,
+          odp_selesai: 0,
+          odp_total: 0,
+          pdp_proses: 0,
+          pdp_selesai: 0,
+          pdp_total: 0,
+          positif: 0,
+          positif_persentase: 0,
+          sembuh: 0,
+          meninggal: 0,
           dataHarian: [
             ['Tanggal', 'Kasus Positif'],
             ['0', 0]
@@ -432,12 +427,16 @@ export default {
         {
           kode: '3215',
           nama: 'Kab. Karawang',
-          jumlah_positif: 0,
-          jumlah_positif_persentase: 0,
-          jumlah_odp: 0,
-          jumlah_odp_persentase: 0,
-          jumlah_pdp: 0,
-          jumlah_pdp_persentase: 0,
+          odp_proses: 0,
+          odp_selesai: 0,
+          odp_total: 0,
+          pdp_proses: 0,
+          pdp_selesai: 0,
+          pdp_total: 0,
+          positif: 0,
+          positif_persentase: 0,
+          sembuh: 0,
+          meninggal: 0,
           dataHarian: [
             ['Tanggal', 'Kasus Positif'],
             ['0', 0]
@@ -450,12 +449,16 @@ export default {
         {
           kode: '3208',
           nama: 'Kab. Kuningan',
-          jumlah_positif: 0,
-          jumlah_positif_persentase: 0,
-          jumlah_odp: 0,
-          jumlah_odp_persentase: 0,
-          jumlah_pdp: 0,
-          jumlah_pdp_persentase: 0,
+          odp_proses: 0,
+          odp_selesai: 0,
+          odp_total: 0,
+          pdp_proses: 0,
+          pdp_selesai: 0,
+          pdp_total: 0,
+          positif: 0,
+          positif_persentase: 0,
+          sembuh: 0,
+          meninggal: 0,
           dataHarian: [
             ['Tanggal', 'Kasus Positif'],
             ['0', 0]
@@ -468,12 +471,16 @@ export default {
         {
           kode: '3210',
           nama: 'Kab. Majalengka',
-          jumlah_positif: 0,
-          jumlah_positif_persentase: 0,
-          jumlah_odp: 0,
-          jumlah_odp_persentase: 0,
-          jumlah_pdp: 0,
-          jumlah_pdp_persentase: 0,
+          odp_proses: 0,
+          odp_selesai: 0,
+          odp_total: 0,
+          pdp_proses: 0,
+          pdp_selesai: 0,
+          pdp_total: 0,
+          positif: 0,
+          positif_persentase: 0,
+          sembuh: 0,
+          meninggal: 0,
           dataHarian: [
             ['Tanggal', 'Kasus Positif'],
             ['0', 0]
@@ -486,12 +493,16 @@ export default {
         {
           kode: '3218',
           nama: 'Kab. Pangandaran',
-          jumlah_positif: 0,
-          jumlah_positif_persentase: 0,
-          jumlah_odp: 0,
-          jumlah_odp_persentase: 0,
-          jumlah_pdp: 0,
-          jumlah_pdp_persentase: 0,
+          odp_proses: 0,
+          odp_selesai: 0,
+          odp_total: 0,
+          pdp_proses: 0,
+          pdp_selesai: 0,
+          pdp_total: 0,
+          positif: 0,
+          positif_persentase: 0,
+          sembuh: 0,
+          meninggal: 0,
           dataHarian: [
             ['Tanggal', 'Kasus Positif'],
             ['0', 0]
@@ -504,12 +515,16 @@ export default {
         {
           kode: '3214',
           nama: 'Kab. Purwarkarta',
-          jumlah_positif: 0,
-          jumlah_positif_persentase: 0,
-          jumlah_odp: 0,
-          jumlah_odp_persentase: 0,
-          jumlah_pdp: 0,
-          jumlah_pdp_persentase: 0,
+          odp_proses: 0,
+          odp_selesai: 0,
+          odp_total: 0,
+          pdp_proses: 0,
+          pdp_selesai: 0,
+          pdp_total: 0,
+          positif: 0,
+          positif_persentase: 0,
+          sembuh: 0,
+          meninggal: 0,
           dataHarian: [
             ['Tanggal', 'Kasus Positif'],
             ['0', 0]
@@ -522,12 +537,16 @@ export default {
         {
           kode: '3213',
           nama: 'Kab. Subang',
-          jumlah_positif: 0,
-          jumlah_positif_persentase: 0,
-          jumlah_odp: 0,
-          jumlah_odp_persentase: 0,
-          jumlah_pdp: 0,
-          jumlah_pdp_persentase: 0,
+          odp_proses: 0,
+          odp_selesai: 0,
+          odp_total: 0,
+          pdp_proses: 0,
+          pdp_selesai: 0,
+          pdp_total: 0,
+          positif: 0,
+          positif_persentase: 0,
+          sembuh: 0,
+          meninggal: 0,
           dataHarian: [
             ['Tanggal', 'Kasus Positif'],
             ['0', 0]
@@ -540,12 +559,16 @@ export default {
         {
           kode: '3202',
           nama: 'Kab. Sukabumi',
-          jumlah_positif: 0,
-          jumlah_positif_persentase: 0,
-          jumlah_odp: 0,
-          jumlah_odp_persentase: 0,
-          jumlah_pdp: 0,
-          jumlah_pdp_persentase: 0,
+          odp_proses: 0,
+          odp_selesai: 0,
+          odp_total: 0,
+          pdp_proses: 0,
+          pdp_selesai: 0,
+          pdp_total: 0,
+          positif: 0,
+          positif_persentase: 0,
+          sembuh: 0,
+          meninggal: 0,
           dataHarian: [
             ['Tanggal', 'Kasus Positif'],
             ['0', 0]
@@ -558,12 +581,16 @@ export default {
         {
           kode: '3211',
           nama: 'Kab. Sumedang',
-          jumlah_positif: 0,
-          jumlah_positif_persentase: 0,
-          jumlah_odp: 0,
-          jumlah_odp_persentase: 0,
-          jumlah_pdp: 0,
-          jumlah_pdp_persentase: 0,
+          odp_proses: 0,
+          odp_selesai: 0,
+          odp_total: 0,
+          pdp_proses: 0,
+          pdp_selesai: 0,
+          pdp_total: 0,
+          positif: 0,
+          positif_persentase: 0,
+          sembuh: 0,
+          meninggal: 0,
           dataHarian: [
             ['Tanggal', 'Kasus Positif'],
             ['0', 0]
@@ -576,12 +603,16 @@ export default {
         {
           kode: '3206',
           nama: 'Kab. Tasikmalaya',
-          jumlah_positif: 0,
-          jumlah_positif_persentase: 0,
-          jumlah_odp: 0,
-          jumlah_odp_persentase: 0,
-          jumlah_pdp: 0,
-          jumlah_pdp_persentase: 0,
+          odp_proses: 0,
+          odp_selesai: 0,
+          odp_total: 0,
+          pdp_proses: 0,
+          pdp_selesai: 0,
+          pdp_total: 0,
+          positif: 0,
+          positif_persentase: 0,
+          sembuh: 0,
+          meninggal: 0,
           dataHarian: [
             ['Tanggal', 'Kasus Positif'],
             ['0', 0]
@@ -594,12 +625,16 @@ export default {
         {
           kode: '3273',
           nama: 'Kota Bandung',
-          jumlah_positif: 0,
-          jumlah_positif_persentase: 0,
-          jumlah_odp: 0,
-          jumlah_odp_persentase: 0,
-          jumlah_pdp: 0,
-          jumlah_pdp_persentase: 0,
+          odp_proses: 0,
+          odp_selesai: 0,
+          odp_total: 0,
+          pdp_proses: 0,
+          pdp_selesai: 0,
+          pdp_total: 0,
+          positif: 0,
+          positif_persentase: 0,
+          sembuh: 0,
+          meninggal: 0,
           dataHarian: [
             ['Tanggal', 'Kasus Positif'],
             ['0', 0]
@@ -612,12 +647,16 @@ export default {
         {
           kode: '3279',
           nama: 'Kota Banjar',
-          jumlah_positif: 0,
-          jumlah_positif_persentase: 0,
-          jumlah_odp: 0,
-          jumlah_odp_persentase: 0,
-          jumlah_pdp: 0,
-          jumlah_pdp_persentase: 0,
+          odp_proses: 0,
+          odp_selesai: 0,
+          odp_total: 0,
+          pdp_proses: 0,
+          pdp_selesai: 0,
+          pdp_total: 0,
+          positif: 0,
+          positif_persentase: 0,
+          sembuh: 0,
+          meninggal: 0,
           dataHarian: [
             ['Tanggal', 'Kasus Positif'],
             ['0', 0]
@@ -630,12 +669,16 @@ export default {
         {
           kode: '3275',
           nama: 'Kota Bekasi',
-          jumlah_positif: 0,
-          jumlah_positif_persentase: 0,
-          jumlah_odp: 0,
-          jumlah_odp_persentase: 0,
-          jumlah_pdp: 0,
-          jumlah_pdp_persentase: 0,
+          odp_proses: 0,
+          odp_selesai: 0,
+          odp_total: 0,
+          pdp_proses: 0,
+          pdp_selesai: 0,
+          pdp_total: 0,
+          positif: 0,
+          positif_persentase: 0,
+          sembuh: 0,
+          meninggal: 0,
           dataHarian: [
             ['Tanggal', 'Kasus Positif'],
             ['0', 0]
@@ -648,12 +691,16 @@ export default {
         {
           kode: '3271',
           nama: 'Kota Bogor',
-          jumlah_positif: 0,
-          jumlah_positif_persentase: 0,
-          jumlah_odp: 0,
-          jumlah_odp_persentase: 0,
-          jumlah_pdp: 0,
-          jumlah_pdp_persentase: 0,
+          odp_proses: 0,
+          odp_selesai: 0,
+          odp_total: 0,
+          pdp_proses: 0,
+          pdp_selesai: 0,
+          pdp_total: 0,
+          positif: 0,
+          positif_persentase: 0,
+          sembuh: 0,
+          meninggal: 0,
           dataHarian: [
             ['Tanggal', 'Kasus Positif'],
             ['0', 0]
@@ -666,12 +713,16 @@ export default {
         {
           kode: '3277',
           nama: 'Kota Cimahi',
-          jumlah_positif: 0,
-          jumlah_positif_persentase: 0,
-          jumlah_odp: 0,
-          jumlah_odp_persentase: 0,
-          jumlah_pdp: 0,
-          jumlah_pdp_persentase: 0,
+          odp_proses: 0,
+          odp_selesai: 0,
+          odp_total: 0,
+          pdp_proses: 0,
+          pdp_selesai: 0,
+          pdp_total: 0,
+          positif: 0,
+          positif_persentase: 0,
+          sembuh: 0,
+          meninggal: 0,
           dataHarian: [
             ['Tanggal', 'Kasus Positif'],
             ['0', 0]
@@ -684,12 +735,16 @@ export default {
         {
           kode: '3274',
           nama: 'Kota Cirebon',
-          jumlah_positif: 0,
-          jumlah_positif_persentase: 0,
-          jumlah_odp: 0,
-          jumlah_odp_persentase: 0,
-          jumlah_pdp: 0,
-          jumlah_pdp_persentase: 0,
+          odp_proses: 0,
+          odp_selesai: 0,
+          odp_total: 0,
+          pdp_proses: 0,
+          pdp_selesai: 0,
+          pdp_total: 0,
+          positif: 0,
+          positif_persentase: 0,
+          sembuh: 0,
+          meninggal: 0,
           dataHarian: [
             ['Tanggal', 'Kasus Positif'],
             ['0', 0]
@@ -702,12 +757,16 @@ export default {
         {
           kode: '3276',
           nama: 'Kota Depok',
-          jumlah_positif: 0,
-          jumlah_positif_persentase: 0,
-          jumlah_odp: 0,
-          jumlah_odp_persentase: 0,
-          jumlah_pdp: 0,
-          jumlah_pdp_persentase: 0,
+          odp_proses: 0,
+          odp_selesai: 0,
+          odp_total: 0,
+          pdp_proses: 0,
+          pdp_selesai: 0,
+          pdp_total: 0,
+          positif: 0,
+          positif_persentase: 0,
+          sembuh: 0,
+          meninggal: 0,
           dataHarian: [
             ['Tanggal', 'Kasus Positif'],
             ['0', 0]
@@ -720,12 +779,16 @@ export default {
         {
           kode: '3272',
           nama: 'Kota Sukabumi',
-          jumlah_positif: 0,
-          jumlah_positif_persentase: 0,
-          jumlah_odp: 0,
-          jumlah_odp_persentase: 0,
-          jumlah_pdp: 0,
-          jumlah_pdp_persentase: 0,
+          odp_proses: 0,
+          odp_selesai: 0,
+          odp_total: 0,
+          pdp_proses: 0,
+          pdp_selesai: 0,
+          pdp_total: 0,
+          positif: 0,
+          positif_persentase: 0,
+          sembuh: 0,
+          meninggal: 0,
           dataHarian: [
             ['Tanggal', 'Kasus Positif'],
             ['0', 0]
@@ -738,12 +801,16 @@ export default {
         {
           kode: '3278',
           nama: 'Kota Tasikmalaya',
-          jumlah_positif: 0,
-          jumlah_positif_persentase: 0,
-          jumlah_odp: 0,
-          jumlah_odp_persentase: 0,
-          jumlah_pdp: 0,
-          jumlah_pdp_persentase: 0,
+          odp_proses: 0,
+          odp_selesai: 0,
+          odp_total: 0,
+          pdp_proses: 0,
+          pdp_selesai: 0,
+          pdp_total: 0,
+          positif: 0,
+          positif_persentase: 0,
+          sembuh: 0,
+          meninggal: 0,
           dataHarian: [
             ['Tanggal', 'Kasus Positif'],
             ['0', 0]
@@ -820,9 +887,13 @@ export default {
     }
   },
   created () {
-    this.fetchDataSatuan()
-    this.fetchDataNasional()
-    this.fetchDataJawaBarat()
+    this.fetchDataNasionalHarianKumulatif()
+    this.fetchDataProvinsi()
+    this.fetchDataProvinsiHarian()
+    this.fetchDataProvinsiKumulatif()
+    this.fetchDataKabupaten()
+    this.fetchDataKabupatenHarian()
+    this.fetchDataKabupatenKumulatif()
   },
   methods: {
     ifNullReturnZero (str) {
@@ -878,21 +949,23 @@ export default {
       this.stat.isActiveHarian = false
       this.stat.isActiveAkumulatif = true
     },
-    fetchDataNasional () {
+    fetchDataNasionalHarianKumulatif () {
       const self = this
       axios
         .get('https://indonesia-covid-19.mathdro.id/api/harian')
         .then(function (response) {
-          self.jsonDataNasional = response.data.data
+          self.jsonDataNasionalHarianKumulatif = response.data.data
 
-          for (let i = 0; i < self.jsonDataNasional.length; i++) {
-            const date = new Date(self.jsonDataNasional[i].tanggal)
+          for (let i = 0; i < self.jsonDataNasionalHarianKumulatif.length; i++) {
+            const date = new Date(self.jsonDataNasionalHarianKumulatif[i].tanggal)
             // by Harian
-            self.ChartNasionalDataHarian.push([self.formatDate(date), self.jsonDataNasional[i].jumlahKasusBaruperHari])
+            self.ChartNasionalDataHarian.push([self.formatDate(date), self.jsonDataNasionalHarianKumulatif[i].jumlahKasusBaruperHari])
             // by Akumulatif
-            self.ChartNasionalDataAkumulatif.push([self.formatDate(date), self.jsonDataNasional[i].jumlahKasusKumulatif])
+            self.ChartNasionalDataAkumulatif.push([self.formatDate(date), self.jsonDataNasionalHarianKumulatif[i].jumlahKasusKumulatif])
           }
-          self.dataTotalPositifAll[0] = self.jsonDataNasional[self.jsonDataNasional.length - 1].jumlahKasusKumulatif
+          if (self.jsonDataNasionalHarianKumulatif[self.jsonDataNasionalHarianKumulatif.length - 1].jumlahKasusKumulatif === null) {
+            self.dataTotalPositifAll[0] = self.jsonDataNasionalHarianKumulatif[self.jsonDataNasionalHarianKumulatif.length - 2].jumlahKasusKumulatif
+          }
           self.ChartNasionalDataHarian.splice(1, 1)
           self.ChartNasionalDataAkumulatif.splice(1, 1)
         })
@@ -900,96 +973,136 @@ export default {
           console.log(error)
         })
     },
-    fetchDataJawaBarat () {
+    fetchDataProvinsi () {
       const self = this
-      const today = new Date()
-      // const strToday = self.formatDate(today)
-      const yesterday = new Date()
-      yesterday.setDate(today.getDate() - 1)
-      const strYesteday = self.formatDate(yesterday)
-
       axios
-        .get('https://covid19-public.digitalservice.id/analytics/aggregation/')
+        .get('https://covid19-public.digitalservice.id/api/v1/rekapitulasi/jabar?level=prov')
         .then(function (response) {
-          self.jsonDataRekap = response.data
+          self.jsonDataProvinsi = response.data.data.content
 
-          // series
-          let stop = false
-          for (let i = 0; i < self.jsonDataRekap.length; i++) {
-            if (stop === false) {
-              // by harian
-              self.ChartJawaBaratDataHarian.push([
-                self.jsonDataRekap[i].tanggal,
-                self.ifNullReturnZero(self.jsonDataRekap[i].positif)
-              ])
-              // by akumulatif
-              self.ChartJawaBaratDataAkumulatif.push([
-                self.jsonDataRekap[i].tanggal,
-                self.ifNullReturnZero(self.jsonDataRekap[i].total_positif_saat_ini)
-              ])
-            }
-            if (self.jsonDataRekap[i].tanggal === strYesteday) {
-              stop = true
-            }
+          self.jsonDataResult.odp_total = self.jsonDataProvinsi.odp_total
+          self.jsonDataResult.odp_proses = self.jsonDataProvinsi.odp_proses
+          self.jsonDataResult.odp_proses_persen = ((self.jsonDataResult.odp_proses / self.jsonDataResult.odp_total) * 100).toFixed(2)
+          self.jsonDataResult.odp_selesai = self.jsonDataProvinsi.odp_selesai
+          self.jsonDataResult.odp_selesai_persen = ((self.jsonDataResult.odp_selesai / self.jsonDataResult.odp_total) * 100).toFixed(2)
+          self.jsonDataResult.pdp_total = self.jsonDataProvinsi.pdp_total
+          self.jsonDataResult.pdp_proses = self.jsonDataProvinsi.pdp_proses
+          self.jsonDataResult.pdp_proses_persen = ((self.jsonDataResult.pdp_proses / self.jsonDataResult.pdp_total) * 100).toFixed(2)
+          self.jsonDataResult.pdp_selesai = self.jsonDataProvinsi.pdp_selesai
+          self.jsonDataResult.pdp_selesai_persen = ((self.jsonDataResult.pdp_selesai / self.jsonDataResult.pdp_total) * 100).toFixed(2)
+          self.jsonDataResult.positif = self.jsonDataProvinsi.positif
+          self.jsonDataResult.sembuh = self.jsonDataProvinsi.sembuh
+          self.jsonDataResult.meninggal = self.jsonDataProvinsi.meninggal
+          self.dataTotalPositifAll[1] = self.jsonDataProvinsi.positif
+        })
+        .catch(function (error) {
+          console.log(error)
+        })
+    },
+    fetchDataProvinsiHarian () {
+      const self = this
+      axios
+        .get('https://covid19-public.digitalservice.id/api/v1/rekapitulasi/jabar/harian?level=prov')
+        .then(function (response) {
+          self.jsonDataProvinsiHarian = response.data.data.content
+
+          for (let i = 0; i < self.jsonDataProvinsiHarian.length; i++) {
+            const date = new Date(self.jsonDataProvinsiHarian[i].tanggal)
+            self.ChartJawaBaratDataHarian.push([self.formatDate(date), self.jsonDataProvinsiHarian[i].positif])
           }
-          self.dataTotalPositifAll[1] = self.jsonDataRekap[self.jsonDataRekap.length - 1].total_positif_saat_ini
           self.ChartJawaBaratDataHarian.splice(1, 1)
+        })
+        .catch(function (error) {
+          console.log(error)
+        })
+    },
+    fetchDataProvinsiKumulatif () {
+      const self = this
+      axios
+        .get('https://covid19-public.digitalservice.id/api/v1/rekapitulasi/jabar/kumulatif?level=prov')
+        .then(function (response) {
+          self.jsonDataProvinsiKumulatif = response.data.data.content
+
+          for (let i = 0; i < self.jsonDataProvinsiKumulatif.length; i++) {
+            const date = new Date(self.jsonDataProvinsiKumulatif[i].tanggal)
+            self.ChartJawaBaratDataAkumulatif.push([self.formatDate(date), self.jsonDataProvinsiKumulatif[i].positif])
+          }
+          if (self.jsonDataProvinsiKumulatif[self.jsonDataProvinsiKumulatif.length - 1].positif === null) {
+            self.dataTotalPositifAll[1] = self.jsonDataProvinsiKumulatif[self.jsonDataProvinsiKumulatif.length - 2].positif
+          }
           self.ChartJawaBaratDataAkumulatif.splice(1, 1)
         })
         .catch(function (error) {
           console.log(error)
         })
     },
-    fetchDataSatuan () {
+    fetchDataKabupaten () {
       const self = this
       axios
-        .get('https://covid19-public.digitalservice.id/analytics/longlat/')
+        .get('https://covid19-public.digitalservice.id/api/v1/rekapitulasi/jabar?level=kab')
         .then(function (response) {
-          self.jsonDataResult.last_update = new Date(response.data.last_update).toLocaleString('id-ID', { dateStyle: 'long', timeStyle: 'medium' })
-          self.jsonDataSatuan = response.data.data
-
-          // count total
-          let totalPositif = 0
-          let totalOdp = 0
-          let totalPdp = 0
-          for (let i = 0; i < self.jsonDataSatuan.length; i++) {
-            if (self.jsonDataSatuan[i].status === 'Positif') {
-              totalPositif += 1
-            }
-            if (self.jsonDataSatuan[i].status === 'ODP') {
-              totalOdp += 1
-            }
-            if (self.jsonDataSatuan[i].status === 'PDP') {
-              totalPdp += 1
-            }
-          }
-          if (self.jsonDataResult.positif === 0) {
-            self.jsonDataResult.positif = totalPositif
-          }
-
-          // by Kota
-          for (let i = 0; i < self.jsonDataSatuan.length; i++) {
-            for (let j = 0; j < self.jsonDataKota.length; j++) {
-              if (self.jsonDataSatuan[i].kode_kabkot === self.jsonDataKota[j].kode.toString()) {
-                if (self.jsonDataSatuan[i].status === 'Positif') {
-                  self.jsonDataKota[j].jumlah_positif += 1
-                  self.jsonDataKota[j].jumlah_positif_persentase = ((self.jsonDataKota[j].jumlah_positif / totalPositif) * 100).toFixed(2)
-                } else if (self.jsonDataSatuan[i].status === 'ODP') {
-                  self.jsonDataKota[j].jumlah_odp += 1
-                  self.jsonDataKota[j].jumlah_odp_persentase = ((self.jsonDataKota[j].jumlah_odp / totalOdp) * 100).toFixed(2)
-                } else if (self.jsonDataSatuan[i].status === 'PDP') {
-                  self.jsonDataKota[j].jumlah_pdp += 1
-                  self.jsonDataKota[j].jumlah_pdp_persentase = ((self.jsonDataKota[j].jumlah_pdp / totalPdp) * 100).toFixed(2)
-                }
+          self.jsonDataKabupaten = response.data.data.content
+          for (let j = 0; j < self.jsonDataKota.length; j++) {
+            for (let i = 0; i < self.jsonDataKabupaten.length; i++) {
+              if (self.jsonDataKabupaten[i].kode_kab === self.jsonDataKota[j].kode) {
+                self.jsonDataKota[j].odp_proses = self.jsonDataKabupaten[i].odp_proses
+                self.jsonDataKota[j].odp_selesai = self.jsonDataKabupaten[i].odp_selesai
+                self.jsonDataKota[j].odp_total = self.jsonDataKabupaten[i].odp_total
+                self.jsonDataKota[j].pdp_proses = self.jsonDataKabupaten[i].pdp_proses
+                self.jsonDataKota[j].pdp_selesai = self.jsonDataKabupaten[i].pdp_selesai
+                self.jsonDataKota[j].pdp_total = self.jsonDataKabupaten[i].pdp_total
+                self.jsonDataKota[j].positif = self.jsonDataKabupaten[i].positif
+                self.jsonDataKota[j].positif_persentase = ((self.jsonDataKota[j].positif / self.jsonDataResult.positif) * 100).toFixed(2)
+                self.jsonDataKota[j].sembuh = self.jsonDataKabupaten[i].sembuh
+                self.jsonDataKota[j].meninggal = self.jsonDataKabupaten[i].meninggal
               }
             }
           }
-          self.jsonDataKota.sort(self.compareValues('jumlah_positif', 'desc'))
-
-          // count kota
+          self.jsonDataKota.sort(self.compareValues('positif', 'desc'))
+        })
+        .catch(function (error) {
+          console.log(error)
+        })
+    },
+    fetchDataKabupatenHarian () {
+      const self = this
+      axios
+        .get('https://covid19-public.digitalservice.id/api/v1/rekapitulasi/jabar/harian?level=kab')
+        .then(function (response) {
+          self.jsonDataKabupatenHarian = response.data.data.content
           for (let j = 0; j < self.jsonDataKota.length; j++) {
-            if (self.jsonDataKota[j].jumlah_positif > 0) {
-              self.jsonDataResult.count_kota += 1
+            for (let i = 0; i < self.jsonDataKabupatenHarian.length; i++) {
+              if (self.jsonDataKabupatenHarian[i].kode_kab === self.jsonDataKota[j].kode) {
+                const date = new Date(self.jsonDataKabupatenHarian[i].tanggal)
+                self.jsonDataKota[j].dataHarian.push([self.formatDate(date), self.jsonDataKabupatenHarian[i].positif]
+                )
+              }
+              if (i === self.jsonDataKabupatenHarian.length - 1) {
+                self.jsonDataKota[j].dataHarian.splice(1, 1)
+              }
+            }
+          }
+        })
+        .catch(function (error) {
+          console.log(error)
+        })
+    },
+    fetchDataKabupatenKumulatif () {
+      const self = this
+      axios
+        .get('https://covid19-public.digitalservice.id/api/v1/rekapitulasi/jabar/kumulatif?level=kab')
+        .then(function (response) {
+          self.jsonDataKabupatenKumulatif = response.data.data.content
+          for (let j = 0; j < self.jsonDataKota.length; j++) {
+            for (let i = 0; i < self.jsonDataKabupatenKumulatif.length; i++) {
+              if (self.jsonDataKabupatenKumulatif[i].kode_kab === self.jsonDataKota[j].kode) {
+                const date = new Date(self.jsonDataKabupatenKumulatif[i].tanggal)
+                self.jsonDataKota[j].dataAkumulatif.push([self.formatDate(date), self.jsonDataKabupatenKumulatif[i].positif]
+                )
+              }
+              if (i === self.jsonDataKabupatenKumulatif.length - 1) {
+                self.jsonDataKota[j].dataAkumulatif.splice(1, 1)
+              }
             }
           }
         })
