@@ -12,7 +12,9 @@
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore ."
   },
   "dependencies": {
+    "@fortawesome/free-regular-svg-icons": "^5.13.0",
     "@nuxtjs/pwa": "^3.0.0-0",
+    "@turf/turf": "^5.1.6",
     "axios": "^0.19.2",
     "date-fns": "^2.11.0",
     "dotenv": "^8.2.0",
@@ -27,6 +29,7 @@
     "register-service-worker": "^1.7.0",
     "sass-loader": "^8.0.2",
     "sweetalert2": "^9.10.0",
+    "turf-inside": "^3.0.12",
     "vee-validate": "^3.2.5",
     "vue-carousel": "^0.18.0",
     "vue-content-loader": "^0.2.3",

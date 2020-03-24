@@ -20,13 +20,12 @@
       </section>
 
       <section class="row">
-        <div
-          class="bg-white col-md-12 p-0 m-2 "
-          style="border-radius: 0.8rem; box-shadow: 0 0 4px 0px rgba(0,0,0,0.05), 0 4px 24px 0 rgba(0,0,0,0.1); height:50em;"
-        >
-          <MapView />
-        </div>
+        <MapSebaranCovid />
       </section>
+
+      <!-- <section class="row">
+        <MapFaskes />
+      </section> -->
 
       <section class="mt-4">
         <BarStatArea />
@@ -58,7 +57,8 @@ import { formatDateTimeShort } from '~/lib/date'
 
 export default {
   components: {
-    MapView: () => import('~/components/MapView'),
+    MapSebaranCovid: () => import('~/components/MapSebaranCovid'),
+    // MapFaskes: () => import('~/components/MapFaskes'),
     BarStat: () => import('~/components/BarStat'),
     BarStatDetail: () => import('~/components/BarStatDetail'),
     BarStatArea: () => import('~/components/BarStatArea'),
