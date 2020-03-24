@@ -25,7 +25,7 @@
         </div>
         <div style="margin-top: auto;">
           <div class="col-md m-2 mr-4">
-            <span style="color: #2DAC55; font-size: 27px; font-weight: bold;">{{ jsonDataResult.odp }}</span><br>
+            <span style="color: #2DAC55; font-size: 27px; font-weight: bold;">{{ jsonDataResult.odp_total }}</span><br>
             <span style="color: #8A8A8A; font-size: 14px; font-weight: normal;">Total ODP</span>
           </div>
         </div>
@@ -64,7 +64,7 @@
         </div>
         <div style="margin-top: auto;">
           <div class="col-md m-2 mr-4">
-            <span style="color: #2DAC55; font-size: 27px; font-weight: bold;">{{ jsonDataResult.pdp }}</span><br>
+            <span style="color: #2DAC55; font-size: 27px; font-weight: bold;">{{ jsonDataResult.pdp_total }}</span><br>
             <span style="color: #8A8A8A; font-size: 14px; font-weight: normal;">Total PDP</span>
           </div>
         </div>
@@ -89,34 +89,30 @@ export default {
   },
   data () {
     return {
-      jsonDataRekap: [
-      ],
+      jsonDataProvinsi: {},
       jsonDataResult: {
-        odp: 0,
+        odp_total: 0,
         odp_proses: 0,
         odp_proses_persen: 0,
         odp_selesai: 0,
         odp_selesai_persen: 0,
-        pdp: 0,
+        pdp_total: 0,
         pdp_proses: 0,
         pdp_proses_persen: 0,
         pdp_selesai: 0,
         pdp_selesai_persen: 0,
         positif: 0,
-        perawatan: 0,
         sembuh: 0,
         meninggal: 0,
-        total_positif_saat_ini: 0,
-        total_sembuh: 0,
-        total_meninggal: 0,
-        last_update: '',
-        umur_max: 0,
-        count_kota: 0
+        positif_nasional: 0,
+        sembuh_nasional: 0,
+        meninggal_nasional: 0,
+        last_update: ''
       }
     }
   },
   created () {
-    this.fetchDataRekap()
+    this.fetchDataProvinsi()
   },
   methods: {
     ifNullReturnZero (str) {
@@ -139,55 +135,27 @@ export default {
       }
       return [day, month, year].join('-')
     },
-    fetchDataRekap () {
+    fetchDataProvinsi () {
       const self = this
-      const today = new Date()
-      const strToday = self.formatDate(today)
 
       axios
-        .get('https://covid19-public.digitalservice.id/analytics/aggregation/')
+        .get('https://covid19-public.digitalservice.id/api/v1/rekapitulasi/jabar?level=prov')
         .then(function (response) {
-          self.jsonDataRekap = response.data
-          // by status
-          for (let i = 0; i < self.jsonDataRekap.length; i++) {
-            if (self.jsonDataRekap[i].tanggal === strToday) {
-              if (self.jsonDataRekap[i].whatsapp !== null) {
-                self.jsonDataResult.positif = self.ifNullReturnZero(self.jsonDataRekap[i].positif)
-                self.jsonDataResult.sembuh = self.ifNullReturnZero(self.jsonDataRekap[i].sembuh)
-                self.jsonDataResult.meninggal = self.ifNullReturnZero(self.jsonDataRekap[i].meninggal)
-                self.jsonDataResult.total_positif_saat_ini = self.ifNullReturnZero(self.jsonDataRekap[i].total_positif_saat_ini)
-                self.jsonDataResult.total_sembuh = self.ifNullReturnZero(self.jsonDataRekap[i].total_sembuh)
-                self.jsonDataResult.total_meninggal = self.ifNullReturnZero(self.jsonDataRekap[i].total_meninggal)
-                self.jsonDataResult.odp = self.ifNullReturnZero(self.jsonDataRekap[i].total_odp)
-                self.jsonDataResult.odp_proses = self.ifNullReturnZero(self.jsonDataRekap[i].proses_pemantauan)
-                self.jsonDataResult.odp_proses_persen = ((self.jsonDataResult.odp_proses / self.jsonDataResult.odp) * 100).toFixed(2)
-                self.jsonDataResult.odp_selesai = self.ifNullReturnZero(self.jsonDataRekap[i].selesai_pemantauan)
-                self.jsonDataResult.odp_selesai_persen = ((self.jsonDataResult.odp_selesai / self.jsonDataResult.odp) * 100).toFixed(2)
-                self.jsonDataResult.pdp = self.ifNullReturnZero(self.jsonDataRekap[i].total_pdp)
-                self.jsonDataResult.pdp_proses = self.ifNullReturnZero(self.jsonDataRekap[i].proses_pengawasan)
-                self.jsonDataResult.pdp_proses_persen = ((self.jsonDataResult.pdp_proses / self.jsonDataResult.pdp) * 100).toFixed(2)
-                self.jsonDataResult.pdp_selesai = self.ifNullReturnZero(self.jsonDataRekap[i].selesai_pengawasan)
-                self.jsonDataResult.pdp_selesai_persen = ((self.jsonDataResult.pdp_selesai / self.jsonDataResult.pdp) * 100).toFixed(2)
-              } else {
-                self.jsonDataResult.positif = self.ifNullReturnZero(self.jsonDataRekap[i - 1].positif)
-                self.jsonDataResult.sembuh = self.ifNullReturnZero(self.jsonDataRekap[i - 1].sembuh)
-                self.jsonDataResult.meninggal = self.ifNullReturnZero(self.jsonDataRekap[i - 1].meninggal)
-                self.jsonDataResult.total_positif_saat_ini = self.ifNullReturnZero(self.jsonDataRekap[i - 1].total_positif_saat_ini)
-                self.jsonDataResult.total_sembuh = self.ifNullReturnZero(self.jsonDataRekap[i - 1].total_sembuh)
-                self.jsonDataResult.total_meninggal = self.ifNullReturnZero(self.jsonDataRekap[i - 1].total_meninggal)
-                self.jsonDataResult.odp = self.ifNullReturnZero(self.jsonDataRekap[i - 1].total_odp)
-                self.jsonDataResult.odp_proses = self.ifNullReturnZero(self.jsonDataRekap[i - 1].proses_pemantauan)
-                self.jsonDataResult.odp_proses_persen = ((self.jsonDataResult.odp_proses / self.jsonDataResult.odp) * 100).toFixed(2)
-                self.jsonDataResult.odp_selesai = self.ifNullReturnZero(self.jsonDataRekap[i - 1].selesai_pemantauan)
-                self.jsonDataResult.odp_selesai_persen = ((self.jsonDataResult.odp_selesai / self.jsonDataResult.odp) * 100).toFixed(2)
-                self.jsonDataResult.pdp = self.ifNullReturnZero(self.jsonDataRekap[i - 1].total_pdp)
-                self.jsonDataResult.pdp_proses = self.ifNullReturnZero(self.jsonDataRekap[i - 1].proses_pengawasan)
-                self.jsonDataResult.pdp_proses_persen = ((self.jsonDataResult.pdp_proses / self.jsonDataResult.pdp) * 100).toFixed(2)
-                self.jsonDataResult.pdp_selesai = self.ifNullReturnZero(self.jsonDataRekap[i - 1].selesai_pengawasan)
-                self.jsonDataResult.pdp_selesai_persen = ((self.jsonDataResult.pdp_selesai / self.jsonDataResult.pdp) * 100).toFixed(2)
-              }
-            }
-          }
+          self.jsonDataProvinsi = response.data.data.content
+
+          self.jsonDataResult.positif = self.ifNullReturnZero(self.jsonDataProvinsi.positif)
+          self.jsonDataResult.sembuh = self.ifNullReturnZero(self.jsonDataProvinsi.sembuh)
+          self.jsonDataResult.meninggal = self.ifNullReturnZero(self.jsonDataProvinsi.meninggal)
+          self.jsonDataResult.odp_total = self.ifNullReturnZero(self.jsonDataProvinsi.odp_total)
+          self.jsonDataResult.odp_proses = self.ifNullReturnZero(self.jsonDataProvinsi.odp_proses)
+          self.jsonDataResult.odp_proses_persen = ((self.jsonDataResult.odp_proses / self.jsonDataResult.odp_total) * 100).toFixed(2)
+          self.jsonDataResult.odp_selesai = self.ifNullReturnZero(self.jsonDataProvinsi.odp_selesai)
+          self.jsonDataResult.odp_selesai_persen = ((self.jsonDataResult.odp_selesai / self.jsonDataResult.odp_total) * 100).toFixed(2)
+          self.jsonDataResult.pdp_total = self.ifNullReturnZero(self.jsonDataProvinsi.pdp_total)
+          self.jsonDataResult.pdp_proses = self.ifNullReturnZero(self.jsonDataProvinsi.pdp_proses)
+          self.jsonDataResult.pdp_proses_persen = ((self.jsonDataResult.pdp_proses / self.jsonDataResult.pdp_total) * 100).toFixed(2)
+          self.jsonDataResult.pdp_selesai = self.ifNullReturnZero(self.jsonDataProvinsi.pdp_selesai)
+          self.jsonDataResult.pdp_selesai_persen = ((self.jsonDataResult.pdp_selesai / self.jsonDataResult.pdp_total) * 100).toFixed(2)
         })
         .catch(function (error) {
           console.log(error)

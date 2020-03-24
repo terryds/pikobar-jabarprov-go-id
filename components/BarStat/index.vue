@@ -103,9 +103,7 @@ export default {
         positif_nasional: 0,
         sembuh_nasional: 0,
         meninggal_nasional: 0,
-        last_update: '',
-        umur_max: 0,
-        count_kota: 0
+        last_update: ''
       }
     }
   },
@@ -141,7 +139,7 @@ export default {
         .get('https://covid19-public.digitalservice.id/api/v1/rekapitulasi/jabar?level=prov')
         .then(function (response) {
           self.jsonDataProvinsi = response.data.data.content
-          console.log(self.jsonDataProvinsi)
+
           self.jsonDataResult.positif = self.ifNullReturnZero(self.jsonDataProvinsi.positif)
           self.jsonDataResult.sembuh = self.ifNullReturnZero(self.jsonDataProvinsi.sembuh)
           self.jsonDataResult.meninggal = self.ifNullReturnZero(self.jsonDataProvinsi.meninggal)
