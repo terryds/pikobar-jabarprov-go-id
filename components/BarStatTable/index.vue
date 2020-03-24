@@ -116,7 +116,7 @@ export default {
             sort: 'desc'
           },
           {
-            label: 'Nama Kota/Kabupaten',
+            label: 'Nama Kota / Kabupaten',
             field: 'nama_kab',
             sort: 'desc'
           },
