@@ -86,12 +86,6 @@ export default {
     }
   },
   methods: {
-    encodeURI (string) {
-      return encodeURI(string)
-    },
-    getItemURL (item) {
-      return `/infographics/${this.encodeURI(item.title)}-inf.${item.id}`
-    },
     ...mapActions('infographics', {
       getItemById: 'getItemById'
     })

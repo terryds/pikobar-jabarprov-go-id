@@ -12,7 +12,8 @@ export function get (options = { perPage: 3 }) {
           return {
             ...data,
             id: doc.id,
-            published_date: data.published_date.toDate()
+            published_date: data.published_date.toDate(),
+            route: `/infographics/${encodeURI(data.title)}-inf.${doc.id}`
           }
         })
       }
@@ -30,7 +31,8 @@ export function getById (id) {
         return {
           ...data,
           id: doc.id,
-          published_date: data.published_date.toDate()
+          published_date: data.published_date.toDate(),
+          route: `/infographics/${encodeURI(data.title)}-inf.${doc.id}`
         }
       }
       return null
