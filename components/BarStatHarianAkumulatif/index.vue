@@ -388,6 +388,10 @@ export default {
               stop = true
             }
           }
+          self.barChartHarianODPData.splice(1, 1)
+          self.barChartHarianPDPData.splice(1, 1)
+          self.barChartAkumulatifODPData.splice(1, 1)
+          self.barChartAkumulatifPDPData.splice(1, 1)
         })
         .catch(function (error) {
           console.log(error)
@@ -397,7 +401,7 @@ export default {
   head () {
     return {
       link: [
-        { rel: 'stylesheet', href: 'https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css' }
+        /* { rel: 'stylesheet', href: 'https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css' } */
       ]
     }
   }

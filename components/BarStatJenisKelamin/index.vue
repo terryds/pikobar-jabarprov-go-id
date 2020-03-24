@@ -142,7 +142,7 @@ export default {
           self.jsonDataSatuan = response.data.data
 
           // by jenis_kelamin
-          self.changeGroupJenisKelamin('PDP')
+          self.changeGroupJenisKelamin('ODP')
         })
         .catch(function (error) {
           console.log(error)
@@ -199,7 +199,7 @@ export default {
   head () {
     return {
       link: [
-        { rel: 'stylesheet', href: 'https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css' }
+        /* { rel: 'stylesheet', href: 'https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css' } */
       ]
     }
   }

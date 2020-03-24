@@ -17,7 +17,7 @@
             Telpon & Pesan Teks
           </small>
         </h6>
-        <summary class="text-5xl text-yellow-400 font-bold">
+        <summary class="text-5xl text-yellopx-40 font-bold">
           {{ cases ? cases.pertanyaan_terlayani : '' }}
         </summary>
       </div>
@@ -72,7 +72,7 @@
       <a
         v-show="false"
         target="_blank"
-        class="text-center md:self-center w-56 py-4 rounded-lg text-brand-green-darker hover:bg-green-200 border-2 border-solid border-brand-green"
+        class="text-center md:self-center w-56 py-2 rounded-lg text-brand-green-darker hover:bg-green-200 border-2 border-solid border-brand-green"
         href="/data"
       >
         Lihat Data Selengkapnya
@@ -173,9 +173,25 @@
         <nuxt-link
           tag="a"
           to="/contact"
-          class="text-center md:self-center w-64 py-4 rounded-lg text-brand-green-darker hover:bg-green-200 border-2 border-solid border-brand-green"
+          class="text-center md:self-center px-4 py-2 rounded-lg text-brand-green-darker hover:bg-green-200 border-2 border-solid border-brand-green"
         >
           Lihat Rumah Sakit Lainnya
+        </nuxt-link>
+      </div>
+    </section>
+    <section class="mt-8 m-4 md:m-8 rounded-lg bg-white shadow-md p-5 md:p-8">
+      <div class="flex flex-col items-stretch">
+        <h3 class="text-lg lg:text-2xl">
+          <strong>Hubungi Call Center</strong>
+        </h3>
+        <CallCenter :count="6" />
+        <br>
+        <nuxt-link
+          tag="a"
+          to="/contact"
+          class="text-center md:self-center px-4 py-2 rounded-lg text-brand-green-darker hover:bg-green-200 border-2 border-solid border-brand-green"
+        >
+          Lihat Selengkapnya
         </nuxt-link>
       </div>
     </section>
@@ -230,7 +246,7 @@
           v-show="false"
           tag="a"
           to="#"
-          class="text-center md:self-center w-48 py-4 rounded-lg text-brand-green-darker hover:bg-green-200 border-2 border-solid border-brand-green"
+          class="text-center md:self-center px-4 py-2 rounded-lg text-brand-green-darker hover:bg-green-200 border-2 border-solid border-brand-green"
         >
           Lihat Selengkapnya
         </nuxt-link>
@@ -306,27 +322,33 @@
           v-show="false"
           tag="a"
           to="#"
-          class="text-center md:self-center w-48 py-4 rounded-lg text-brand-green-darker hover:bg-green-200 border-2 border-solid border-brand-green"
+          class="text-center md:self-center px-4 py-2 rounded-lg text-brand-green-darker hover:bg-green-200 border-2 border-solid border-brand-green"
         >
           Lihat Selengkapnya
         </nuxt-link>
       </div>
     </section>
     <section class="mt-8 m-4 md:mt-16 md:m-8">
-      <h2 class="text-left text-2xl md:text-3xl">
-        <b>Infografis</b>
-      </h2>
-      <br>
-      <div class="flex flex-col">
-        <ImageSwiper class="w-full" :items="infographics" />
+      <div class="flex justify-between items-center md:mb-4">
+        <h2 class="text-left text-2xl md:text-3xl">
+          <b>Info Praktikal</b>
+        </h2>
         <nuxt-link
           tag="a"
-          class="text-center md:self-center w-48 py-4 mt-8 rounded-lg text-brand-green-darker hover:bg-green-200 border-2 border-solid border-brand-green"
+          class="hidden md:inline-block text-center md:self-center px-4 py-2 rounded-lg text-brand-green-darker hover:bg-green-200 border-2 border-solid border-brand-green"
           to="/infographics"
         >
           Lihat Selengkapnya
         </nuxt-link>
       </div>
+      <ShareableItems :items="shareableInfographics" />
+      <nuxt-link
+        tag="a"
+        class="inline-block md:hidden text-center md:self-center px-4 py-2 mt-8  rounded-lg text-brand-green-darker hover:bg-green-200 border-2 border-solid border-brand-green"
+        to="/infographics"
+      >
+        Lihat Selengkapnya
+      </nuxt-link>
     </section>
     <br>
     <section class="m-4 md:m-8">
@@ -354,7 +376,7 @@
         <br>
         <nuxt-link
           tag="a"
-          class="text-center md:self-center w-48 py-4 mt-8 rounded-lg text-brand-green-darker hover:bg-green-200 border-2 border-solid border-brand-green"
+          class="text-center md:self-center px-4 py-2 mt-8 rounded-lg text-brand-green-darker hover:bg-green-200 border-2 border-solid border-brand-green"
           to="/articles?tab=jabar"
         >
           Lihat Selengkapnya
@@ -368,24 +390,24 @@ import { ContentLoader } from 'vue-content-loader'
 import { mapState } from 'vuex'
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons'
 import { formatDateTimeShort } from '~/lib/date'
-import ImageSwiper from '~/components/ImageSwiper'
 import CallCard from '~/components/CallCard'
 import ContactListItem from '~/components/ContactList/ContactListItem'
 import CallCenter from '~/components/CallCenter'
 import BlogPostPreview from '~/components/Blog/BlogPostPreview'
 import DataSummary from '~/components/_pages/index/DataSummary'
 import PetaPersebaranAllCases from '~/components/Tableau/PetaPersebaranAllCases'
+import ShareableItems from '~/components/ShareableItems'
 
 export default {
   components: {
     ContentLoader,
-    ImageSwiper,
     CallCard,
     BlogPostPreview,
     ContactListItem,
     CallCenter,
     DataSummary,
-    PetaPersebaranAllCases
+    PetaPersebaranAllCases,
+    ShareableItems
   },
   data () {
     return {
@@ -430,6 +452,20 @@ export default {
         pdp: pdp.total.jabar,
         aktif: aktif.jabar
       }
+    },
+    shareableInfographics () {
+      return this.infographics
+        .filter((_, index) => index < 4)
+        .map((item) => {
+          return {
+            title: item.title,
+            route: item.route,
+            shareable: true,
+            downloadable: true,
+            downloadURL: item.images[0],
+            shareText: `[Pikobar] Bagikan "${item.title}". Selengkapnya di ${window.location.origin}${item.route}`
+          }
+        })
     }
   },
   methods: {

@@ -23,7 +23,7 @@
       </nuxt-link>
     </div>
 
-    <div v-if="stat.isActiveHarian" class="row mt-2 mb-2 p3">
+    <div v-if="stat.isActiveHarian" class="row mt-2 mb-2">
       <div style="overflow-x: auto; width: 100%; height: 100%; display: flex;">
         <div
           class="bg-white m-2 p-2"
@@ -32,7 +32,7 @@
           <div class="row m-1">
             <span style="width: 50%">
               <h4 style="color: #828282; font-weight: bolder;">
-                Nasional
+                Indonesia
               </h4>
             </span>
             <span style="width: 50%">
@@ -893,6 +893,8 @@ export default {
             self.ChartNasionalDataAkumulatif.push([self.formatDate(date), self.jsonDataNasional[i].jumlahKasusKumulatif])
           }
           self.dataTotalPositifAll[0] = self.jsonDataNasional[self.jsonDataNasional.length - 1].jumlahKasusKumulatif
+          self.ChartNasionalDataHarian.splice(1, 1)
+          self.ChartNasionalDataAkumulatif.splice(1, 1)
         })
         .catch(function (error) {
           console.log(error)
@@ -930,8 +932,9 @@ export default {
               stop = true
             }
           }
-
           self.dataTotalPositifAll[1] = self.jsonDataRekap[self.jsonDataRekap.length - 1].total_positif_saat_ini
+          self.ChartJawaBaratDataHarian.splice(1, 1)
+          self.ChartJawaBaratDataAkumulatif.splice(1, 1)
         })
         .catch(function (error) {
           console.log(error)
@@ -998,7 +1001,7 @@ export default {
   head () {
     return {
       link: [
-        { rel: 'stylesheet', href: 'https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css' }
+        /* { rel: 'stylesheet', href: 'https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css' } */
       ]
     }
   }
