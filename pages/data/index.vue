@@ -19,13 +19,36 @@
         <BarStatDetail />
       </section>
 
-      <section class="row">
+      <div class="row mt-2 mb-2 pl-2">
+        <nuxt-link
+          tag="a"
+          style="border: 1px solid #2DAC55;"
+          class="btn btn-md mr-2"
+          :class="stat.isActiveCovid ? 'btnActive' : 'btnNonActive'"
+          to=""
+          @click.native="enableCovid"
+        >
+          <font-awesome-icon :icon="fontDiagnoses" /> Sebaran Covid-19
+        </nuxt-link>
+        <nuxt-link
+          tag="a"
+          style="border: 1px solid #2DAC55;"
+          class="btn btn-md mr-2"
+          :class="stat.isActiveRS ? 'btnActive' : 'btnNonActive'"
+          to=""
+          @click.native="enableRS"
+        >
+          <font-awesome-icon :icon="fontHospital" /> Fasilitas Kesehatan
+        </nuxt-link>
+      </div>
+
+      <section v-if="stat.isActiveCovid" class="row">
         <MapSebaranCovid />
       </section>
 
-      <!-- <section class="row">
-        <MapFaskes />
-      </section> -->
+      <section v-if="stat.isActiveRS" class="row">
+        <!-- <MapFaskes /> -->
+      </section>
 
       <section class="mt-4">
         <BarStatArea />
@@ -53,6 +76,8 @@
 
 <script>
 import { mapState } from 'vuex'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { faFirstAid, faBug } from '@fortawesome/free-solid-svg-icons'
 import { formatDateTimeShort } from '~/lib/date'
 
 export default {
@@ -65,7 +90,18 @@ export default {
     BarStatJenisKelamin: () => import('~/components/BarStatJenisKelamin'),
     BarStatUsia: () => import('~/components/BarStatUsia'),
     BarStatHarianAkumulatif: () => import('~/components/BarStatHarianAkumulatif'),
-    BarStatTable: () => import('~/components/BarStatTable')
+    BarStatTable: () => import('~/components/BarStatTable'),
+    FontAwesomeIcon
+  },
+  data () {
+    return {
+      stat: {
+        isActiveCovid: true,
+        isActiveRS: false
+      },
+      fontHospital: faFirstAid,
+      fontDiagnoses: faBug
+    }
   },
   computed: {
     ...mapState({
@@ -79,7 +115,15 @@ export default {
     }
   },
   methods: {
-    formatDateTimeShort
+    formatDateTimeShort,
+    enableCovid () {
+      this.stat.isActiveCovid = true
+      this.stat.isActiveRS = false
+    },
+    enableRS () {
+      this.stat.isActiveCovid = false
+      this.stat.isActiveRS = true
+    }
   },
   head () {
     return {
@@ -90,3 +134,15 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+
+.btnActive {
+  color: #ffffff;
+  background-color: #2DAC55;
+}
+.btnNonActive {
+  color: #2DAC55;
+  background-color: #FFFFFF;
+}
+</style>
