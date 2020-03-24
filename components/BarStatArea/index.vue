@@ -30,12 +30,12 @@
           style="border-radius: 0.8rem; box-shadow: 0 0 4px 0px rgba(0,0,0,0.05)"
         >
           <div class="row m-1">
-            <span style="width: 50%">
+            <span style="width: 60%">
               <h4 style="color: #828282; font-weight: bolder;">
                 Indonesia
               </h4>
             </span>
-            <span style="width: 50%">
+            <span style="width: 40%">
               <h4 style="color: #000000; font-weight: bolder; text-align: right; margin-right: 20px;">
                 ({{ dataTotalPositifAll[0] }})
               </h4>
@@ -52,12 +52,12 @@
           style="border-radius: 0.8rem; box-shadow: 0 0 4px 0px rgba(0,0,0,0.05)"
         >
           <div class="row m-1">
-            <span style="width: 50%">
+            <span style="width: 60%">
               <h4 style="color: #828282; font-weight: bolder;">
                 Jawa Barat
               </h4>
             </span>
-            <span style="width: 50%">
+            <span style="width: 40%">
               <h4 style="color: #000000; font-weight: bolder; text-align: right; margin-right: 20px;">
                 ({{ dataTotalPositifAll[1] }})
               </h4>
@@ -76,12 +76,12 @@
           style="border-radius: 0.8rem; box-shadow: 0 0 4px 0px rgba(0,0,0,0.05)"
         >
           <div class="row m-1">
-            <div style="width: 50%">
+            <div style="width: 60%">
               <h4 style="color: #828282; font-weight: bolder;">
                 {{ item.nama }}
               </h4>
             </div>
-            <div style="width: 50%">
+            <div style="width: 40%">
               <h4 style="text-align: right; margin-right: 20px;">
                 <span style="color: #4FB769; font-weight: bolder;">{{ item.positif_persentase }} %</span>
                 <span style="color: #000000; font-weight: bolder;">({{ item.positif }})</span>
@@ -104,12 +104,12 @@
           style="border-radius: 0.8rem; box-shadow: 0 0 4px 0px rgba(0,0,0,0.05)"
         >
           <div class="row m-1">
-            <span style="width: 50%">
+            <span style="width: 60%">
               <h4 style="color: #828282; font-weight: bolder;">
                 Indonesia
               </h4>
             </span>
-            <span style="width: 50%">
+            <span style="width: 40%">
               <h4 style="color: #000000; font-weight: bolder; text-align: right; margin-right: 20px;">
                 ({{ dataTotalPositifAll[0] }})
               </h4>
@@ -126,12 +126,12 @@
           style="border-radius: 0.8rem; box-shadow: 0 0 4px 0px rgba(0,0,0,0.05)"
         >
           <div class="row m-1">
-            <span style="width: 50%">
+            <span style="width: 60%">
               <h4 style="color: #828282; font-weight: bolder;">
                 Jawa Barat
               </h4>
             </span>
-            <span style="width: 50%">
+            <span style="width: 40%">
               <h4 style="color: #000000; font-weight: bolder; text-align: right; margin-right: 20px;">
                 ({{ dataTotalPositifAll[1] }})
               </h4>
@@ -150,12 +150,12 @@
           style="border-radius: 0.8rem; box-shadow: 0 0 4px 0px rgba(0,0,0,0.05)"
         >
           <div class="row m-1">
-            <div style="width: 50%">
+            <div style="width: 60%">
               <h4 style="color: #828282; font-weight: bolder;">
                 {{ item.nama }}
               </h4>
             </div>
-            <div style="width: 50%">
+            <div style="width: 40%">
               <h4 style="text-align: right; margin-right: 20px;">
                 <span style="color: #4FB769; font-weight: bolder;">{{ item.positif_persentase }} %</span>
                 <span style="color: #000000; font-weight: bolder;">({{ item.positif }})</span>
@@ -835,7 +835,7 @@ export default {
       ],
       barChartNasionalOptions: {
         height: 200,
-        width: 250,
+        width: 300,
         orientation: 'horizontal',
         colors: ['#6DD274'],
         legend: {
@@ -854,7 +854,7 @@ export default {
       },
       lineChartNasionalOptions: {
         height: 200,
-        width: 250,
+        width: 300,
         orientation: 'horizontal',
         colors: ['#6DD274'],
         legend: {
