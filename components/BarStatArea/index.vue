@@ -996,14 +996,23 @@ export default {
     },
     fetchDataProvinsiHarian () {
       const self = this
+      const today = new Date()
+      const strToday = self.formatDate(today)
+
       axios
         .get('https://covid19-public.digitalservice.id/api/v1/rekapitulasi/jabar/harian?level=prov')
         .then(function (response) {
           self.jsonDataProvinsiHarian = response.data.data.content
 
+          let stop = false
           for (let i = 0; i < self.jsonDataProvinsiHarian.length; i++) {
             const date = new Date(self.jsonDataProvinsiHarian[i].tanggal)
-            self.ChartJawaBaratDataHarian.push([self.formatDate(date), self.jsonDataProvinsiHarian[i].positif])
+            if (stop === false) {
+              self.ChartJawaBaratDataHarian.push([self.formatDate(date), self.jsonDataProvinsiHarian[i].positif])
+            }
+            if (self.formatDate(date) === strToday) {
+              stop = true
+            }
           }
           self.ChartJawaBaratDataHarian.splice(1, 1)
         })
@@ -1013,17 +1022,26 @@ export default {
     },
     fetchDataProvinsiKumulatif () {
       const self = this
+      const today = new Date()
+      const strToday = self.formatDate(today)
+
       axios
         .get('https://covid19-public.digitalservice.id/api/v1/rekapitulasi/jabar/kumulatif?level=prov')
         .then(function (response) {
           self.jsonDataProvinsiKumulatif = response.data.data.content
 
+          let stop = false
           for (let i = 0; i < self.jsonDataProvinsiKumulatif.length; i++) {
             const date = new Date(self.jsonDataProvinsiKumulatif[i].tanggal)
-            self.ChartJawaBaratDataAkumulatif.push([self.formatDate(date), self.jsonDataProvinsiKumulatif[i].positif])
-          }
-          if (self.jsonDataProvinsiKumulatif[self.jsonDataProvinsiKumulatif.length - 1].positif === null) {
-            self.dataTotalPositifAll[1] = self.jsonDataProvinsiKumulatif[self.jsonDataProvinsiKumulatif.length - 2].positif
+            if (stop === false) {
+              self.ChartJawaBaratDataAkumulatif.push([self.formatDate(date), self.jsonDataProvinsiKumulatif[i].positif])
+            }
+            if (self.jsonDataProvinsiKumulatif[self.jsonDataProvinsiKumulatif.length - 1].positif === null) {
+              self.dataTotalPositifAll[1] = self.jsonDataProvinsiKumulatif[self.jsonDataProvinsiKumulatif.length - 2].positif
+            }
+            if (self.formatDate(date) === strToday) {
+              stop = true
+            }
           }
           self.ChartJawaBaratDataAkumulatif.splice(1, 1)
         })
