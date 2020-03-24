@@ -3,8 +3,8 @@
     class="appbar"
     style="box-shadow: 0 0px 32px -4px rgba(0,0,0,0.15)"
   >
-    <div v-if="showPopupNotification" class="bg-brand-yellow-darkest">
-      <div class="container mx-auto">
+    <div v-show="showPopupNotification" class="bg-brand-yellow-darkest">
+      <div class="container mx-auto ">
         <div class="flex flex-wrap px-6 py-4">
           <div class="text-sm w-full">
             Izinkan notifikasi mengirim pesan
@@ -18,7 +18,7 @@
     <div class="container mx-auto p-4">
       <div class="md:hidden">
         <a
-          v-if="canGoBack"
+          v-show="canGoBack"
           tag="a"
           class="cursor-pointer flex items-center"
           href="javascript:void(0)"
@@ -31,12 +31,15 @@
             </p>
           </div>
         </a>
-        <div v-else class="flex justify-between items-center">
+        <div
+          v-show="!canGoBack"
+          class="flex justify-between items-center"
+        >
           <div
             class="flex items-center"
           >
             <nuxt-link to="/">
-              <img class="block h-10 mx-auto mr-4" src="logo.jpg" alt>
+              <img class="block h-10 mx-auto mr-4" src="/logo.jpg" alt>
             </nuxt-link>
             <nuxt-link to="/">
               <div class="text-left">
@@ -69,7 +72,7 @@
             class="flex items-center"
           >
             <nuxt-link to="/">
-              <img class="block h-10" style="margin-right: 1rem;" src="logo.jpg" alt>
+              <img class="block h-10 mx-auto mr-4" src="/logo.jpg" alt>
             </nuxt-link>
             <nuxt-link to="/">
               <div class="text-left">
@@ -111,7 +114,7 @@
               </a>
             </nuxt-link>
             <a
-              v-if="enableDownload"
+              v-show="enableDownload"
               :href="downloadAppURL"
               class="cursor-pointer px-4 py-2 text-white text-center ml-2 rounded-md bg-brand-green hover:bg-brand-green-light"
             >
@@ -141,9 +144,7 @@ export default {
         { to: '/articles?tab=jabar', label: 'Berita' },
         { to: '/contact', label: 'Kontak' },
         { to: '/faq', label: 'FAQ' }
-      ],
-      enableDownload: false,
-      downloadAppURL: '#'
+      ]
     }
   },
   computed: {
@@ -152,50 +153,22 @@ export default {
     },
     pathToGoBack () {
       return this.$store.state.route.from.path
+    },
+    enableDownload () {
+      const { config } = this.$store.state['remote-config']
+      return !!config && !!config.enableDownload
+    },
+    downloadAppURL () {
+      const { config } = this.$store.state['remote-config']
+      return !!config && !!config.downloadAppURL ? config.downloadAppURL : '#'
     }
   },
   mounted () {
-    this.toggleDownloadAppButton()
     this.checkPermission()
   },
   methods: {
     onGoBack () {
       this.$router.back()
-    },
-    toggleDownloadAppButton () {
-      if (process.client || process.browser) {
-        import('../../lib/firebase-client')
-          .then((m) => {
-            return m ? m.default || m : null
-          }).then((module) => {
-            if (!module) {
-              return
-            }
-            const { remoteConfig } = module
-            // eslint-disable-next-line
-            let retry = 0
-            // eslint-disable-next-line
-            const fetch = () => {
-              if (retry >= 5) {
-                return
-              }
-              remoteConfig.fetchAndActivate()
-                .then(() => {
-                  this.enableDownload = remoteConfig.getValue('download_app_via_web_enabled')._value === 'true'
-                  this.downloadAppURL = remoteConfig.getValue('download_app_url')._value
-                }).catch((e) => {
-                  retry += 1
-                  fetch()
-                })
-            }
-            remoteConfig.activate()
-              .then((isActivated) => {
-                if (!isActivated) {
-                  fetch()
-                }
-              })
-          })
-      }
     },
     async checkPermission () {
       if (!messaging) {

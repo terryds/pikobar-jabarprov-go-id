@@ -2,7 +2,7 @@
 import { ContentLoader } from 'vue-content-loader'
 export default {
   functional: true,
-  props: ['size', 'isPending', 'label', 'value'],
+  props: ['size', 'isPending', 'label'],
   render (h, context) {
     const staticClass = context.data.staticClass || ''
     const staticStyle = context.data.staticStyle || {}
@@ -10,9 +10,10 @@ export default {
       class: ['p-5 rounded-lg border border-solid border-gray-300 bg-white shadow-md', staticClass],
       style: staticStyle
     }
-    if (context.props.isPending) {
-      return (
-        <div {...containerProps}>
+    return (
+      <div {...containerProps}>
+        <div
+          style={`display: ${context.props.isPending ? 'block' : 'none'}`}>
           <ContentLoader
             speed={2}
             width={400}
@@ -25,19 +26,13 @@ export default {
             <rect x={0} y={64} rx={8} ry={6} width="20%" height="16"></rect>
           </ContentLoader>
         </div>
-      )
-    }
-    return (
-      <div {...containerProps}>
-        <h4 class="text-black opacity-50">
-          <b class="uppercase">{ context.props.label }</b>
-        </h4>
-        <h3 class="text-4xl">
-          <b class="inline-block" style="min-width: 2ch;">
-            { context.props.value }
-          </b>
-          <small class="opacity-50 ml-2">orang</small>
-        </h3>
+        <div
+          style={`display: ${context.props.isPending ? 'none' : 'block'}`}>
+          <h4 class="text-black opacity-50">
+            <b class="uppercase">{ context.props.label }</b>
+          </h4>
+          { context.children }
+        </div>
       </div>
     )
   }
