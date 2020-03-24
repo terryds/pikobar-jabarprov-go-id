@@ -318,7 +318,6 @@ export default {
           this.removeLayer()
           this.removeBatasWilayah()
           this.zoom = this.map.getZoom()
-          this.createBatasWilayah(this.kotaGeojson)
           this.setLayerPasienByKota()
         }
       })
@@ -401,117 +400,118 @@ export default {
     },
     createMap () {
       this.setLayerPasienByKota()
-      this.createBatasWilayah(this.kotaGeojson)
     },
     setLayerPasienByKota () {
-      this.createClusterByKota()
       this.createLayerPasienByKota()
     },
-    createClusterByKota () {
-      this.jsonDataKota.forEach((element) => {
-        const markerClusters = {
-          odp: {
-            proses: '',
-            selesai: '',
-            pdp: '',
-            positif: '',
-            belumupdate: ''
-          },
-          pdp: {
-            proses: '',
-            selesai: '',
-            positif: '',
-            belumupdate: ''
-          },
-          positif: {
-            proses: '',
-            meninggal: '',
-            sembuh: ''
-          }
+    paramMarkerCluster () {
+      const markerClusters = {
+        odp: {
+          proses: '',
+          selesai: '',
+          pdp: '',
+          positif: '',
+          belumupdate: ''
+        },
+        pdp: {
+          proses: '',
+          selesai: '',
+          positif: '',
+          belumupdate: ''
+        },
+        positif: {
+          proses: '',
+          meninggal: '',
+          sembuh: ''
         }
-        markerClusters.positif.proses = this.$L.markerClusterGroup(this.configCluster('cluster-positif-proses'))
+      }
+      markerClusters.positif.proses = this.$L.markerClusterGroup(this.configCluster('cluster-positif-proses'))
+      markerClusters.positif.meninggal = this.$L.markerClusterGroup(this.configCluster('cluster-positif-meninggal'))
+      markerClusters.positif.sembuh = this.$L.markerClusterGroup(this.configCluster('cluster-positif-sembuh'))
+      markerClusters.pdp.proses = this.$L.markerClusterGroup(this.configCluster('cluster-pdp-proses'))
+      markerClusters.pdp.selesai = this.$L.markerClusterGroup(this.configCluster('cluster-pdp-selesai'))
+      markerClusters.pdp.positif = this.$L.markerClusterGroup(this.configCluster('cluster-pdp-positif'))
+      markerClusters.pdp.belumupdate = this.$L.markerClusterGroup(this.configCluster('cluster-pdp-belumupdate'))
+      markerClusters.odp.proses = this.$L.markerClusterGroup(this.configCluster('cluster-odp-proses'))
+      markerClusters.odp.selesai = this.$L.markerClusterGroup(this.configCluster('cluster-odp-selesai'))
+      markerClusters.odp.pdp = this.$L.markerClusterGroup(this.configCluster('cluster-odp-pdp'))
+      markerClusters.odp.positif = this.$L.markerClusterGroup(this.configCluster('cluster-odp-positif'))
+      markerClusters.odp.belumupdate = this.$L.markerClusterGroup(this.configCluster('cluster-odp-belumupdate'))
 
-        markerClusters.positif.meninggal = this.$L.markerClusterGroup(this.configCluster('cluster-positif-meninggal'))
-
-        markerClusters.positif.sembuh = this.$L.markerClusterGroup(this.configCluster('cluster-positif-sembuh'))
-
-        markerClusters.pdp.proses = this.$L.markerClusterGroup(this.configCluster('cluster-pdp-proses'))
-
-        markerClusters.pdp.selesai = this.$L.markerClusterGroup(this.configCluster('cluster-pdp-selesai'))
-
-        markerClusters.pdp.positif = this.$L.markerClusterGroup(this.configCluster('cluster-pdp-positif'))
-
-        markerClusters.pdp.belumupdate = this.$L.markerClusterGroup(this.configCluster('cluster-pdp-belumupdate'))
-
-        markerClusters.odp.proses = this.$L.markerClusterGroup(this.configCluster('cluster-odp-proses'))
-
-        markerClusters.odp.selesai = this.$L.markerClusterGroup(this.configCluster('cluster-odp-selesai'))
-
-        markerClusters.odp.pdp = this.$L.markerClusterGroup(this.configCluster('cluster-odp-pdp'))
-
-        markerClusters.odp.positif = this.$L.markerClusterGroup(this.configCluster('cluster-odp-positif'))
-
-        markerClusters.odp.belumupdate = this.$L.markerClusterGroup(this.configCluster('cluster-odp-belumupdate'))
-        this.kotaCluster[element.kode] = markerClusters
-      })
-      this.settingLayerPasienByKota()
+      return markerClusters
     },
-    settingLayerPasienByKota () {
-      this.jsonData.forEach((element) => {
-        if (element.alamat_latitude !== null) {
-          const m = this.$L.marker([element.alamat_latitude, element.alamat_longitude])
-          m.bindPopup(`
-            <b> Kab/Kota </b> : ${element.kabkot_str} <br>
-            <b> Status </b> : ${element.status} <br>
-            <b> Jenis Kelamin </b> : ${element.jenis_kelamin_str} <br>
-            <b> Usia </b> : ${element.umur} 
-          `)
-          m.on('mouseover', function (e) {
-            this.openPopup()
-          })
-          m.on('mouseout', function (e) {
-            this.closePopup()
-          })
-          if (element.status === 'Positif' && element.stage === 'Aktif') {
-            this.kotaCluster[element.kode_kabkot].positif.proses.addLayer(m)
-          } else if (element.status === 'Positif' && element.stage === 'Meninggal') {
-            this.kotaCluster[element.kode_kabkot].positif.meninggal.addLayer(m)
-          } else if (element.status === 'Positif' && element.stage === 'Sembuh') {
-            this.kotaCluster[element.kode_kabkot].positif.sembuh.addLayer(m)
-          } else if (element.status === 'PDP' && element.stage === 'Proses') {
-            this.kotaCluster[element.kode_kabkot].pdp.proses.addLayer(m)
-          } else if (element.status === 'PDP' && element.stage === 'Selesai') {
-            this.kotaCluster[element.kode_kabkot].pdp.selesai.addLayer(m)
-          } else if (element.status === 'PDP' && element.stage === 'Positif') {
-            this.kotaCluster[element.kode_kabkot].pdp.positif.addLayer(m)
-          } else if (element.status === 'PDP' && element.stage === null) {
-            this.kotaCluster[element.kode_kabkot].pdp.belumupdate.addLayer(m)
-          } else if (element.status === 'ODP' && element.stage === 'Proses') {
-            this.kotaCluster[element.kode_kabkot].odp.proses.addLayer(m)
-          } else if (element.status === 'ODP' && element.stage === 'Selesai') {
-            this.kotaCluster[element.kode_kabkot].odp.selesai.addLayer(m)
-          } else if (element.status === 'ODP' && element.stage === 'PDP') {
-            this.kotaCluster[element.kode_kabkot].odp.pdp.addLayer(m)
-          } else if (element.status === 'ODP' && element.stage === 'Positif') {
-            this.kotaCluster[element.kode_kabkot].odp.positif.addLayer(m)
-          } else {
-            this.kotaCluster[element.kode_kabkot].odp.belumupdate.addLayer(m)
-          }
-        }
+    addMarkerLayer(cluster, element, elPasien) {
+      const m = this.$L.marker([elPasien.alamat_latitude, elPasien.alamat_longitude])
+      m.bindPopup(`
+        <b> Kab/Kota </b> : ${elPasien.kabkot_str} <br>
+        <b> Status </b> : ${elPasien.status} <br>
+        <b> Jenis Kelamin </b> : ${elPasien.jenis_kelamin_str} <br>
+        <b> Usia </b> : ${elPasien.umur} 
+      `)
+      m.on('mouseover', function (e) {
+        this.openPopup()
       })
+      m.on('mouseout', function (e) {
+        this.closePopup()
+      })
+      if (elPasien.status === 'Positif' && elPasien.stage === 'Aktif') {
+        cluster[element.feature.properties.bps_kode].positif.proses.addLayer(m)
+      } else if (elPasien.status === 'Positif' && elPasien.stage === 'Meninggal') {
+        cluster[element.feature.properties.bps_kode].positif.meninggal.addLayer(m)
+      } else if (elPasien.status === 'Positif' && elPasien.stage === 'Sembuh') {
+        cluster[element.feature.properties.bps_kode].positif.sembuh.addLayer(m)
+      } else if (elPasien.status === 'PDP' && elPasien.stage === 'Proses') {
+        cluster[element.feature.properties.bps_kode].pdp.proses.addLayer(m)
+      } else if (elPasien.status === 'PDP' && elPasien.stage === 'Selesai') {
+        cluster[element.feature.properties.bps_kode].pdp.selesai.addLayer(m)
+      } else if (elPasien.status === 'PDP' && elPasien.stage === 'Positif') {
+        cluster[element.feature.properties.bps_kode].pdp.positif.addLayer(m)
+      } else if (elPasien.status === 'PDP' && elPasien.stage === null) {
+        cluster[element.feature.properties.bps_kode].pdp.belumupdate.addLayer(m)
+      } else if (elPasien.status === 'ODP' && elPasien.stage === 'Proses') {
+        cluster[element.feature.properties.bps_kode].odp.proses.addLayer(m)
+      } else if (elPasien.status === 'ODP' && elPasien.stage === 'Selesai') {
+        cluster[element.feature.properties.bps_kode].odp.selesai.addLayer(m)
+      } else if (elPasien.status === 'ODP' && elPasien.stage === 'PDP') {
+        cluster[element.feature.properties.bps_kode].odp.pdp.addLayer(m)
+      } else if (elPasien.status === 'ODP' && elPasien.stage === 'Positif') {
+        cluster[element.feature.properties.bps_kode].odp.positif.addLayer(m)
+      } else {
+        cluster[element.feature.properties.bps_kode].odp.belumupdate.addLayer(m)
+      }
+    },
+    addMarkerClusterLayer(cluster, element, wilayah = '') {
+      for (const key in cluster[element.feature.properties.bps_kode]) {
+        for (const keySub in cluster[element.feature.properties.bps_kode][key]) {
+          const newLayer = cluster[element.feature.properties.bps_kode][key][keySub].addTo(this.map)
+          this.listLayer.push(newLayer)
+          cluster[element.feature.properties.bps_kode][key][keySub].on('clusterclick', (c) => {
+            this.$L.popup().setLatLng(c.layer.getLatLng()).setContent(c.layer._childCount + ' kasus ' + this.statusStageCorona(key, keySub) + ' di ' + wilayah + ' ' + element.feature.properties.bps_nama).openOn(this.map)
+          }).on('clustermouseout', (c) => {
+            this.map.closePopup()
+          })
+        }
+      }
     },
     createLayerPasienByKota () {
-      this.jsonDataKota.forEach((element) => {
-        for (const key in this.kotaCluster[element.kode]) {
-          for (const keySub in this.kotaCluster[element.kode][key]) {
-            const newLayer = this.kotaCluster[element.kode][key][keySub].addTo(this.map)
-            this.listLayer.push(newLayer)
-            this.kotaCluster[element.kode][key][keySub].on('clusterclick', (c) => {
-              this.$L.popup().setLatLng(c.layer.getLatLng()).setContent(c.layer._childCount + ' kasus ' + this.statusStageCorona(key, keySub) + ' di ' + element.nama).openOn(this.map)
-            }).on('clustermouseout', (c) => {
-              this.map.closePopup()
-            })
-          }
+      this.$L.geoJSON(this.kotaGeojson, {
+        style: this.styleBatasWilayah
+      }).eachLayer((element) => { 
+        if (this.map.getBounds().intersects(element._bounds)) {
+          const layerWilayah = element.addTo(this.map)
+          this.wilayahLayer.push(layerWilayah)
+          element.bindPopup(element.feature.properties.bps_nama)
+          const markerClusters = this.paramMarkerCluster()
+          this.kotaCluster[element.feature.properties.bps_kode] = markerClusters
+          this.jsonData.forEach((elPasien) => {
+            if (elPasien.alamat_latitude !== null) {
+              if (element._bounds.contains([elPasien.alamat_latitude, elPasien.alamat_longitude])) {
+                this.addMarkerLayer(this.kotaCluster, element, elPasien)
+              }
+            }
+          })
+
+          this.addMarkerClusterLayer(this.kotaCluster, element)
         }
       })
     },
@@ -528,109 +528,18 @@ export default {
           this.wilayahLayer.push(layerWilayah)
           element.bindPopup(element.feature.properties.bps_nama)
 
-          // console.log(element.properties.bps_kode)
-          const markerClusters = {
-            odp: {
-              proses: '',
-              selesai: '',
-              pdp: '',
-              positif: '',
-              belumupdate: ''
-            },
-            pdp: {
-              proses: '',
-              selesai: '',
-              positif: '',
-              belumupdate: ''
-            },
-            positif: {
-              proses: '',
-              meninggal: '',
-              sembuh: ''
-            }
-          }
-          markerClusters.positif.proses = this.$L.markerClusterGroup(this.configCluster('cluster-positif-proses'))
-          markerClusters.positif.meninggal = this.$L.markerClusterGroup(this.configCluster('cluster-positif-meninggal'))
-          markerClusters.positif.sembuh = this.$L.markerClusterGroup(this.configCluster('cluster-positif-sembuh'))
-          markerClusters.pdp.proses = this.$L.markerClusterGroup(this.configCluster('cluster-pdp-proses'))
-          markerClusters.pdp.selesai = this.$L.markerClusterGroup(this.configCluster('cluster-pdp-selesai'))
-          markerClusters.pdp.positif = this.$L.markerClusterGroup(this.configCluster('cluster-pdp-positif'))
-          markerClusters.pdp.belumupdate = this.$L.markerClusterGroup(this.configCluster('cluster-pdp-belumupdate'))
-          markerClusters.odp.proses = this.$L.markerClusterGroup(this.configCluster('cluster-odp-proses'))
-          markerClusters.odp.selesai = this.$L.markerClusterGroup(this.configCluster('cluster-odp-selesai'))
-          markerClusters.odp.pdp = this.$L.markerClusterGroup(this.configCluster('cluster-odp-pdp'))
-          markerClusters.odp.positif = this.$L.markerClusterGroup(this.configCluster('cluster-odp-positif'))
-          markerClusters.odp.belumupdate = this.$L.markerClusterGroup(this.configCluster('cluster-odp-belumupdate'))
+          const markerClusters = this.paramMarkerCluster()
           this.kecamatanCluster[element.feature.properties.bps_kode] = markerClusters
           this.jsonData.forEach((elPasien) => {
             if (elPasien.alamat_latitude !== null) {
               if (element._bounds.contains([elPasien.alamat_latitude, elPasien.alamat_longitude])) {
-
-                const m = this.$L.marker([elPasien.alamat_latitude, elPasien.alamat_longitude])
-                m.bindPopup(`
-                  <b> Kab/Kota </b> : ${elPasien.kabkot_str} <br>
-                  <b> Status </b> : ${elPasien.status} <br>
-                  <b> Jenis Kelamin </b> : ${elPasien.jenis_kelamin_str} <br>
-                  <b> Usia </b> : ${elPasien.umur} 
-                `)
-                m.on('mouseover', function (e) {
-                  this.openPopup()
-                })
-                m.on('mouseout', function (e) {
-                  this.closePopup()
-                })
-                if (elPasien.status === 'Positif' && elPasien.stage === 'Aktif') {
-                  this.kecamatanCluster[element.feature.properties.bps_kode].positif.proses.addLayer(m)
-                } else if (elPasien.status === 'Positif' && elPasien.stage === 'Meninggal') {
-                  this.kecamatanCluster[element.feature.properties.bps_kode].positif.meninggal.addLayer(m)
-                } else if (elPasien.status === 'Positif' && elPasien.stage === 'Sembuh') {
-                  this.kecamatanCluster[element.feature.properties.bps_kode].positif.sembuh.addLayer(m)
-                } else if (elPasien.status === 'PDP' && elPasien.stage === 'Proses') {
-                  this.kecamatanCluster[element.feature.properties.bps_kode].pdp.proses.addLayer(m)
-                } else if (elPasien.status === 'PDP' && elPasien.stage === 'Selesai') {
-                  this.kecamatanCluster[element.feature.properties.bps_kode].pdp.selesai.addLayer(m)
-                } else if (elPasien.status === 'PDP' && elPasien.stage === 'Positif') {
-                  this.kecamatanCluster[element.feature.properties.bps_kode].pdp.positif.addLayer(m)
-                } else if (elPasien.status === 'PDP' && elPasien.stage === null) {
-                  this.kecamatanCluster[element.feature.properties.bps_kode].pdp.belumupdate.addLayer(m)
-                } else if (elPasien.status === 'ODP' && elPasien.stage === 'Proses') {
-                  this.kecamatanCluster[element.feature.properties.bps_kode].odp.proses.addLayer(m)
-                } else if (elPasien.status === 'ODP' && elPasien.stage === 'Selesai') {
-                  this.kecamatanCluster[element.feature.properties.bps_kode].odp.selesai.addLayer(m)
-                } else if (elPasien.status === 'ODP' && elPasien.stage === 'PDP') {
-                  this.kecamatanCluster[element.feature.properties.bps_kode].odp.pdp.addLayer(m)
-                } else if (elPasien.status === 'ODP' && elPasien.stage === 'Positif') {
-                  this.kecamatanCluster[element.feature.properties.bps_kode].odp.positif.addLayer(m)
-                } else {
-                  this.kecamatanCluster[element.feature.properties.bps_kode].odp.belumupdate.addLayer(m)
-                }
+                this.addMarkerLayer(this.kecamatanCluster, element, elPasien)
               }
             }
           })
 
-          for (const key in this.kecamatanCluster[element.feature.properties.bps_kode]) {
-            for (const keySub in this.kecamatanCluster[element.feature.properties.bps_kode][key]) {
-              const newLayer = this.kecamatanCluster[element.feature.properties.bps_kode][key][keySub].addTo(this.map)
-              this.listLayer.push(newLayer)
-              this.kecamatanCluster[element.feature.properties.bps_kode][key][keySub].on('clusterclick', (c) => {
-                this.$L.popup().setLatLng(c.layer.getLatLng()).setContent(c.layer._childCount + ' kasus ' + this.statusStageCorona(key, keySub) + ' di Kecamatan ' + element.feature.properties.bps_nama).openOn(this.map)
-              }).on('clustermouseout', (c) => {
-                this.map.closePopup()
-              })
-            }
-          }
+          this.addMarkerClusterLayer(this.kecamatanCluster, element, 'Kecamatan')
         }
-      })
-    },
-    createBatasWilayah (wilayah = this.kotaGeojson) {
-      this.$L.geoJSON(wilayah, {
-        style: this.styleBatasWilayah
-      }).eachLayer((layer) => {
-        if (this.map.getBounds().intersects(layer._bounds)) {
-          const layerWilayah = layer.addTo(this.map)
-          this.wilayahLayer.push(layerWilayah)
-        }
-        layer.bindPopup(layer.feature.properties.bps_nama)
       })
     },
     tesMap () {
