@@ -26,7 +26,7 @@ export default {
   ** Headers of the page
   */
   head: {
-    title: 'COVID-19 Jawa Barat',
+    title: 'Pikobar - Pusat Informasi dan Koordinasi COVID-19 Jawa Barat',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },

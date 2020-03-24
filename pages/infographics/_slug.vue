@@ -95,6 +95,29 @@ export default {
     ...mapActions('infographics', {
       getItemById: 'getItemById'
     })
+  },
+  head () {
+    const { title = process.env.npm_package_title, images = [] } = (this.infographic || {})
+    return {
+      title: title + ' - Pikobar',
+      meta: [
+        {
+          hid: 'og:title',
+          property: 'og:title',
+          content: title + ' - Pikobar'
+        },
+        {
+          hid: 'og:type',
+          property: 'og:type',
+          content: 'image'
+        },
+        {
+          hid: 'og:image',
+          property: 'og:image',
+          content: images[0] || ''
+        }
+      ]
+    }
   }
 }
 </script>

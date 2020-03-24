@@ -113,6 +113,30 @@ export default {
       }
       window.open(e.target.href, '_blank')
     }
+  },
+  head () {
+    // eslint-disable-next-line
+    const { title = process.env.npm_package_title, published_at = '' } = (this.item || {})
+    return {
+      title: title + ' - Pikobar',
+      meta: [
+        {
+          hid: 'og:title',
+          property: 'og:title',
+          content: title + ' - Pikobar'
+        },
+        {
+          hid: 'og:type',
+          property: 'og:type',
+          content: 'article'
+        },
+        {
+          hid: 'og:article:published_time',
+          property: 'og:article:published_time',
+          content: published_at
+        }
+      ]
+    }
   }
 }
 </script>
