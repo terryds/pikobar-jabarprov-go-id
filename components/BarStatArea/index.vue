@@ -193,20 +193,13 @@ export default {
       },
       fontChartBar: faChartBar,
       fontChartLine: faChartLine,
-      jsonDataNasionalHarianKumulatif: [
-      ],
-      jsonDataProvinsi: [
-      ],
-      jsonDataProvinsiHarian: [
-      ],
-      jsonDataProvinsiKumulatif: [
-      ],
-      jsonDataKabupaten: [
-      ],
-      jsonDataKabupatenHarian: [
-      ],
-      jsonDataKabupatenKumulatif: [
-      ],
+      jsonDataNasionalHarianKumulatif: [],
+      jsonDataProvinsi: [],
+      jsonDataProvinsiHarian: [],
+      jsonDataProvinsiKumulatif: [],
+      jsonDataKabupaten: [],
+      jsonDataKabupatenHarian: [],
+      jsonDataKabupatenKumulatif: [],
       jsonDataResult: {
         odp_total: 0,
         odp_proses: 0,
@@ -889,9 +882,11 @@ export default {
   created () {
     this.fetchDataNasionalHarianKumulatif()
     this.fetchDataProvinsi()
+    setTimeout(() => {
+      this.fetchDataKabupaten()
+    }, 2000)
     this.fetchDataProvinsiHarian()
     this.fetchDataProvinsiKumulatif()
-    this.fetchDataKabupaten()
     this.fetchDataKabupatenHarian()
     this.fetchDataKabupatenKumulatif()
   },
