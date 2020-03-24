@@ -111,6 +111,7 @@ export default {
       activeLayer: 'ODP',
       kotaGeojson: {},
       kecamatanGeojson: {},
+      kelurahanGeojson: {},
       jsonData: [],
       jsonDataKota: [
         {
@@ -224,6 +225,7 @@ export default {
       ],
       kotaCluster: [],
       kecamatanCluster: [],
+      kelurahanCluster: [],
       listLayer: [],
       wilayahLayer: [],
       styleBatasWilayah: {
@@ -261,6 +263,12 @@ export default {
           name: 'kecamatan.json',
           onLoad: (module) => {
             this.kecamatanGeojson = module
+          }
+        },
+        {
+          name: 'kelurahan.json',
+          onLoad: (module) => {
+            this.kelurahanGeojson = module
           }
         }
       ]
@@ -309,22 +317,32 @@ export default {
       // on zoom
       // Here the events for zooming and dragging
       this.map.on('zoomend', () => {
+        // if (this.map.getZoom() > 15 && this.zoom < 15) {
+        //   this.removeLayer()
+        //   this.removeBatasWilayah()
+        //   this.zoom = this.map.getZoom()
+        //   this.createLayerByKelurahan()
+        // } else 
         if (this.map.getZoom() > 12 && this.zoom < 12) {
           this.removeLayer()
           this.removeBatasWilayah()
           this.zoom = this.map.getZoom()
-          this.setLayerPasienByKecamatan()
+          this.createLayerByKecamatan()
         } else if (this.map.getZoom() < 12 && this.zoom > 12) {
           this.removeLayer()
           this.removeBatasWilayah()
           this.zoom = this.map.getZoom()
-          this.setLayerPasienByKota()
+          this.createLayerPasienByKota()
         }
       })
       this.map.on('dragend', () => {
+        // if (this.zoom > 15) {
+        //   this.removeLayer()
+        //   this.createLayerByKelurahan()
+        // } else 
         if (this.zoom > 12) {
           this.removeLayer()
-          this.setLayerPasienByKecamatan()
+          this.createLayerByKecamatan()
         }
       })
       // end
@@ -399,9 +417,6 @@ export default {
       return statusStage
     },
     createMap () {
-      this.setLayerPasienByKota()
-    },
-    setLayerPasienByKota () {
       this.createLayerPasienByKota()
     },
     paramMarkerCluster () {
@@ -515,10 +530,7 @@ export default {
         }
       })
     },
-    setLayerPasienByKecamatan () {
-      this.createClusterByKecamatan()
-    },
-    createClusterByKecamatan () {
+    createLayerByKecamatan () {
       // if(map.getBounds().intersects(layer._bounds)) { ... }
       this.$L.geoJSON(this.kecamatanGeojson, {
         style: this.styleBatasWilayah
@@ -539,6 +551,30 @@ export default {
           })
 
           this.addMarkerClusterLayer(this.kecamatanCluster, element, 'Kecamatan')
+        }
+      })
+    },
+    createLayerByKelurahan () {
+      // if(map.getBounds().intersects(layer._bounds)) { ... }
+      this.$L.geoJSON(this.kelurahanGeojson, {
+        style: this.styleBatasWilayah
+      }).eachLayer((element) => {
+        if (this.map.getBounds().intersects(element._bounds)) {
+          const layerWilayah = element.addTo(this.map)
+          this.wilayahLayer.push(layerWilayah)
+          element.bindPopup(element.feature.properties.bps_nama)
+
+          const markerClusters = this.paramMarkerCluster()
+          this.kelurahanCluster[element.feature.properties.bps_kode] = markerClusters
+          this.jsonData.forEach((elPasien) => {
+            if (elPasien.alamat_latitude !== null) {
+              if (element._bounds.contains([elPasien.alamat_latitude, elPasien.alamat_longitude])) {
+                this.addMarkerLayer(this.kelurahanCluster, element, elPasien)
+              }
+            }
+          })
+
+          this.addMarkerClusterLayer(this.kelurahanCluster, element, 'Kelurahan')
         }
       })
     },
