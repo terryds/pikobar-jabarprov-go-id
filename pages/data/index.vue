@@ -8,7 +8,7 @@
       <h3 class="text-3xl text-gray-900 font-bold text-left leading-none" style="margin-bottom: 10px; ">
         Dashboard Kasus COVID-19 Provinsi Jawa Barat
       </h3>
-      <span style="font-size: smaller;">*Terakhir diupdate {{ jsonDataResult.last_update }}</span>
+      <span style="font-size: smaller;">*Update Terakhir: {{ lastUpdatedAt }}</span>
       <br>
       <br>
       <section>
@@ -49,7 +49,8 @@
 </template>
 
 <script>
-import axios from 'axios'
+import { mapState } from 'vuex'
+import { formatDateTimeShort } from '~/lib/date'
 
 export default {
   components: {
@@ -61,55 +62,19 @@ export default {
     BarStatUsia: () => import('~/components/BarStatUsia'),
     BarStatHarianAkumulatif: () => import('~/components/BarStatHarianAkumulatif')
   },
-  data () {
-    return {
-      jsonDataSatuan: [
-      ],
-      jsonDataRekap: [
-      ],
-      jsonDataResult: {
-        odp: 0,
-        odp_proses: 0,
-        odp_proses_persen: 0,
-        odp_selesai: 0,
-        odp_selesai_persen: 0,
-        pdp: 0,
-        pdp_proses: 0,
-        pdp_proses_persen: 0,
-        pdp_selesai: 0,
-        pdp_selesai_persen: 0,
-        positif: 0,
-        perawatan: 0,
-        sembuh: 0,
-        meninggal: 0,
-        total_positif_saat_ini: 0,
-        total_positif_saat_ini_nasional: 0,
-        total_sembuh: 0,
-        total_sembuh_nasional: 0,
-        total_meninggal: 0,
-        total_meninggal_nasional: 0,
-        last_update: '',
-        umur_max: 0,
-        count_kota: 0
+  computed: {
+    ...mapState({
+      cases: state => state.statistics.cases
+    }),
+    lastUpdatedAt () {
+      if (!this.cases) {
+        return ''
       }
+      return this.formatDateTimeShort(this.cases.updated_at)
     }
-  },
-  created () {
-    this.fetchDataSatuan()
   },
   methods: {
-    fetchDataSatuan () {
-      const self = this
-      axios
-        .get('https://covid19-public.digitalservice.id/analytics/longlat/')
-        .then(function (response) {
-          self.jsonDataResult.last_update = new Date(response.data.last_update).toLocaleString('id-ID', { dateStyle: 'long', timeStyle: 'medium' })
-          self.jsonDataSatuan = response.data
-        })
-        .catch(function (error) {
-          console.log(error)
-        })
-    }
+    formatDateTimeShort
   },
   head () {
     return {
