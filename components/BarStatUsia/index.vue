@@ -63,8 +63,7 @@ export default {
         isODP: false,
         isPDP: true
       },
-      jsonDataSebaranJabar: [
-      ],
+      jsonDataSebaranJabar: [],
       barChartUmurJenisKelaminData: {
         cols: [
           { id: 'Umur', label: 'Umur', type: 'string' },
