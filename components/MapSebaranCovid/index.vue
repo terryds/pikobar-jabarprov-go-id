@@ -243,9 +243,9 @@ export default {
   },
   mounted () {
     this.tesMap()
+    this.createBasemap()
     this.importJSON()
       .then(() => {
-        this.createBasemap()
         this.fetchData()
       })
   },
@@ -379,13 +379,15 @@ export default {
           // get the number of items in the cluster
           let count = cluster.getChildCount()
           const digits = (count + '').length
+          let classMarker = 'cluster ' + className + ' digits-' + digits
+          
           if (count === 1) {
             count = ''
+            classMarker = 'cluster ' + className + ' digits-0'
           }
-          // console.log(className)
           return this.$L.divIcon({
             html: count,
-            className: 'cluster ' + className + ' digits-' + digits,
+            className:  classMarker,
             iconSize: null
           })
         }
@@ -508,7 +510,7 @@ export default {
           const newLayer = cluster[element.feature.properties.bps_kode][key][keySub].addTo(this.map)
           this.listLayer.push(newLayer)
           cluster[element.feature.properties.bps_kode][key][keySub].on('clusterclick', (c) => {
-            this.$L.popup().setLatLng(c.layer.getLatLng()).setContent(c.layer._childCount + ' kasus ' + this.statusStageCorona(key, keySub) + ' di ' + wilayah + ' ' + element.feature.properties.bps_nama).openOn(this.map)
+            this.$L.popup().setLatLng(c.layer.getLatLng()).setContent(c.layer._childCount + ' kasus ' + this.statusStageCorona(key, keySub) + ' di ' + wilayah + ' ' + element.feature.properties.kemendagri_nama).openOn(this.map)
           }).on('clustermouseout', (c) => {
             this.map.closePopup()
           })
@@ -522,7 +524,7 @@ export default {
         if (this.map.getBounds().intersects(element._bounds)) {
           const layerWilayah = element.addTo(this.map)
           this.wilayahLayer.push(layerWilayah)
-          element.bindPopup(element.feature.properties.bps_nama)
+          element.bindPopup(element.feature.properties.kemendagri_nama)
           const markerClusters = this.paramMarkerCluster()
           this.kotaCluster[element.feature.properties.bps_kode] = markerClusters
           this.jsonData.forEach((elPasien) => {
@@ -541,6 +543,7 @@ export default {
               }
             }
           })
+
           this.addMarkerClusterLayer(this.kotaCluster, element)
         }
       })
@@ -553,7 +556,7 @@ export default {
         if (this.map.getBounds().intersects(element._bounds)) {
           const layerWilayah = element.addTo(this.map)
           this.wilayahLayer.push(layerWilayah)
-          element.bindPopup(element.feature.properties.bps_nama)
+          element.bindPopup('KEC. ' + element.feature.properties.bps_nama)
 
           const markerClusters = this.paramMarkerCluster()
           this.kecamatanCluster[element.feature.properties.bps_kode] = markerClusters
@@ -775,6 +778,13 @@ export default {
     /* border: 1px solid white; */
   }
 
+  .digits-0 {
+    height: 17px;
+    width: 17px;
+    margin-top: -14px;
+    margin-left: -14px;
+  }
+
   .digits-1 {
     font-size: 14px;
     height: 28px;
@@ -812,5 +822,5 @@ export default {
     margin-top: -29px;
     margin-left: -29px;
   }
-
+  
 </style>

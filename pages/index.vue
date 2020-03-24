@@ -98,62 +98,9 @@
             Penting bagi Anda untuk menilai kondisi secara mandiri. Anda bergejala?
           </p>
           <i style="flex: 0 0 2rem;" />
-<<<<<<< HEAD
-          <a
-            class="px-10 py-4 rounded-lg text-white border-2 border-solid border-white hover:bg-brand-green-light"
-            :href="selfDiagnoseURL"
-            target="_blank"
-          >
-            <b>Nilai Diri Saya</b>
-          </a>
-        </div>
-      </div>
-      <div class="flex flex-row flex-wrap items-stretch my-8">
-        <div
-          class="w-full mb-8 lg:mb-0 lg:w-1/4 rounded-lg bg-white shadow-md lg:mr-8 p-5 md:p-8"
-          style="min-width:320px"
-        >
-          <div class="flex flex-col justify-between items-start h-full">
-            <header>
-              <h3 class="text-lg lg:text-2xl">
-                <strong>Punya Pertanyaan Terkait COVID-19?</strong>
-              </h3>
-              <br>
-              <br>
-              <p>
-                Penting bagi Anda untuk menilai kondisi secara mandiri.
-                Anda bergejala?
-              </p>
-            </header>
-            <nuxt-link
-              tag="a"
-              class="mt-8 px-6 py-4 inline-block rounded-lg bg-brand-green text-white border-2 border-solid border-brand-green"
-              to="/faq"
-            >
-              <b>Tanyakan Sekarang</b>
-            </nuxt-link>
-          </div>
-        </div>
-        <div class="flex-1 rounded-lg bg-white shadow-md p-5 md:p-8">
-          <div class="flex flex-col items-stretch">
-            <h3 class="text-lg lg:text-2xl leading-loose">
-              <strong>Hubungi Call Center</strong>
-            </h3>
-            <CallCenter :count="4" />
-            <br>
-            <nuxt-link
-              tag="a"
-              to="/contact"
-              class="text-center md:self-center w-64 py-4 rounded-lg text-brand-green-darker hover:bg-green-200 border-2 border-solid border-brand-green"
-            >
-              Lihat Selengkapnya
-            </nuxt-link>
-          </div>
-=======
           <button class="px-10 py-2 rounded-lg text-white border-2 border-solid border-white hover:bg-brand-green-light">
             Lihat Disini
           </button>
->>>>>>> master
         </div>
       </div>
       <div class="flex flex-col items-stretch my-4 p-5 md:p-8 md:p-12 bg-white rounded-lg shadow-md">
@@ -186,8 +133,6 @@
       </div>
     </section>
     <section class="mt-8 m-4 md:m-8 rounded-lg bg-white shadow-md p-5 md:p-8">
-<<<<<<< HEAD
-=======
       <div class="flex flex-col items-stretch">
         <h3 class="text-lg lg:text-2xl">
           <strong>Hubungi Call Center</strong>
@@ -204,7 +149,6 @@
       </div>
     </section>
     <section class="mt-8 m-4 md:m-8 rounded-lg bg-white shadow-md p-5 md:p-8">
->>>>>>> master
       <header class="lg:max-w-2xl">
         <h2 class="mb-4 md:mb-8 text-left text-xl md:text-2xl">
           <b>Lindungi Diri dan Orang Lain</b>
