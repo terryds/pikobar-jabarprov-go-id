@@ -1,108 +1,112 @@
 <template>
+
   <div class="container-map">
-    <div id="map-wrap" style="height: 75%;z-index:0;" />
-    <div class="info-legend p-2">
-      <b>Keterangan: </b>
-      <div class="row">
-        <div class="col-md">
-          <div class="legend-color" style="background:#2d9cdb" /> &nbsp;
-          ODP - Proses
+    <div class="bg-white col-md-12 p-0 m-2 " style="border-radius: 0.8rem; box-shadow: 0 0 4px 0px rgba(0,0,0,0.05), 0 4px 24px 0 rgba(0,0,0,0.1); height:50em;">
+        <div id="map-wrap" style="height: 75%;z-index:0;" />
+        <div class="info-legend p-2">
+          <b>Keterangan: </b>
+          <div class="row">
+            <div class="col-md">
+              <div class="legend-color" style="background:#2d9cdb" /> &nbsp;
+              ODP - Proses
+            </div>
+            <div class="col-md">
+              <div class="legend-color" style="background:#f2c94c; border: 1px solid #2d9cdb" /> &nbsp;
+              ODP - naik satus ke PDP
+            </div>
+            <div class="col-md">
+              <div class="legend-color" style="background:#bdbdbd; border: 1px solid #2d9cdb" /> &nbsp;
+              ODP (belum diupdate)
+            </div>
+            <div class="col-md">
+              <div class="legend-color" style="background:#27ae60; border: 1px solid #f2c94c" /> &nbsp;
+              PDP - Selesai
+            </div>
+            <div class="col-md">
+              <div class="legend-color" style="background:#bdbdbd; border: 1px solid #f2c94c" /> &nbsp;
+              PDP (belum diupdate)
+            </div>
+            <div class="col-md">
+              <div class="legend-color" style="background:#a51212; border: 1px solid #eb5757" /> &nbsp;
+              Positif - Meninggal
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md">
+              <div class="legend-color" style="background:#27ae60; border: 1px solid #3aa2dd" /> &nbsp;
+              ODP - Selesai
+            </div>
+            <div class="col-md">
+              <div class="legend-color" style="background:#eb5757; border: 1px solid #3aa2dd" /> &nbsp;
+              ODP - naik satus ke Positif
+            </div>
+            <div class="col-md">
+              <div class="legend-color" style="background:#f2c94c;" /> &nbsp;
+              PDP - Proses
+            </div>
+            <div class="col-md">
+              <div class="legend-color" style="background:#eb5757; border: 1px solid #f2c94c" /> &nbsp;
+              PDP - naik status ke Positif
+            </div>
+            <div class="col-md">
+              <div class="legend-color" style="background:#eb5757" /> &nbsp;
+              Positif - Proses
+            </div>
+            <div class="col-md">
+              <div class="legend-color" style="background:#27ae60; border: 1px solid #eb5757" /> &nbsp;
+              Positif - Sembuh
+            </div>
+          </div>
+          <hr>
+          <!-- <div class="row">
+            <div class="col-md mt-1">
+              <b>ODP (Orang Dalam Pemantauan)</b><br>
+              Data yang divisualisasikan sebanyak 635 dari 1412 kasus dan 20 dari 27 kabupaten/kota
+            </div>
+            <div class="col-md">
+              <b>PDP (Pasien Dalam Pengawasan)</b><br>
+              Data yang divisualisasikan sebanyak 94 dari 132 kasus dan 16 dari 23 kabupaten/kota
+            </div>
+            <div class="col-md">
+              <b>Positif (Pasien terkonfirmasi positif COVID-19)</b><br>
+              Data yang divisualisasikan sebanyak 22 dari 26 kasus dan 7 dari 7 kabupaten/kota
+            </div>
+          </div> -->
+          <div class="row">
+            <div class="col-md mt-1">
+              <b>Catatan:</b><br>
+              Titik lokasi merupakan titik acak (random by system) wilayah yang tertera pada identitas kasus dan tidak menunjuk pada alamat persis masing-masing kasus, beberapa titik yang saling berdekatan terlihat menyatu pada pembesaran peta skala besar. Data yang ditampilkan saat ini bukan data seluruhnya,  data akan terus diperbaharui sesuai dengan informasi yang diterima melalui Pemerintah Provinsi Jawa Barat
+            </div>
+          </div>
         </div>
-        <div class="col-md">
-          <div class="legend-color" style="background:#f2c94c; border: 1px solid #2d9cdb" /> &nbsp;
-          ODP - naik satus ke PDP
+        <div v-if="!isHidden" class="disclaimer">
+          <div class="backdrop" />
+          <div class="text-disclaimer">
+            <div class="title">
+              Peta Sebaran Kasus COVID-19 di Jawa Barat
+            </div>
+            <div class="subtitle">
+              Sumber: Dinas Kesehatan Provinsi Jawa Barat
+            </div>
+            <div class="description mt-2">
+              <br>
+              <b>Data yang ditampilkan akan terus diperbarui sesuai dengan informasi yang diterima melalui <br>Pemerintah Provinsi Jawa Barat.</b>
+            </div>
+            <button class="px-6 py-2 bg-brand-green hover:bg-brand-green-lighter text-white rounded-lg shadow-md mt-8" style="color: #fff" @click="isHidden = !isHidden">
+              <b>Lihat Peta</b>
+            </button>
+          </div>
         </div>
-        <div class="col-md">
-          <div class="legend-color" style="background:#bdbdbd; border: 1px solid #2d9cdb" /> &nbsp;
-          ODP (belum diupdate)
-        </div>
-        <div class="col-md">
-          <div class="legend-color" style="background:#27ae60; border: 1px solid #f2c94c" /> &nbsp;
-          PDP - Selesai
-        </div>
-        <div class="col-md">
-          <div class="legend-color" style="background:#bdbdbd; border: 1px solid #f2c94c" /> &nbsp;
-          PDP (belum diupdate)
-        </div>
-        <div class="col-md">
-          <div class="legend-color" style="background:#a51212; border: 1px solid #eb5757" /> &nbsp;
-          Positif - Meninggal
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md">
-          <div class="legend-color" style="background:#27ae60; border: 1px solid #3aa2dd" /> &nbsp;
-          ODP - Selesai
-        </div>
-        <div class="col-md">
-          <div class="legend-color" style="background:#eb5757; border: 1px solid #3aa2dd" /> &nbsp;
-          ODP - naik satus ke Positif
-        </div>
-        <div class="col-md">
-          <div class="legend-color" style="background:#f2c94c;" /> &nbsp;
-          PDP - Proses
-        </div>
-        <div class="col-md">
-          <div class="legend-color" style="background:#eb5757; border: 1px solid #f2c94c" /> &nbsp;
-          PDP - naik status ke Positif
-        </div>
-        <div class="col-md">
-          <div class="legend-color" style="background:#eb5757" /> &nbsp;
-          Positif - Proses
-        </div>
-        <div class="col-md">
-          <div class="legend-color" style="background:#27ae60; border: 1px solid #eb5757" /> &nbsp;
-          Positif - Sembuh
-        </div>
-      </div>
-      <hr>
-      <!-- <div class="row">
-        <div class="col-md mt-1">
-          <b>ODP (Orang Dalam Pemantauan)</b><br>
-          Data yang divisualisasikan sebanyak 635 dari 1412 kasus dan 20 dari 27 kabupaten/kota
-        </div>
-        <div class="col-md">
-          <b>PDP (Pasien Dalam Pengawasan)</b><br>
-          Data yang divisualisasikan sebanyak 94 dari 132 kasus dan 16 dari 23 kabupaten/kota
-        </div>
-        <div class="col-md">
-          <b>Positif (Pasien terkonfirmasi positif COVID-19)</b><br>
-          Data yang divisualisasikan sebanyak 22 dari 26 kasus dan 7 dari 7 kabupaten/kota
-        </div>
-      </div> -->
-      <div class="row">
-        <div class="col-md mt-1">
-          <b>Catatan:</b><br>
-          Titik lokasi merupakan titik acak (random by system) wilayah yang tertera pada identitas kasus dan tidak menunjuk pada alamat persis masing-masing kasus, beberapa titik yang saling berdekatan terlihat menyatu pada pembesaran peta skala besar. Data yang ditampilkan saat ini bukan data seluruhnya,  data akan terus diperbaharui sesuai dengan informasi yang diterima melalui Pemerintah Provinsi Jawa Barat
-        </div>
-      </div>
-    </div>
-    <div v-if="!isHidden" class="disclaimer">
-      <div class="backdrop" />
-      <div class="text-disclaimer">
-        <div class="title">
-          Peta Sebaran Kasus COVID-19 di Jawa Barat
-        </div>
-        <div class="subtitle">
-          Sumber: Dinas Kesehatan Provinsi Jawa Barat
-        </div>
-        <div class="description mt-2">
-          <br>
-          <b>Data yang ditampilkan akan terus diperbarui sesuai dengan informasi yang diterima melalui <br>Pemerintah Provinsi Jawa Barat.</b>
-        </div>
-        <button class="px-6 py-2 bg-brand-green hover:bg-brand-green-lighter text-white rounded-lg shadow-md mt-8" style="color: #fff" @click="isHidden = !isHidden">
-          <b>Lihat Peta</b>
-        </button>
-      </div>
     </div>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
+import * as turf from '@turf/turf'
 
 export default {
-  name: 'MapView',
+  name: 'MapSebaranCovid',
   data () {
     return {
       map: '',
@@ -238,6 +242,7 @@ export default {
     }
   },
   mounted () {
+    this.tesMap()
     this.importJSON()
       .then(() => {
         this.createBasemap()
@@ -388,12 +393,14 @@ export default {
     },
     statusStageCorona (status, stage) {
       let statusStage = ''
-      if (status === 'positif' && stage === 'aktif') {
+      if (status === 'positif' && stage === 'proses') {
         statusStage = 'Positif - Proses'
       } else if (status === 'positif' && stage === 'meninggal') {
         statusStage = 'Positif - Meninggal'
       } else if (status === 'positif' && stage === 'sembuh') {
         statusStage = 'Positif - Sembuh'
+      } else if (status === 'positif' && (stage == null || stage == '')) {
+        statusStage = 'Positif'
       } else if (status === 'pdp' && stage === 'proses') {
         statusStage = 'PDP - Proses'
       } else if (status === 'pdp' && stage === 'selesai') {
@@ -410,9 +417,9 @@ export default {
         statusStage = 'ODP - naik status ke PDP'
       } else if (status === 'odp' && stage === 'positif') {
         statusStage = 'ODP naik status ke Positif'
-      } else {
+      } else if (status === 'odp' && stage == null){
         statusStage = 'ODP belum di update'
-      }
+      } 
 
       return statusStage
     },
@@ -520,12 +527,20 @@ export default {
           this.kotaCluster[element.feature.properties.bps_kode] = markerClusters
           this.jsonData.forEach((elPasien) => {
             if (elPasien.alamat_latitude !== null) {
-              if (element._bounds.contains([elPasien.alamat_latitude, elPasien.alamat_longitude])) {
+              const point = {
+                "type": "Feature",
+                "properties": {},
+                "geometry": {
+                  "type": "Point",
+                  "coordinates": [elPasien.alamat_longitude, elPasien.alamat_latitude]
+                }
+              }
+              const isInside = turf.inside(point, element.feature)
+              if (isInside) {
                 this.addMarkerLayer(this.kotaCluster, element, elPasien)
               }
             }
           })
-
           this.addMarkerClusterLayer(this.kotaCluster, element)
         }
       })
@@ -544,7 +559,16 @@ export default {
           this.kecamatanCluster[element.feature.properties.bps_kode] = markerClusters
           this.jsonData.forEach((elPasien) => {
             if (elPasien.alamat_latitude !== null) {
-              if (element._bounds.contains([elPasien.alamat_latitude, elPasien.alamat_longitude])) {
+              const point = {
+                "type": "Feature",
+                "properties": {},
+                "geometry": {
+                  "type": "Point",
+                  "coordinates": [elPasien.alamat_longitude, elPasien.alamat_latitude]
+                }
+              }
+              const isInside = turf.inside(point, element.feature)
+              if (isInside) {
                 this.addMarkerLayer(this.kecamatanCluster, element, elPasien)
               }
             }
@@ -578,7 +602,24 @@ export default {
         }
       })
     },
+    isMarkerInsidePolygon(marker, poly) {
+      var polyPoints = poly.getLatLngs();       
+      var x = marker[0], y = marker[1];
+
+      var inside = false;
+      for (var i = 0, j = polyPoints.length - 1; i < polyPoints.length; j = i++) {
+          var xi = polyPoints[i].lat, yi = polyPoints[i].lng;
+          var xj = polyPoints[j].lat, yj = polyPoints[j].lng;
+
+          var intersect = ((yi > y) != (yj > y))
+              && (x < (xj - xi) * (y - yi) / (yj - yi) + xi);
+          if (intersect) inside = !inside;
+      }
+
+      return inside;
+    },
     tesMap () {
+      
     }
   }
 }
