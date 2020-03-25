@@ -98,6 +98,9 @@
             Penting bagi Anda untuk menilai kondisi secara mandiri. Anda bergejala?
           </p>
           <i style="flex: 0 0 2rem;" />
+          <!-- <button class="px-10 py-2 rounded-lg text-white border-2 border-solid border-white hover:bg-brand-green-light">
+            Lihat Disini
+          </button> -->
           <a
             class="cursor-pointer px-10 py-4 rounded-lg text-white border-2 border-solid border-white hover:bg-brand-green-light"
             @click.prevent="onClickSelfDiagnose"
