@@ -1,4 +1,5 @@
 require('dotenv').config()
+const APP_TITLE = 'Pikobar - Pusat Informasi dan Koordinasi COVID-19 Jawa Barat'
 export default {
   env: {
     FIREBASE_API_KEY: process.env.FIREBASE_API_KEY,
@@ -9,7 +10,9 @@ export default {
     FIREBASE_MESSAGING_SENDER_ID: process.env.FIREBASE_MESSAGING_SENDER_ID,
     FIREBASE_APP_ID: process.env.FIREBASE_APP_ID,
     FIREBASE_MEASUREMENT_ID: process.env.FIREBASE_MEASUREMENT_ID,
-    FIREBASE_PUBLIC_VAPID_KEY: process.env.FIREBASE_PUBLIC_VAPID_KEY
+    FIREBASE_PUBLIC_VAPID_KEY: process.env.FIREBASE_PUBLIC_VAPID_KEY,
+    APP_TITLE,
+    URL: process.env.URL
   },
   router: {
     prefetchLinks: false
@@ -26,7 +29,7 @@ export default {
   ** Headers of the page
   */
   head: {
-    title: 'Pikobar - Pusat Informasi dan Koordinasi COVID-19 Jawa Barat',
+    title: APP_TITLE,
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
