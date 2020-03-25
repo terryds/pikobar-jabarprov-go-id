@@ -25,10 +25,13 @@
   .my-custom-scrollbar {
     position: relative;
     height: 365px;
-    overflow: scroll;
+    overflow-y: scroll;
   }
   .table-wrapper-scroll-y {
     display: block;
+  }
+  .dataTables_wrapper {
+    max-width: 98% !important;
   }
 
   .table {
