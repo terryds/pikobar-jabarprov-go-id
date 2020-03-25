@@ -99,9 +99,8 @@
           </p>
           <i style="flex: 0 0 2rem;" />
           <a
-            class="px-10 py-4 rounded-lg text-white border-2 border-solid border-white hover:bg-brand-green-light"
-            :href="selfDiagnoseURL"
-            target="_blank"
+            class="cursor-pointer px-10 py-4 rounded-lg text-white border-2 border-solid border-white hover:bg-brand-green-light"
+            @click.prevent="onClickSelfDiagnose"
           >
             <b>Nilai Diri Saya</b>
           </a>
@@ -428,7 +427,7 @@ export default {
     }),
     selfDiagnoseURL () {
       const config = this.$store.state['remote-config'].config
-      return config ? config.selfDiagnoseURL : '#'
+      return config ? config.selfDiagnoseURL : null
     },
     bannerImage () {
       if (this.banners && this.banners.length) {
@@ -469,7 +468,13 @@ export default {
     }
   },
   methods: {
-    formatDateTimeShort
+    formatDateTimeShort,
+    onClickSelfDiagnose () {
+      if (!this.selfDiagnoseURL) {
+        return
+      }
+      window.open(this.selfDiagnoseURL, '_blank')
+    }
   }
 }
 
