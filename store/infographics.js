@@ -20,11 +20,15 @@ export const mutations = {
 }
 
 export const actions = {
-  getItems ({ commit }, options) {
-    return get(options)
-      .then((arr) => {
-        commit('setItems', arr)
-      })
+  getItems ({ state, commit }, options = { perPage: 3, fresh: false }) {
+    if (!state.items || !state.items.length || options.fresh) {
+      return get(options)
+        .then((arr) => {
+          commit('setItems', arr)
+          return state.items
+        })
+    }
+    return state.items
   },
   getItemById ({ commit }, id) {
     return getById(id)
