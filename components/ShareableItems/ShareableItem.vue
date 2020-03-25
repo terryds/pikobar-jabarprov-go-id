@@ -76,7 +76,7 @@ export default {
   computed: {
     fileExtension () {
       if (typeof this.downloadURL === 'string' && this.downloadURL.length) {
-        const ext = /(jpe?g|png|bmp|gif)/
+        const ext = /(jpe?g|png|bmp|gif|docx?|pdf|xls?|pptx?)/
         const matched = ext.exec(this.downloadURL)
         return matched ? matched[1] : null
       }
