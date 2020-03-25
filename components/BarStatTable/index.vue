@@ -8,7 +8,7 @@
         <b>Tabel Covid-19 Jawa Barat</b>
       </h4>
       <hr>
-      <div class="p-2">
+      <div class="p-2 table-wrapper-scroll-y my-custom-scrollbar">
         <mdb-datatable
           :data="data"
           :searching="false"
@@ -22,6 +22,15 @@
 </template>
 
 <style >
+  .my-custom-scrollbar {
+    position: relative;
+    height: 365px;
+    overflow: scroll;
+  }
+  .table-wrapper-scroll-y {
+    display: block;
+  }
+
   .table {
     font-size: 14px;
     font-weight: 500;
@@ -112,8 +121,7 @@ export default {
         columns: [
           {
             label: 'No',
-            field: 'no',
-            sort: 'desc'
+            field: 'no'
           },
           {
             label: 'Nama Kota / Kabupaten',
@@ -205,8 +213,23 @@ export default {
       axios
         .get('https://covid19-public.digitalservice.id/api/v1/rekapitulasi/jabar?level=kab')
         .then(function (response) {
-          self.jsonDataKabupaten = response.data.data.content
-          self.jsonDataKabupaten.sort(self.compareValues('positif', 'desc'))
+          // self.jsonDataKabupaten = response.data.data.content
+
+          for (let i = 0; i < response.data.data.content.length; i++) {
+            self.jsonDataKabupaten.push({
+              no: i + 1,
+              nama_kab: response.data.data.content[i].nama_kab,
+              odp_proses: self.ifNullReturnZero(response.data.data.content[i].odp_proses),
+              pdp_proses: self.ifNullReturnZero(response.data.data.content[i].pdp_proses),
+              positif_aktif: self.ifNullReturnZero(
+                self.ifNullReturnZero(response.data.data.content[i].positif) -
+                (self.ifNullReturnZero(response.data.data.content[i].sembuh) + self.ifNullReturnZero(response.data.data.content[i].meninggal))
+              ),
+              positif_sembuh: self.ifNullReturnZero(response.data.data.content[i].sembuh),
+              positif_meninggal: self.ifNullReturnZero(response.data.data.content[i].meninggal)
+            })
+          }
+          self.jsonDataKabupaten.sort(self.compareValues('positif_aktif', 'desc'))
 
           for (let i = 0; i < self.jsonDataKabupaten.length; i++) {
             self.data.rows.push({
@@ -214,12 +237,9 @@ export default {
               nama_kab: self.jsonDataKabupaten[i].nama_kab,
               odp_proses: self.ifNullReturnZero(self.jsonDataKabupaten[i].odp_proses),
               pdp_proses: self.ifNullReturnZero(self.jsonDataKabupaten[i].pdp_proses),
-              positif_aktif: self.ifNullReturnZero(
-                self.ifNullReturnZero(self.jsonDataKabupaten[i].positif) -
-                (self.ifNullReturnZero(self.jsonDataKabupaten[i].sembuh) + self.ifNullReturnZero(self.jsonDataKabupaten[i].meninggal))
-              ),
-              positif_sembuh: self.ifNullReturnZero(self.jsonDataKabupaten[i].sembuh),
-              positif_meninggal: self.ifNullReturnZero(self.jsonDataKabupaten[i].meninggal)
+              positif_aktif: self.ifNullReturnZero(self.jsonDataKabupaten[i].positif_aktif),
+              positif_sembuh: self.ifNullReturnZero(self.jsonDataKabupaten[i].positif_sembuh),
+              positif_meninggal: self.ifNullReturnZero(self.jsonDataKabupaten[i].positif_meninggal)
             })
           }
         })
