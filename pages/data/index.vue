@@ -19,13 +19,13 @@
         <BarStatDetail />
       </section>
 
-      <section class="row">
-        <MapSebaranCovid />
-      </section>
-
       <!-- <section class="row">
-        <MapFaskes />
+        <MapSebaranCovid />
       </section> -->
+
+      <section class="row">
+        <MapFaskes />
+      </section>
 
       <section class="mt-4">
         <BarStatArea />
@@ -53,8 +53,8 @@ import { formatDateTimeShort } from '~/lib/date'
 
 export default {
   components: {
-    MapSebaranCovid: () => import('~/components/MapSebaranCovid'),
-    // MapFaskes: () => import('~/components/MapFaskes'),
+    // MapSebaranCovid: () => import('~/components/MapSebaranCovid'),
+    MapFaskes: () => import('~/components/MapFaskes'),
     BarStat: () => import('~/components/BarStat'),
     BarStatDetail: () => import('~/components/BarStatDetail'),
     BarStatArea: () => import('~/components/BarStatArea'),

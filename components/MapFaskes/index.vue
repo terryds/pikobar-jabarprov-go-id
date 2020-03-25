@@ -6,15 +6,68 @@
         <b>Keterangan: </b>
         <div class="row">
           <div class="col-md-2">
-            <FontAwesomeIcon :icon="icon.faPlusSquare" class="mr-2 fa-w-14 icon-legend-rs" style="color: #08cc29" />
+            <svg
+              style="float:left;"
+              width="18"
+              height="18"
+              viewBox="0 0 18 18"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg">
+              <rect
+                x="1"
+                y="1"
+                width="16"
+                height="16"
+                rx="4"
+                stroke="#5AAA4E"
+              />
+              <path d="M13.9996 7.54973V10.4503C13.9996 10.7177 13.783 10.9347 13.5151 10.9347H10.9348V13.5155C10.9348 13.783 10.7177 14 10.4503 14H7.54978C7.28235 14 7.0653 13.783 7.0653 13.5155V10.9347H4.48447C4.21656 10.9347 4 10.7177 4 10.4503V7.54973C4 7.2823 4.21656 7.06526 4.48447 7.06526H7.0653V4.48447C7.0653 4.21704 7.28235 4 7.54978 4H10.4504C10.7178 4 10.9348 4.21704 10.9348 4.48447V7.06526H13.5152C13.783 7.06526 13.9996 7.2823 13.9996 7.54973Z" fill="#6EBE62"/>
+              <path d="M13.9998 7.54973V10.4503C13.9998 10.7177 13.7832 10.9347 13.5153 10.9347H10.935V13.5155C10.935 13.783 10.7179 14 10.4505 14H9V4H10.4505C10.7179 4 10.935 4.21704 10.935 4.48447V7.06526H13.5153C13.7832 7.06526 13.9998 7.2823 13.9998 7.54973Z" fill="#5AAA4E" />
+            </svg>
+            &nbsp;
             Rumah Sakit Rujukan
           </div>
           <div class="col-md-2">
-            <FontAwesomeIcon :icon="icon.faPlusSquare" class="mr-2 fa-w-14 icon-legend-rs" style="color: #fdd619" />
+            <svg
+              style="float:left"
+              width="18"
+              height="18"
+              viewBox="0 0 18 18"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg">
+              <rect
+                x="1"
+                y="1"
+                width="16"
+                height="16"
+                rx="4"
+                stroke="#F2C94C"
+              />
+              <path d="M13.9996 7.54973V10.4503C13.9996 10.7177 13.783 10.9347 13.5151 10.9347H10.9348V13.5155C10.9348 13.783 10.7177 14 10.4503 14H7.54978C7.28235 14 7.0653 13.783 7.0653 13.5155V10.9347H4.48447C4.21656 10.9347 4 10.7177 4 10.4503V7.54973C4 7.2823 4.21656 7.06526 4.48447 7.06526H7.0653V4.48447C7.0653 4.21704 7.28235 4 7.54978 4H10.4504C10.7178 4 10.9348 4.21704 10.9348 4.48447V7.06526H13.5152C13.783 7.06526 13.9996 7.2823 13.9996 7.54973Z" fill="#F2D57A" />
+              <path d="M13.9998 7.54973V10.4503C13.9998 10.7177 13.7832 10.9347 13.5153 10.9347H10.935V13.5155C10.935 13.783 10.7179 14 10.4505 14H9V4H10.4505C10.7179 4 10.935 4.21704 10.935 4.48447V7.06526H13.5153C13.7832 7.06526 13.9998 7.2823 13.9998 7.54973Z" fill="#F2C94C" />
+            </svg>
+            &nbsp;
             Rumah Sakit Lini 2
           </div>
           <div class="col-md-2">
-            <FontAwesomeIcon :icon="icon.faPlusSquare" class="mr-2 fa-w-14 icon-legend-rs" style="color: #169cea" />
+            <svg
+              style="float:left"
+              width="18"
+              height="18"
+              viewBox="0 0 18 18"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg">
+              <rect
+                x="1"
+                y="1"
+                width="16"
+                height="16"
+                rx="4"
+                stroke="#2D9CDB" />
+              <path d="M13.9996 7.54973V10.4503C13.9996 10.7177 13.783 10.9347 13.5151 10.9347H10.9348V13.5155C10.9348 13.783 10.7177 14 10.4503 14H7.54978C7.28235 14 7.0653 13.783 7.0653 13.5155V10.9347H4.48447C4.21656 10.9347 4 10.7177 4 10.4503V7.54973C4 7.2823 4.21656 7.06526 4.48447 7.06526H7.0653V4.48447C7.0653 4.21704 7.28235 4 7.54978 4H10.4504C10.7178 4 10.9348 4.21704 10.9348 4.48447V7.06526H13.5152C13.783 7.06526 13.9996 7.2823 13.9996 7.54973Z" fill="#56CCF2" />
+              <path d="M13.9998 7.54973V10.4503C13.9998 10.7177 13.7832 10.9347 13.5153 10.9347H10.935V13.5155C10.935 13.783 10.7179 14 10.4505 14H9V4H10.4505C10.7179 4 10.935 4.21704 10.935 4.48447V7.06526H13.5153C13.7832 7.06526 13.9998 7.2823 13.9998 7.54973Z" fill="#2D9CDB" />
+            </svg>
+            &nbsp;
             Puskesmas
           </div>
           <div class="col-md" />
@@ -26,24 +79,16 @@
 
 <script>
 import axios from 'axios'
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { faPlusSquare } from '@fortawesome/free-solid-svg-icons'
 
 export default {
   name: 'MapSebaranCovid',
-  components: {
-    FontAwesomeIcon
-  },
   data () {
     return {
       map: '',
       zoom: 8,
       isHidden: false,
       jsonData: [],
-      listLayer: [],
-      icon: {
-        faPlusSquare
-      }
+      listLayer: []
     }
   },
   mounted () {
@@ -108,70 +153,76 @@ export default {
       this.createLayerFaskes()
     },
     createLayerFaskes () {
-      const svgRS = '<svg style="font-size: 1.6em;"data-v-827fdf16="" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="plus-square" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="mr-2 fa-w-14 icon-legend-rs svg-inline--fa fa-plus-square fa-w-14" ><path data-v-827fdf16="" fill="currentColor" d="M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm-32 252c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92H92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12v56z" class=""></path></svg>'
+      const iconRSRujukan = `<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="1" y="1" width="16" height="16" rx="4" stroke="#5AAA4E"/>
+      <path d="M13.9996 7.54973V10.4503C13.9996 10.7177 13.783 10.9347 13.5151 10.9347H10.9348V13.5155C10.9348 13.783 10.7177 14 10.4503 14H7.54978C7.28235 14 7.0653 13.783 7.0653 13.5155V10.9347H4.48447C4.21656 10.9347 4 10.7177 4 10.4503V7.54973C4 7.2823 4.21656 7.06526 4.48447 7.06526H7.0653V4.48447C7.0653 4.21704 7.28235 4 7.54978 4H10.4504C10.7178 4 10.9348 4.21704 10.9348 4.48447V7.06526H13.5152C13.783 7.06526 13.9996 7.2823 13.9996 7.54973Z" fill="#6EBE62"/>
+      <path d="M13.9998 7.54973V10.4503C13.9998 10.7177 13.7832 10.9347 13.5153 10.9347H10.935V13.5155C10.935 13.783 10.7179 14 10.4505 14H9V4H10.4505C10.7179 4 10.935 4.21704 10.935 4.48447V7.06526H13.5153C13.7832 7.06526 13.9998 7.2823 13.9998 7.54973Z" fill="#5AAA4E"/></svg>`
+      const iconRSLini = `<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="1" y="1" width="16" height="16" rx="4" stroke="#F2C94C"/>
+      <path d="M13.9996 7.54973V10.4503C13.9996 10.7177 13.783 10.9347 13.5151 10.9347H10.9348V13.5155C10.9348 13.783 10.7177 14 10.4503 14H7.54978C7.28235 14 7.0653 13.783 7.0653 13.5155V10.9347H4.48447C4.21656 10.9347 4 10.7177 4 10.4503V7.54973C4 7.2823 4.21656 7.06526 4.48447 7.06526H7.0653V4.48447C7.0653 4.21704 7.28235 4 7.54978 4H10.4504C10.7178 4 10.9348 4.21704 10.9348 4.48447V7.06526H13.5152C13.783 7.06526 13.9996 7.2823 13.9996 7.54973Z" fill="#F2D57A"/>
+      <path d="M13.9998 7.54973V10.4503C13.9998 10.7177 13.7832 10.9347 13.5153 10.9347H10.935V13.5155C10.935 13.783 10.7179 14 10.4505 14H9V4H10.4505C10.7179 4 10.935 4.21704 10.935 4.48447V7.06526H13.5153C13.7832 7.06526 13.9998 7.2823 13.9998 7.54973Z" fill="#F2C94C"/>
+      </svg>`
+      const iconPuskesmas = `<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="1" y="1" width="16" height="16" rx="4" stroke="#2D9CDB"/>
+      <path d="M13.9996 7.54973V10.4503C13.9996 10.7177 13.783 10.9347 13.5151 10.9347H10.9348V13.5155C10.9348 13.783 10.7177 14 10.4503 14H7.54978C7.28235 14 7.0653 13.783 7.0653 13.5155V10.9347H4.48447C4.21656 10.9347 4 10.7177 4 10.4503V7.54973C4 7.2823 4.21656 7.06526 4.48447 7.06526H7.0653V4.48447C7.0653 4.21704 7.28235 4 7.54978 4H10.4504C10.7178 4 10.9348 4.21704 10.9348 4.48447V7.06526H13.5152C13.783 7.06526 13.9996 7.2823 13.9996 7.54973Z" fill="#56CCF2"/>
+      <path d="M13.9998 7.54973V10.4503C13.9998 10.7177 13.7832 10.9347 13.5153 10.9347H10.935V13.5155C10.935 13.783 10.7179 14 10.4505 14H9V4H10.4505C10.7179 4 10.935 4.21704 10.935 4.48447V7.06526H13.5153C13.7832 7.06526 13.9998 7.2823 13.9998 7.54973Z" fill="#2D9CDB"/>
+      </svg>`
 
-      this.jsonData.content.forEach((elFaskes) => {
-        const pointRS = this.$L.marker([elFaskes.latitude, elFaskes.longitude], {
-          icon: this.$L.divIcon({
-            html: svgRS,
-            iconSize: [17, 17],
-            className: 'icon-rs green'
+      this.jsonData.forEach((elFaskes) => {
+        if (elFaskes.latitude !== null) {
+          let icon = ''
+          if (elFaskes.rujukan === true) {
+            icon = iconRSRujukan
+          } else if (elFaskes.tipe_faskes === 1) {
+            icon = iconRSLini
+          } else {
+            icon = iconPuskesmas
+          }
+          const pointRS = this.$L.marker([elFaskes.latitude, elFaskes.longitude], {
+            icon: this.$L.divIcon({
+              html: icon,
+              className: 'icon-rs green'
+            })
+          }).addTo(this.map)
+
+          let popup = `<table border=0 cellpadding=2>
+              <tr>
+                <th><b> Nama </b></th>
+                <td> : </td>
+                <td>${elFaskes.nama}</td>
+              </tr>
+              <tr>
+                <th><b> Alamat </b></th>
+                <td> : </td>
+                <td>${elFaskes.alamat}</td>
+              </tr>`
+          if (elFaskes.telepon != null && elFaskes.telepon !== '') {
+            popup += `<tr>
+                <th><b> Telepon </b></th>
+                <td> : </td>
+                <td>${elFaskes.telepon}</td>
+            </tr>`
+          }
+
+          if (elFaskes.url != null && elFaskes.url !== '') {
+            popup += `<tr>
+                <th><b> Url </b></th>
+                <td> : </td>
+                <td>${elFaskes.url}</td>
+              </tr>`
+          }
+
+          popup += '</table>'
+          pointRS.bindPopup(popup)
+          pointRS.on('mouseover', function (e) {
+            this.openPopup()
           })
-        }).addTo(this.map)
-
-        let telepon = ''
-        elFaskes.telepon.forEach((elTelepon) => {
-          telepon += elTelepon + '<br>'
-        })
-        pointRS.bindPopup(`
-          <table border=0 cellpadding=2>
-            <tr>
-              <th><b> Nama </b></th>
-              <td> : </td>
-              <td>${elFaskes.nama}</td>
-            </tr>
-            <tr>
-              <th><b> Alamat </b></th>
-              <td> : </td>
-              <td>${elFaskes.alamat}</td>
-            </tr>
-            <tr>
-              <th><b> Telepon </b></th>
-              <td> : </td>
-              <td>${telepon}</td>
-            </tr>
-            <tr>
-              <th><b> Url </b></th>
-              <td> : </td>
-              <td>${elFaskes.url}</td>
-            </tr>
-          </table>
-        `)
-        pointRS.on('mouseover', function (e) {
-          this.openPopup()
-        })
-        pointRS.on('mouseout', function (e) {
-          this.closePopup()
-        })
-        this.listLayer.push(pointRS)
+          pointRS.on('mouseout', function (e) {
+            this.closePopup()
+          })
+          this.listLayer.push(pointRS)
+        }
       })
-      // const newLayer = this.$L.marker([-6.921655383188578, 107.61039733886719], {
-      //   icon: this.$L.divIcon({
-      //     html: svgRS,
-      //     iconSize: [20, 20],
-      //     className: 'yellow'
-      //   })
-      // }).addTo(this.map)
-      // this.listLayer.push(newLayer)
-
-      // const newLayer = this.$L.marker([-6.921655383188578, 107.61039733886719], {
-      //   icon: this.$L.divIcon({
-      //     html: svgRS,
-      //     iconSize: [20, 20],
-      //     className: 'blue'
-      //   })
-      // }).addTo(this.map)
-      // this.listLayer.push(newLayer)
     },
     tesMap () {
     }
