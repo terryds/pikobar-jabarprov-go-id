@@ -124,7 +124,9 @@ export default {
   mounted () {
     this.getItems()
       .then(() => {
-        this.performFiltering()
+        this.performFiltering({
+          showLoading: false
+        })
         if (process.browser) {
           analytics.logEvent('faqs_view')
         }
@@ -150,7 +152,7 @@ export default {
         this.openItem(index)
       }
     },
-    performFiltering () {
+    performFiltering ({ showLoading = true } = {}) {
       if (!this.items || !this.items.length) {
         this.filteredItems = []
       }
@@ -164,11 +166,29 @@ export default {
             return `${str}`.toLowerCase().includes(this.searchString.toLowerCase())
           })
         })
-      }, 1000)
+      }, showLoading ? 1000 : 0)
     },
     resetFilter () {
       this.searchString = ''
       this.performFiltering()
+    }
+  },
+  head () {
+    const title = 'FAQ - Pikobar [Pusat Informasi dan Koordinasi COVID-19 Jawa Barat]'
+    return {
+      title,
+      meta: [
+        {
+          hid: 'og:title',
+          property: 'og:title',
+          content: title
+        },
+        {
+          hid: 'og:type',
+          property: 'og:type',
+          content: 'article'
+        }
+      ]
     }
   }
 }
