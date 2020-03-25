@@ -47,7 +47,7 @@ export default {
   },
   mounted () {
     this.isPending = true
-    this.getItems({ perPage: 8 })
+    this.getItems({ perPage: 8, fresh: true })
       .finally(() => {
         if (process.browser) {
           analytics.logEvent('infographic_list_view')
