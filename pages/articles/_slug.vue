@@ -68,10 +68,20 @@
 import { ContentLoader } from 'vue-content-loader'
 import { formatDateTimeShort } from '~/lib/date'
 import { analytics } from '~/lib/firebase'
+import { useDefaultMetaInfo, useArticleMetaInfo } from '~/lib/metainfo'
 
+const regex = /(?:(-artcl\.))(.*)$/
 export default {
   components: {
     ContentLoader
+  },
+  validate ({ redirect, params }) {
+    const { slug } = params
+    if (!slug || typeof slug !== 'string') {
+      redirect('/articles')
+      return
+    }
+    return true
   },
 
   metaInfo: {
@@ -85,8 +95,20 @@ export default {
     }
   },
 
+  computed: {
+    itemId () {
+      const slug = this.$route.params.slug
+      if (slug.includes('-artcl.')) {
+        const matched = regex.exec(slug)
+        return matched && matched.length ? matched[2] : null
+      } else {
+        return slug
+      }
+    }
+  },
+
   mounted () {
-    this.getById(this.$route.params.slug)
+    this.getById(this.itemId)
   },
 
   methods: {
@@ -115,27 +137,26 @@ export default {
     }
   },
   head () {
-    // eslint-disable-next-line
-    const { title = process.env.npm_package_title, published_at = '' } = (this.item || {})
-    return {
-      title: title + ' - Pikobar',
-      meta: [
-        {
-          hid: 'og:title',
-          property: 'og:title',
-          content: title + ' - Pikobar'
-        },
-        {
-          hid: 'og:type',
-          property: 'og:type',
-          content: 'article'
-        },
-        {
-          hid: 'og:article:published_time',
-          property: 'og:article:published_time',
-          content: published_at
-        }
-      ]
+    if (!this.item) {
+      return useDefaultMetaInfo()
+    } else {
+      const {
+        title,
+        published_at: publishedAt,
+        image,
+        route,
+        news_channel: newsChannel
+      } = this.item
+      const date = publishedAt && typeof publishedAt.toISOString === 'function'
+        ? publishedAt.toISOString()
+        : ''
+      return useArticleMetaInfo({
+        author: newsChannel,
+        title,
+        publishedTime: date,
+        image,
+        url: `${process.env.URL}${route}`
+      })
     }
   }
 }

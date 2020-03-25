@@ -39,11 +39,20 @@
 import { mapActions } from 'vuex'
 import { ContentLoader } from 'vue-content-loader'
 import { analytics } from '~/lib/firebase'
+import { useDefaultMetaInfo, useArticleMetaInfo } from '~/lib/metainfo'
 
 const regex = /(?:(-inf\.))(.*)$/
 export default {
   components: {
     ContentLoader
+  },
+  validate ({ redirect, params }) {
+    const { slug } = params
+    if (!slug || typeof slug !== 'string') {
+      redirect('/articles')
+      return
+    }
+    return true
   },
   data () {
     return {
@@ -54,13 +63,12 @@ export default {
   computed: {
     itemId () {
       const slug = this.$route.params.slug
-      if (slug) {
+      if (slug.includes('-inf.')) {
         const matched = regex.exec(slug)
-        if (matched && matched.length) {
-          return matched[2] || null
-        }
+        return matched && matched.length ? matched[2] : null
+      } else {
+        return slug
       }
-      return null
     }
   },
   watch: {
@@ -91,26 +99,19 @@ export default {
     })
   },
   head () {
-    const { title = process.env.npm_package_title, images = [] } = (this.infographic || {})
-    return {
-      title: title + ' - Pikobar',
-      meta: [
-        {
-          hid: 'og:title',
-          property: 'og:title',
-          content: title + ' - Pikobar'
-        },
-        {
-          hid: 'og:type',
-          property: 'og:type',
-          content: 'image'
-        },
-        {
-          hid: 'og:image',
-          property: 'og:image',
-          content: images[0] || ''
-        }
-      ]
+    if (!this.infographic) {
+      return useDefaultMetaInfo()
+    } else {
+      const { title, route, published_at: publishedAt, images = [] } = this.infographic
+      const date = publishedAt && typeof publishedAt.toISOString === 'function'
+        ? publishedAt.toISOString()
+        : ''
+      return useArticleMetaInfo({
+        title,
+        publishedTime: date,
+        url: `${process.env.URL}${route}`,
+        image: images[0]
+      })
     }
   }
 }
