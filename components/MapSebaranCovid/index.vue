@@ -11,33 +11,33 @@
               ODP - Proses
             </div>
             <div class="col-md">
-              <div class="legend-color" style="background:#f2c94c; border: 1px solid #2d9cdb" /> &nbsp;
+              <div class="legend-color" style="background:#f2c94c; border: 2px solid #2d9cdb" /> &nbsp;
               ODP - naik satus ke PDP
             </div>
             <div class="col-md">
-              <div class="legend-color" style="background:#bdbdbd; border: 1px solid #2d9cdb" /> &nbsp;
+              <div class="legend-color" style="background:#2d9cdb; border: 2px solid #bdbdbd" /> &nbsp;
               ODP (belum diupdate)
             </div>
             <div class="col-md">
-              <div class="legend-color" style="background:#27ae60; border: 1px solid #f2c94c" /> &nbsp;
+              <div class="legend-color" style="background:#27ae60; border: 2px solid #f2c94c" /> &nbsp;
               PDP - Selesai
             </div>
             <div class="col-md">
-              <div class="legend-color" style="background:#bdbdbd; border: 1px solid #f2c94c" /> &nbsp;
+              <div class="legend-color" style="background:#f2c94c; border: 2px solid #bdbdbd" /> &nbsp;
               PDP (belum diupdate)
             </div>
             <div class="col-md">
-              <div class="legend-color" style="background:#a51212; border: 1px solid #eb5757" /> &nbsp;
+              <div class="legend-color" style="background:#a51212; border: 2px solid #eb5757" /> &nbsp;
               Positif - Meninggal
             </div>
           </div>
           <div class="row">
             <div class="col-md">
-              <div class="legend-color" style="background:#27ae60; border: 1px solid #3aa2dd" /> &nbsp;
+              <div class="legend-color" style="background:#27ae60; border: 2px solid #3aa2dd" /> &nbsp;
               ODP - Selesai
             </div>
             <div class="col-md">
-              <div class="legend-color" style="background:#eb5757; border: 1px solid #3aa2dd" /> &nbsp;
+              <div class="legend-color" style="background:#eb5757; border: 2px solid #3aa2dd" /> &nbsp;
               ODP - naik satus ke Positif
             </div>
             <div class="col-md">
@@ -45,7 +45,7 @@
               PDP - Proses
             </div>
             <div class="col-md">
-              <div class="legend-color" style="background:#eb5757; border: 1px solid #f2c94c" /> &nbsp;
+              <div class="legend-color" style="background:#eb5757; border: 2px solid #f2c94c" /> &nbsp;
               PDP - naik status ke Positif
             </div>
             <div class="col-md">
@@ -53,7 +53,7 @@
               Positif - Proses
             </div>
             <div class="col-md">
-              <div class="legend-color" style="background:#27ae60; border: 1px solid #eb5757" /> &nbsp;
+              <div class="legend-color" style="background:#27ae60; border: 2px solid #eb5757" /> &nbsp;
               Positif - Sembuh
             </div>
           </div>
@@ -394,6 +394,7 @@ export default {
       }
     },
     statusStageCorona (status, stage) {
+      console.log( status + ' === ' + stage )
       let statusStage = ''
       if (status === 'positif' && stage === 'proses') {
         statusStage = 'Positif - Proses'
@@ -409,7 +410,7 @@ export default {
         statusStage = 'PDP - Selesai'
       } else if (status === 'pdp' && stage === 'positif') {
         statusStage = 'PDP - naik status ke Positif'
-      } else if (status === 'pdp' && stage === null) {
+      } else if (status === 'pdp' && stage === 'belumupdate') {
         statusStage = 'PDP (belum diupdate)'
       } else if (status === 'odp' && stage === 'proses') {
         statusStage = 'ODP - Proses'
@@ -419,8 +420,8 @@ export default {
         statusStage = 'ODP - naik status ke PDP'
       } else if (status === 'odp' && stage === 'positif') {
         statusStage = 'ODP naik status ke Positif'
-      } else if (status === 'odp' && stage == null){
-        statusStage = 'ODP belum di update'
+      } else if (status === 'odp' && stage == 'belumupdate'){
+        statusStage = 'ODP (belum di update)'
       } 
 
       return statusStage
@@ -466,12 +467,24 @@ export default {
     },
     addMarkerLayer(cluster, element, elPasien) {
       const m = this.$L.marker([elPasien.alamat_latitude, elPasien.alamat_longitude])
-      m.bindPopup(`
-        <b> Kab/Kota </b> : ${elPasien.kabkot_str} <br>
-        <b> Status </b> : ${elPasien.status} <br>
-        <b> Jenis Kelamin </b> : ${elPasien.jenis_kelamin_str} <br>
-        <b> Usia </b> : ${elPasien.umur} 
-      `)
+      let popup = `<b> Status </b> : ${elPasien.status} <br>`
+
+      if (elPasien.kabkot_str !== '' && elPasien.kabkot_str !== null) {
+        popup += '<b> Kab/Kota </b> : ' + elPasien.kabkot_str + '<br />'
+      }
+
+      if (elPasien.kecamatan_str !== '' && elPasien.kecamatan_str !== null) {
+        popup += '<b> Kecamatan </b> : ' + elPasien.kecamatan_str + '<br />'
+      }
+
+      if (elPasien.jenis_kelamin_str !== '' && elPasien.jenis_kelamin_str !== null) {
+        popup += '<b> Jenis Kelamin </b> : ' + elPasien.jenis_kelamin_str + '<br />'
+      }
+
+      if (elPasien.umur !== '' && elPasien.umur !== null) {
+        popup += '<b> Usia </b> : ' + elPasien.umur + ' tahun <br />'
+      }
+      m.bindPopup(popup)
       m.on('mouseover', function (e) {
         this.openPopup()
       })
@@ -504,13 +517,26 @@ export default {
         cluster[element.feature.properties.bps_kode].odp.belumupdate.addLayer(m)
       }
     },
-    addMarkerClusterLayer(cluster, element, wilayah = '') {
+    addMarkerClusterLayer(cluster, element, wilayah = '', kabkotNama = '') {
       for (const key in cluster[element.feature.properties.bps_kode]) {
         for (const keySub in cluster[element.feature.properties.bps_kode][key]) {
           const newLayer = cluster[element.feature.properties.bps_kode][key][keySub].addTo(this.map)
           this.listLayer.push(newLayer)
           cluster[element.feature.properties.bps_kode][key][keySub].on('clusterclick', (c) => {
-            this.$L.popup().setLatLng(c.layer.getLatLng()).setContent(c.layer._childCount + ' kasus ' + this.statusStageCorona(key, keySub) + ' di ' + wilayah + ' ' + element.feature.properties.kemendagri_nama).openOn(this.map)
+            let popup = ''
+            popup += `<b> Status </b> : ${this.statusStageCorona(key, keySub)} <br>`
+            popup += `<b> Jumlah </b> : ${c.layer._childCount} kasus <br>`
+
+            if (wilayah === 'Kecamatan') {
+              if (kabkotNama !== '') {
+                popup += `<b> Kota/Kabupaten </b> : ${ kabkotNama } <br>`
+              }
+              popup += `<b> Kecamatan </b> : ${element.feature.properties.kemendagri_nama} kasus <br>`
+            } else {
+              popup += `<b> Kota/Kabupaten </b> : ${ element.feature.properties.kemendagri_nama } <br>`
+            }
+
+            this.$L.popup().setLatLng(c.layer.getLatLng()).setContent(popup).openOn(this.map)
           }).on('clustermouseout', (c) => {
             this.map.closePopup()
           })
@@ -560,6 +586,7 @@ export default {
 
           const markerClusters = this.paramMarkerCluster()
           this.kecamatanCluster[element.feature.properties.bps_kode] = markerClusters
+          let kabkotNama = ''
           this.jsonData.forEach((elPasien) => {
             if (elPasien.alamat_latitude !== null) {
               const point = {
@@ -572,12 +599,13 @@ export default {
               }
               const isInside = turf.inside(point, element.feature)
               if (isInside) {
+                kabkotNama = elPasien.kabkot_str
                 this.addMarkerLayer(this.kecamatanCluster, element, elPasien)
               }
             }
           })
 
-          this.addMarkerClusterLayer(this.kecamatanCluster, element, 'Kecamatan')
+          this.addMarkerClusterLayer(this.kecamatanCluster, element, 'Kecamatan', kabkotNama)
         }
       })
     },
@@ -721,17 +749,20 @@ export default {
 
   .cluster-odp-pdp {
     background: #f2c94c;
-    border: 1px solid rgb(45, 156, 219, 0.9);
+    border: 3px solid rgb(45, 156, 219, 0.9);
+    line-height: 1.8em  !important;
   }
 
   .cluster-odp-positif {
     background: #eb5757;
-    border: 1px solid rgb(45, 156, 219, 0.9);
+    border: 3px solid rgb(45, 156, 219, 0.9);
+    line-height: 1.8em  !important;
   }
 
   .cluster-odp-belumupdate {
-    background: #bdbdbd;
-    border: 1px solid rgb(45, 156, 219, 0.9);
+    background: rgb(45, 156, 219, 0.9);
+    border: 3px solid #bdbdbd;
+    line-height: 1.8em  !important;
   }
 
   .cluster-pdp-proses {
@@ -739,18 +770,21 @@ export default {
   }
 
   .cluster-pdp-selesai {
-    border: 1px solid rgb(242, 201, 76, 0.9);
-    background: #27ae60
+    border: 3px solid rgb(242, 201, 76, 0.9);
+    background: #27ae60;
+    line-height: 1.8em  !important;
   }
 
   .cluster-pdp-positif {
-    border: 1px solid rgb(242, 201, 76, 0.9);
+    border: 3px solid rgb(242, 201, 76, 0.9);
     background: #eb5757;
+    line-height: 1.8em  !important;
   }
 
   .cluster-pdp-belumupdate {
-    border: 1px solid rgb(242, 201, 76, 0.9);
-    background: #bdbdbd;
+    border: 3px solid #bdbdbd;
+    background: rgb(242, 201, 76, 0.9);
+    line-height: 1.8em  !important;
   }
 
   .cluster-positif-proses {
@@ -759,12 +793,14 @@ export default {
 
   .cluster-positif-meninggal {
     background: #a51212;
-    border: 1px solid rgb(235, 87, 87, 0.9);
+    border: 3px solid rgb(235, 87, 87, 0.9);
+    line-height: 1.8em  !important;
   }
 
   .cluster-positif-sembuh {
     background: #27ae60;
-    border: 1px solid rgb(235, 87, 87, 0.9);
+    border: 3px solid rgb(235, 87, 87, 0.9);
+    line-height: 1.8em  !important;
   }
   .cluster:before {
     content: ' ';
@@ -775,7 +811,7 @@ export default {
     left: 1px;
     right: 1px;
     bottom: 1px;
-    /* border: 1px solid white; */
+    /* border: 3px solid white; */
   }
 
   .digits-0 {
