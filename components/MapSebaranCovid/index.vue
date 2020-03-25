@@ -531,7 +531,7 @@ export default {
               if (kabkotNama !== '') {
                 popup += `<b> Kota/Kabupaten </b> : ${ kabkotNama } <br>`
               }
-              popup += `<b> Kecamatan </b> : ${element.feature.properties.kemendagri_nama} kasus <br>`
+              popup += `<b> Kecamatan </b> : ${element.feature.properties.kemendagri_nama} <br>`
             } else {
               popup += `<b> Kota/Kabupaten </b> : ${ element.feature.properties.kemendagri_nama } <br>`
             }
