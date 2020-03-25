@@ -182,22 +182,6 @@
       </div>
     </section>
     <section class="mt-8 m-4 md:m-8 rounded-lg bg-white shadow-md p-5 md:p-8">
-      <div class="flex flex-col items-stretch">
-        <h3 class="text-lg lg:text-2xl">
-          <strong>Hubungi Call Center</strong>
-        </h3>
-        <CallCenter :count="6" />
-        <br>
-        <nuxt-link
-          tag="a"
-          to="/contact"
-          class="text-center md:self-center px-4 py-2 rounded-lg text-brand-green-darker hover:bg-green-200 border-2 border-solid border-brand-green"
-        >
-          Lihat Selengkapnya
-        </nuxt-link>
-      </div>
-    </section>
-    <section class="mt-8 m-4 md:m-8 rounded-lg bg-white shadow-md p-5 md:p-8">
       <header class="lg:max-w-2xl">
         <h2 class="mb-4 md:mb-8 text-left text-xl md:text-2xl">
           <b>Lindungi Diri dan Orang Lain</b>
