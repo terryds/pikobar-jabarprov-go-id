@@ -63,30 +63,7 @@ export default {
         isODP: false,
         isPDP: true
       },
-      jsonDataSatuan: [
-      ],
-      jsonDataResult: {
-        odp: 0,
-        odp_proses: 0,
-        odp_proses_persen: 0,
-        odp_selesai: 0,
-        odp_selesai_persen: 0,
-        pdp: 0,
-        pdp_proses: 0,
-        pdp_proses_persen: 0,
-        pdp_selesai: 0,
-        pdp_selesai_persen: 0,
-        positif: 0,
-        perawatan: 0,
-        sembuh: 0,
-        meninggal: 0,
-        total_positif_saat_ini: 0,
-        total_sembuh: 0,
-        total_meninggal: 0,
-        last_update: '',
-        umur_max: 0,
-        count_kota: 0
-      },
+      jsonDataSebaranJabar: [],
       pieChartJenisKelaminData: [
         ['Jenis Kelamin', 'Data'],
         ['Pria', 0],
@@ -110,7 +87,7 @@ export default {
     }
   },
   created () {
-    this.fetchDataSatuan()
+    this.fetchDataSebaranJabar()
   },
   methods: {
     ifNullReturnZero (str) {
@@ -133,13 +110,12 @@ export default {
       }
       return [day, month, year].join('-')
     },
-    fetchDataSatuan () {
+    fetchDataSebaranJabar () {
       const self = this
       axios
-        .get('https://covid19-public.digitalservice.id/analytics/longlat/')
+        .get('https://covid19-public.digitalservice.id/api/v1/sebaran/jabar')
         .then(function (response) {
-          self.jsonDataResult.last_update = new Date(response.data.last_update).toLocaleString('id-ID', { dateStyle: 'long', timeStyle: 'medium' })
-          self.jsonDataSatuan = response.data.data
+          self.jsonDataSebaranJabar = response.data.data.content
 
           // by jenis_kelamin
           self.changeGroupJenisKelamin('ODP')
@@ -177,11 +153,11 @@ export default {
       let tempJenisKelaminPria = 0
       let tempJenisKelaminWanita = 0
       let tempJenisKelaminNull = 0
-      for (let i = 0; i < self.jsonDataSatuan.length; i++) {
-        if (self.jsonDataSatuan[i].status === stat) {
-          if (self.jsonDataSatuan[i].jenis_kelamin_str === 'Laki-laki') {
+      for (let i = 0; i < self.jsonDataSebaranJabar.length; i++) {
+        if (self.jsonDataSebaranJabar[i].status === stat) {
+          if (self.jsonDataSebaranJabar[i].gender === 'Laki-laki') {
             tempJenisKelaminPria += 1
-          } else if (self.jsonDataSatuan[i].jenis_kelamin_str === 'Perempuan') {
+          } else if (self.jsonDataSebaranJabar[i].gender === 'Perempuan') {
             tempJenisKelaminWanita += 1
           } else {
             tempJenisKelaminNull += 1

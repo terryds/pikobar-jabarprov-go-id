@@ -98,10 +98,12 @@
             Penting bagi Anda untuk menilai kondisi secara mandiri. Anda bergejala?
           </p>
           <i style="flex: 0 0 2rem;" />
+          <!-- <button class="px-10 py-2 rounded-lg text-white border-2 border-solid border-white hover:bg-brand-green-light">
+            Lihat Disini
+          </button> -->
           <a
-            class="px-10 py-4 rounded-lg text-white border-2 border-solid border-white hover:bg-brand-green-light"
-            :href="selfDiagnoseURL"
-            target="_blank"
+            class="cursor-pointer px-10 py-4 rounded-lg text-white border-2 border-solid border-white hover:bg-brand-green-light"
+            @click.prevent="onClickSelfDiagnose"
           >
             <b>Nilai Diri Saya</b>
           </a>
@@ -176,22 +178,6 @@
           class="text-center md:self-center px-4 py-2 rounded-lg text-brand-green-darker hover:bg-green-200 border-2 border-solid border-brand-green"
         >
           Lihat Rumah Sakit Lainnya
-        </nuxt-link>
-      </div>
-    </section>
-    <section class="mt-8 m-4 md:m-8 rounded-lg bg-white shadow-md p-5 md:p-8">
-      <div class="flex flex-col items-stretch">
-        <h3 class="text-lg lg:text-2xl">
-          <strong>Hubungi Call Center</strong>
-        </h3>
-        <CallCenter :count="6" />
-        <br>
-        <nuxt-link
-          tag="a"
-          to="/contact"
-          class="text-center md:self-center px-4 py-2 rounded-lg text-brand-green-darker hover:bg-green-200 border-2 border-solid border-brand-green"
-        >
-          Lihat Selengkapnya
         </nuxt-link>
       </div>
     </section>
@@ -428,7 +414,7 @@ export default {
     }),
     selfDiagnoseURL () {
       const config = this.$store.state['remote-config'].config
-      return config ? config.selfDiagnoseURL : '#'
+      return config ? config.selfDiagnoseURL : null
     },
     bannerImage () {
       if (this.banners && this.banners.length) {
@@ -469,7 +455,13 @@ export default {
     }
   },
   methods: {
-    formatDateTimeShort
+    formatDateTimeShort,
+    onClickSelfDiagnose () {
+      if (!this.selfDiagnoseURL) {
+        return
+      }
+      window.open(this.selfDiagnoseURL, '_blank')
+    }
   }
 }
 

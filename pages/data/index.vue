@@ -8,7 +8,7 @@
       <h3 class="text-3xl text-gray-900 font-bold text-left leading-none" style="margin-bottom: 10px; ">
         Dashboard Kasus COVID-19 Provinsi Jawa Barat
       </h3>
-      <span style="font-size: smaller;">*Terakhir diupdate {{ jsonDataResult.last_update }}</span>
+      <span style="font-size: smaller;">*Update Terakhir: {{ lastUpdatedAt }}</span>
       <br>
       <br>
       <section>
@@ -19,17 +19,43 @@
         <BarStatDetail />
       </section>
 
-      <section class="row">
-        <div
-          class="bg-white col-md-12 p-0 m-2 "
-          style="border-radius: 0.8rem; box-shadow: 0 0 4px 0px rgba(0,0,0,0.05), 0 4px 24px 0 rgba(0,0,0,0.1); height:50em;"
+      <div class="row mt-2 mb-2 pl-2">
+        <nuxt-link
+          tag="a"
+          style="border: 1px solid #2DAC55;"
+          class="btn btn-md mr-2"
+          :class="stat.isActiveCovid ? 'btnActive' : 'btnNonActive'"
+          to=""
+          @click.native="enableCovid"
         >
-          <MapView />
-        </div>
+          <font-awesome-icon :icon="fontDiagnoses" /> Sebaran Covid-19
+        </nuxt-link>
+        <nuxt-link
+          tag="a"
+          style="border: 1px solid #2DAC55;"
+          class="btn btn-md mr-2"
+          :class="stat.isActiveRS ? 'btnActive' : 'btnNonActive'"
+          to=""
+          @click.native="enableRS"
+        >
+          <font-awesome-icon :icon="fontHospital" /> Fasilitas Kesehatan
+        </nuxt-link>
+      </div>
+
+      <section v-if="stat.isActiveCovid" class="row">
+        <MapSebaranCovid />
+      </section>
+
+      <section v-if="stat.isActiveRS" class="row">
+        <MapFaskes />
       </section>
 
       <section class="mt-4">
         <BarStatArea />
+      </section>
+
+      <section class="mt-4">
+        <BarStatTable />
       </section>
 
       <section class="row mt-4">
@@ -49,66 +75,54 @@
 </template>
 
 <script>
-import axios from 'axios'
+import { mapState } from 'vuex'
+// import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { faFirstAid, faBug } from '@fortawesome/free-solid-svg-icons'
+import { formatDateTimeShort } from '~/lib/date'
 
 export default {
   components: {
-    MapView: () => import('~/components/MapView'),
+    MapSebaranCovid: () => import('~/components/MapSebaranCovid'),
+    MapFaskes: () => import('~/components/MapFaskes'),
     BarStat: () => import('~/components/BarStat'),
     BarStatDetail: () => import('~/components/BarStatDetail'),
     BarStatArea: () => import('~/components/BarStatArea'),
     BarStatJenisKelamin: () => import('~/components/BarStatJenisKelamin'),
     BarStatUsia: () => import('~/components/BarStatUsia'),
-    BarStatHarianAkumulatif: () => import('~/components/BarStatHarianAkumulatif')
+    BarStatHarianAkumulatif: () => import('~/components/BarStatHarianAkumulatif'),
+    BarStatTable: () => import('~/components/BarStatTable')
+    // FontAwesomeIcon
   },
   data () {
     return {
-      jsonDataSatuan: [
-      ],
-      jsonDataRekap: [
-      ],
-      jsonDataResult: {
-        odp: 0,
-        odp_proses: 0,
-        odp_proses_persen: 0,
-        odp_selesai: 0,
-        odp_selesai_persen: 0,
-        pdp: 0,
-        pdp_proses: 0,
-        pdp_proses_persen: 0,
-        pdp_selesai: 0,
-        pdp_selesai_persen: 0,
-        positif: 0,
-        perawatan: 0,
-        sembuh: 0,
-        meninggal: 0,
-        total_positif_saat_ini: 0,
-        total_positif_saat_ini_nasional: 0,
-        total_sembuh: 0,
-        total_sembuh_nasional: 0,
-        total_meninggal: 0,
-        total_meninggal_nasional: 0,
-        last_update: '',
-        umur_max: 0,
-        count_kota: 0
-      }
+      stat: {
+        isActiveCovid: true,
+        isActiveRS: false
+      },
+      fontHospital: faFirstAid,
+      fontDiagnoses: faBug
     }
   },
-  created () {
-    this.fetchDataSatuan()
+  computed: {
+    ...mapState({
+      cases: state => state.statistics.cases
+    }),
+    lastUpdatedAt () {
+      if (!this.cases) {
+        return ''
+      }
+      return this.formatDateTimeShort(this.cases.updated_at)
+    }
   },
   methods: {
-    fetchDataSatuan () {
-      const self = this
-      axios
-        .get('https://covid19-public.digitalservice.id/analytics/longlat/')
-        .then(function (response) {
-          self.jsonDataResult.last_update = new Date(response.data.last_update).toLocaleString('id-ID', { dateStyle: 'long', timeStyle: 'medium' })
-          self.jsonDataSatuan = response.data
-        })
-        .catch(function (error) {
-          console.log(error)
-        })
+    formatDateTimeShort,
+    enableCovid () {
+      this.stat.isActiveCovid = true
+      this.stat.isActiveRS = false
+    },
+    enableRS () {
+      this.stat.isActiveCovid = false
+      this.stat.isActiveRS = true
     }
   },
   head () {
@@ -120,3 +134,15 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+
+.btnActive {
+  color: #ffffff;
+  background-color: #2DAC55;
+}
+.btnNonActive {
+  color: #2DAC55;
+  background-color: #FFFFFF;
+}
+</style>
