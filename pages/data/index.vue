@@ -20,7 +20,7 @@
       </section>
 
       <div class="row mt-2 mb-2 pl-2">
-        <nuxt-link
+        <!-- <nuxt-link
           tag="a"
           style="border: 1px solid #2DAC55;"
           class="btn btn-md mr-2"
@@ -30,7 +30,7 @@
         >
           <font-awesome-icon :icon="fontDiagnoses" /> Sebaran Covid-19
         </nuxt-link>
-        <!-- <nuxt-link
+        <nuxt-link
           tag="a"
           style="border: 1px solid #2DAC55;"
           class="btn btn-md mr-2"
@@ -76,7 +76,7 @@
 
 <script>
 import { mapState } from 'vuex'
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+// import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { faFirstAid, faBug } from '@fortawesome/free-solid-svg-icons'
 import { formatDateTimeShort } from '~/lib/date'
 
@@ -90,8 +90,8 @@ export default {
     BarStatJenisKelamin: () => import('~/components/BarStatJenisKelamin'),
     BarStatUsia: () => import('~/components/BarStatUsia'),
     BarStatHarianAkumulatif: () => import('~/components/BarStatHarianAkumulatif'),
-    BarStatTable: () => import('~/components/BarStatTable'),
-    FontAwesomeIcon
+    BarStatTable: () => import('~/components/BarStatTable')
+    // FontAwesomeIcon
   },
   data () {
     return {
