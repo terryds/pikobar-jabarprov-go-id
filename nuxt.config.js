@@ -33,7 +33,15 @@ export default {
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: process.env.npm_package_description || '' }
+      { hid: 'description', name: 'description', content: process.env.npm_package_description || '' },
+      { hid: 'url', name: 'url', content: process.env.URL },
+      { hid: 'og:title', property: 'og:title', content: APP_TITLE },
+      { hid: 'og:description', property: 'og:description', content: process.env.npm_package_description },
+      { hid: 'og:url', property: 'og:url', content: process.env.URL },
+      { hid: 'og:image', property: 'og:image', content: `${process.env.URL}/logo.jpg` },
+      { hid: 'og:site_name', property: 'og:site_name', content: APP_TITLE },
+      { hid: 'twitter:card', name: 'twitter:card', content: 'summary' },
+      { hid: 'twitter:site', name: 'twitter:site', content: '@jabardigital' }
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
