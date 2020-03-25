@@ -30,7 +30,7 @@
         >
           <font-awesome-icon :icon="fontDiagnoses" /> Sebaran Covid-19
         </nuxt-link>
-        <nuxt-link
+        <!-- <nuxt-link
           tag="a"
           style="border: 1px solid #2DAC55;"
           class="btn btn-md mr-2"
@@ -39,7 +39,7 @@
           @click.native="enableRS"
         >
           <font-awesome-icon :icon="fontHospital" /> Fasilitas Kesehatan
-        </nuxt-link>
+        </nuxt-link> -->
       </div>
 
       <section v-if="stat.isActiveCovid" class="row">
